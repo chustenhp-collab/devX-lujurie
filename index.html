@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>devX h web - Ultimate Edition</title>
+    <title>devX lujurie.web</title>
     <style>
         :root {
-            --bg-base: #060913;
+            --bg-base: #05070f;
             --surface: #0f172a;
             --surface-hover: #1e293b;
             --accent: #8b5cf6;
@@ -24,6 +24,7 @@
             padding: 0;
             -webkit-tap-highlight-color: transparent;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            border-radius: 0 !important; /* Forzar esquinas completamente rectas en todo */
         }
 
         body {
@@ -33,7 +34,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px;
+            padding: 16px;
             overflow-x: hidden;
         }
 
@@ -62,14 +63,12 @@
             position: absolute;
             bottom: 30px;
             right: 30px;
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(15, 23, 42, 0.85);
             color: var(--text-main);
             border: 1px solid var(--border);
             padding: 10px 20px;
-            border-radius: 20px;
             font-size: 0.85rem;
             cursor: pointer;
-            backdrop-filter: blur(8px);
             z-index: 10001;
         }
 
@@ -80,10 +79,10 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(6, 9, 19, 0.96);
+            background: rgba(5, 7, 15, 0.97);
             backdrop-filter: blur(16px);
             z-index: 9999;
-            display: none; /* Se activa tras el video */
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -94,14 +93,13 @@
         .gate-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 20px;
             padding: 32px 24px;
             max-width: 400px;
             width: 100%;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px var(--accent-glow);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
         .gate-logo {
@@ -109,7 +107,10 @@
             font-weight: 800;
             letter-spacing: 1px;
             color: #fff;
-            text-shadow: 0 0 15px var(--accent);
+        }
+
+        .gate-logo span {
+            color: var(--danger);
         }
 
         .gate-title {
@@ -128,7 +129,6 @@
             flex: 1;
             padding: 12px;
             border: none;
-            border-radius: 12px;
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
@@ -138,28 +138,25 @@
         .btn-primary {
             background: var(--accent);
             color: white;
-            box-shadow: 0 4px 15px var(--accent-glow);
         }
-        .btn-primary:active { transform: scale(0.96); }
+        .btn-primary:active { opacity: 0.8; }
 
         .btn-secondary {
             background: var(--surface-hover);
             color: var(--text-muted);
             border: 1px solid var(--border);
         }
-        .btn-secondary:active { transform: scale(0.96); }
+        .btn-secondary:active { opacity: 0.8; }
 
         .key-input, .auth-input {
             width: 100%;
             padding: 14px 16px;
-            border-radius: 12px;
             border: 1px solid var(--border);
             background: var(--bg-base);
             color: #fff;
             text-align: center;
             font-size: 1.05rem;
             outline: none;
-            transition: border-color 0.2s;
         }
         .key-input:focus, .auth-input:focus { border-color: var(--accent); }
 
@@ -173,7 +170,7 @@
         /* --- App Container --- */
         .app-container {
             width: 100%;
-            max-width: 440px;
+            max-width: 480px;
             display: flex;
             flex-direction: column;
             gap: 16px;
@@ -187,111 +184,182 @@
             pointer-events: auto;
         }
 
+        /* --- Header con Título Rectangular y Menú --- */
         header {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 16px;
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
-        header h1 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #fff, var(--text-muted));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .brand-title {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -0.5px;
         }
 
-        .user-badge {
-            font-size: 0.75rem;
+        .brand-title span {
+            color: var(--danger);
+        }
+
+        .menu-toggle-btn {
             background: var(--surface-hover);
             border: 1px solid var(--border);
-            padding: 6px 10px;
-            border-radius: 20px;
-            color: var(--accent);
-            font-weight: 600;
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        .menu-toggle-btn:active { background: var(--accent); }
+
+        /* --- Barra de Búsqueda Superior --- */
+        .search-container {
+            position: relative;
+            width: 100%;
         }
 
-        /* Panel de Control de Cuentas y Subida */
-        .dashboard-panel {
+        .search-input {
+            width: 100%;
+            padding: 14px 18px 14px 44px;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
         }
 
-        .dashboard-header {
+        .search-input:focus { border-color: var(--accent); }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* --- Menú Lateral Desplegable (Sidebar Rectangular) --- */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9995;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 300px;
+            height: 100vh;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 9996;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            gap: 24px;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .sidebar.open { right: 0; }
+
+        .sidebar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .sidebar-close {
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .sidebar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-section h3 {
             font-size: 0.85rem;
-            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             color: var(--text-muted);
         }
 
-        .btn-upload-toggle {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
+        .user-status-card {
+            background: var(--bg-base);
+            border: 1px solid var(--border);
+            padding: 12px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Formulario oculto para subir cómic (Límite 2) */
-        .upload-form-container {
-            display: none;
+        .upload-form-box {
+            display: flex;
             flex-direction: column;
             gap: 10px;
-            border-top: 1px solid var(--border);
-            padding-top: 10px;
-            margin-top: 4px;
-        }
-
-        .upload-form-container.active {
-            display: flex;
-        }
-
-        .upload-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .upload-input-group input {
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
             background: var(--bg-base);
+            border: 1px solid var(--border);
+            padding: 12px;
+        }
+
+        .upload-form-box input {
+            padding: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface);
             color: white;
             font-size: 0.85rem;
+            outline: none;
         }
 
+        /* --- Cuadrícula de Cómics Rectangular --- */
         .comics-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            gap: 12px;
         }
 
         .comic-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 14px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             transition: all 0.2s ease;
+        }
+
+        .comic-card:hover {
+            border-color: var(--accent);
         }
 
         .comic-thumb {
@@ -305,24 +373,22 @@
         .comic-actions {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            padding: 6px;
+            gap: 6px;
+            padding: 8px;
             background: var(--surface);
         }
 
         .action-btn {
             width: 100%;
-            padding: 6px 0;
+            padding: 7px 0;
             background: var(--surface-hover);
             color: var(--text-main);
             border: 1px solid var(--border);
-            border-radius: 6px;
             font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
             text-align: center;
             text-decoration: none;
-            transition: background 0.2s;
         }
 
         .action-btn.open {
@@ -331,7 +397,7 @@
             color: white;
         }
 
-        .action-btn:active { transform: scale(0.96); }
+        .action-btn:active { opacity: 0.8; }
 
         .placeholder-box {
             width: 100%;
@@ -342,7 +408,6 @@
             background: var(--surface-hover);
             font-size: 0.65rem;
             color: var(--text-muted);
-            border-radius: 14px 14px 0 0;
             text-align: center;
             padding: 5px;
         }
@@ -378,7 +443,6 @@
             height: 48px;
             border: 4px solid rgba(255, 255, 255, 0.1);
             border-top-color: var(--accent);
-            border-radius: 50%;
             animation: spin 0.8s linear infinite;
             z-index: 5;
         }
@@ -397,15 +461,13 @@
             z-index: 10;
         }
 
-        .viewer-image-container img.loaded {
-            opacity: 1;
-        }
+        .viewer-image-container img.loaded { opacity: 1; }
 
         .nav-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(15, 23, 42, 0.85);
             color: #fff;
             border: 1px solid var(--border);
             width: 50px;
@@ -416,28 +478,25 @@
             font-size: 1.8rem;
             cursor: pointer;
             z-index: 40;
-            backdrop-filter: blur(4px);
             user-select: none;
         }
 
         .nav-arrow:active { background: var(--accent); }
-        .arrow-left { left: 4px; border-radius: 0 12px 12px 0; }
-        .arrow-right { right: 4px; border-radius: 12px 0 0 12px; }
+        .arrow-left { left: 0; }
+        .arrow-right { right: 0; }
 
         .btn-back-menu {
             position: absolute;
             top: 16px;
             left: 16px;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(15, 23, 42, 0.9);
             color: var(--text-main);
             border: 1px solid var(--border);
             padding: 8px 14px;
-            border-radius: 10px;
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             z-index: 45;
-            backdrop-filter: blur(4px);
         }
     </style>
 </head>
@@ -452,7 +511,7 @@
     <!-- 2. Gatekeeper (Edad y Key) -->
     <div id="gatekeeperModal">
         <div class="gate-card" id="stepAge">
-            <div class="gate-logo">devX h web</div>
+            <div class="gate-logo">devX lujurie<span>.web</span></div>
             <div class="gate-title">¿Tienes más de 18 años?</div>
             <div class="gate-btns">
                 <button class="btn btn-primary" onclick="confirmarEdad(true)">Sí</button>
@@ -461,7 +520,7 @@
         </div>
 
         <div class="gate-card" id="stepKey" style="display: none;">
-            <div class="gate-logo">devX h web</div>
+            <div class="gate-logo">devX lujurie<span>.web</span></div>
             <div class="gate-title">Ingresa tu Key de Acceso</div>
             <input type="password" id="accessKeyInput" class="key-input" placeholder="chusten">
             <div class="error-txt" id="keyError">Key incorrecta. Inténtalo de nuevo.</div>
@@ -471,7 +530,7 @@
         <!-- Sistema de Cuentas Integrado -->
         <div class="gate-card" id="stepAuth" style="display: none;">
             <div class="gate-logo">Portal de Cuentas</div>
-            <div class="gate-title" id="authTitle">Inicia sesión o regístrate</div>
+            <div class="gate-title">Inicia sesión o regístrate</div>
             <input type="text" id="usernameInput" class="auth-input" placeholder="Nombre de usuario">
             <input type="password" id="passwordInput" class="auth-input" placeholder="Contraseña">
             <div class="error-txt" id="authError">Completa los campos correctamente.</div>
@@ -484,61 +543,78 @@
 
     <!-- 3. Contenido Principal de la App -->
     <div class="app-container" id="appContainer">
+        <!-- Header con Título Exacto y Menú -->
         <header>
-            <h1>devX h web</h1>
-            <div class="user-badge" id="currentUserBadge">Invitado</div>
+            <h1 class="brand-title">devX lujurie<span>.web</span></h1>
+            <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
         </header>
 
-        <!-- Panel de Usuario para Subir Cómics (Máximo 2) -->
-        <div class="dashboard-panel" id="userDashboard" style="display: none;">
-            <div class="dashboard-header">
-                <span id="userComicCount">Tus cómics subidos: 0 / 2</span>
-                <button class="btn-upload-toggle" onclick="toggleFormularioSubida()">+ Subir Comic</button>
-            </div>
-
-            <div class="upload-form-container" id="uploadForm">
-                <div class="upload-input-group">
-                    <label>Título del Comic:</label>
-                    <input type="text" id="newComicTitle" placeholder="Ej. Mi Aventura">
-                </div>
-                <div class="upload-input-group">
-                    <label>Imagen de Portada (JPG):</label>
-                    <input type="file" id="newComicCover" accept="image/jpeg">
-                </div>
-                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" onclick="subirComicUsuario()">Publicar Comic</button>
-            </div>
+        <!-- Barra de Búsqueda Superior -->
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="Buscar cómics..." oninput="filtrarComics()">
         </div>
 
-        <!-- Cuadrícula de Cómics -->
+        <!-- Cuadrícula de Cómics Rectangular -->
         <div class="comics-grid" id="comicsGrid">
-            <!-- Comics oficiales predeterminados -->
-            <div class="comic-card">
-                <img id="thumb1" class="comic-thumb" src="comic1/portada1.jpg" alt="Konosuba" onclick="abrirComic(1, true)">
+            <div class="comic-card" data-title="konosuba">
+                <img class="comic-thumb" src="comic1/portada1.jpg" alt="Konosuba" onclick="abrirComic(1)">
                 <div class="comic-actions">
-                    <button class="action-btn open" onclick="abrirComic(1, true)">Abrir</button>
+                    <button class="action-btn open" onclick="abrirComic(1)">Abrir</button>
                     <a href="comic1/comic1.zip" class="action-btn" download>Descargar</a>
                 </div>
             </div>
 
-            <div class="comic-card">
-                <img id="thumb2" class="comic-thumb" src="comic2/1t.jpg" alt="Jane Doe" onclick="abrirComic(2, true)">
+            <div class="comic-card" data-title="jane doe">
+                <img class="comic-thumb" src="comic2/1t.jpg" alt="Jane Doe" onclick="abrirComic(2)">
                 <div class="comic-actions">
-                    <button class="action-btn open" onclick="abrirComic(2, true)">Abrir</button>
+                    <button class="action-btn open" onclick="abrirComic(2)">Abrir</button>
                     <a href="comic2/comic2.zip" class="action-btn" download>Descargar</a>
                 </div>
             </div>
 
-            <div class="comic-card">
-                <img id="thumb3" class="comic-thumb" src="comic3/1r.jpg" alt="Tonikaku" onclick="abrirComic(3, true)">
+            <div class="comic-card" data-title="tonikaku">
+                <img class="comic-thumb" src="comic3/1r.jpg" alt="Tonikaku" onclick="abrirComic(3)">
                 <div class="comic-actions">
-                    <button class="action-btn open" onclick="abrirComic(3, true)">Abrir</button>
+                    <button class="action-btn open" onclick="abrirComic(3)">Abrir</button>
                     <a href="comic3/comic3.zip" class="action-btn" download>Descargar</a>
                 </div>
+            </div>
+
+            <div class="comic-card" data-title="slot 4"><div class="placeholder-box">+ Slot 4</div></div>
+            <div class="comic-card" data-title="slot 5"><div class="placeholder-box">+ Slot 5</div></div>
+            <div class="comic-card" data-title="slot 6"><div class="placeholder-box">+ Slot 6</div></div>
+        </div>
+    </div>
+
+    <!-- 4. Menú Lateral Desplegable (Sidebar) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar" id="sidebarMenu">
+        <div class="sidebar-header">
+            <h2 style="font-size: 1.1rem;">Menú & Ajustes</h2>
+            <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+        </div>
+
+        <div class="sidebar-section">
+            <h3>Sesión Actual</h3>
+            <div class="user-status-card">
+                <span id="sidebarUserBadge">Invitado</span>
+                <button class="action-btn" style="width: auto; padding: 4px 8px;" onclick="cerrarSesion()">Salir</button>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <h3>Subir Cómics (Máx. 2)</h3>
+            <div class="upload-form-box">
+                <span id="userComicCount" style="font-size: 0.75rem; color: var(--text-muted);">Subidos: 0 / 2</span>
+                <input type="text" id="newComicTitle" placeholder="Título del cómic">
+                <input type="file" id="newComicCover" accept="image/jpeg" style="font-size: 0.75rem;">
+                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" onclick="subirComicUsuario()">Publicar</button>
             </div>
         </div>
     </div>
 
-    <!-- 4. Visor de Cómics -->
+    <!-- 5. Visor de Cómics -->
     <div id="viewerModal">
         <button class="btn-back-menu" onclick="cerrarVisor()">Volver</button>
         <div class="viewer-image-container">
@@ -561,15 +637,10 @@
             3: { max: 24 }
         };
 
-        const cacheImgs = {};
-
         // Control del Video de Inicio (4 segundos)
         const videoElement = document.getElementById('introVideo');
-        
         videoElement.addEventListener('timeupdate', () => {
-            if (videoElement.currentTime >= 4.0) {
-                terminarVideo();
-            }
+            if (videoElement.currentTime >= 4.0) { terminarVideo(); }
         });
 
         function terminarVideo() {
@@ -593,7 +664,6 @@
         function validarKey() {
             const input = document.getElementById('accessKeyInput').value;
             const error = document.getElementById('keyError');
-            
             if (input === "chusten") {
                 document.getElementById('stepKey').style.display = 'none';
                 document.getElementById('stepAuth').style.display = 'flex';
@@ -602,22 +672,18 @@
             }
         }
 
-        // Sistema de Cuentas Local
         function manejarAuth(tipo) {
             const user = document.getElementById('usernameInput').value.trim();
             const pass = document.getElementById('passwordInput').value.trim();
             const error = document.getElementById('authError');
 
-            if (!user || !pass) {
-                error.style.display = 'block';
-                return;
-            }
+            if (!user || !pass) { error.style.display = 'block'; return; }
 
             let cuentas = JSON.parse(localStorage.getItem('devX_cuentas') || '{}');
 
             if (tipo === 'register') {
                 if (cuentas[user]) {
-                    error.textContent = "El usuario ya existe. Inicia sesión.";
+                    error.textContent = "El usuario ya existe.";
                     error.style.display = 'block';
                     return;
                 }
@@ -625,40 +691,56 @@
                 localStorage.setItem('devX_cuentas', JSON.stringify(cuentas));
             } else {
                 if (!cuentas[user] || cuentas[user].pass !== pass) {
-                    error.textContent = "Usuario o contraseña incorrectos.";
+                    error.textContent = "Datos incorrectos.";
                     error.style.display = 'block';
                     return;
                 }
             }
 
             usuarioLogueado = user;
-            localStorage.setItem('devX_sesion_activa', user);
             iniciarSesionExitosa();
         }
 
         function iniciarSesionExitosa() {
             document.getElementById('gatekeeperModal').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('gatekeeperModal').style.display = 'none';
-            }, 400);
+            setTimeout(() => { document.getElementById('gatekeeperModal').style.display = 'none'; }, 400);
             document.getElementById('appContainer').classList.add('unlocked');
-            document.getElementById('currentUserBadge').textContent = "@" + usuarioLogueado;
-            document.getElementById('userDashboard').style.display = 'flex';
-            cargarComicsUsuario();
+            document.getElementById('sidebarUserBadge').textContent = "@" + usuarioLogueado;
+            actualizarPanelUsuario();
         }
 
-        function toggleFormularioSubida() {
-            const form = document.getElementById('uploadForm');
-            form.classList.toggle('active');
+        function cerrarSesion() {
+            usuarioLogueado = null;
+            location.reload();
         }
 
-        // Lógica para subir Cómics (Límite estricto de 2 por usuario)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarMenu');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('open');
+
+            if (isOpen) {
+                sidebar.classList.remove('open');
+                overlay.style.opacity = '0';
+                setTimeout(() => { overlay.style.display = 'none'; }, 300);
+            } else {
+                if (!usuarioLogueado) {
+                    alert("Por favor inicia sesión primero.");
+                    return;
+                }
+                overlay.style.display = 'block';
+                setTimeout(() => { overlay.style.opacity = '1'; }, 10);
+                sidebar.classList.add('open');
+            }
+        }
+
         function subirComicUsuario() {
+            if (!usuarioLogueado) return;
             const titulo = document.getElementById('newComicTitle').value.trim();
             const archivoInput = document.getElementById('newComicCover');
 
             if (!titulo || archivoInput.files.length === 0) {
-                alert("Por favor ingresa un título y selecciona una imagen de portada.");
+                alert("Ingresa título y portada.");
                 return;
             }
 
@@ -666,19 +748,17 @@
             let misComics = cuentas[usuarioLogueado].comics || [];
 
             if (misComics.length >= 2) {
-                alert("Has alcanzado el límite máximo permitido de 2 cómics por cuenta.");
+                alert("Límite alcanzado: máximo 2 cómics por cuenta.");
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                const base64Image = e.target.result;
-                
                 const nuevoComic = {
                     id: 'usr_' + Date.now(),
                     titulo: titulo,
-                    portada: base64Image,
-                    paginas: [base64Image] // Simulación de páginas con la portada
+                    portada: e.target.result,
+                    paginas: [e.target.result]
                 };
 
                 misComics.push(nuevoComic);
@@ -687,57 +767,50 @@
 
                 document.getElementById('newComicTitle').value = '';
                 archivoInput.value = '';
-                toggleFormularioSubida();
-                cargarComicsUsuario();
-                alert("¡Comic publicado con éxito!");
+                actualizarPanelUsuario();
+                alert("¡Cómic publicado con éxito!");
             };
             reader.readAsDataURL(archivoInput.files[0]);
         }
 
-        function cargarComicsUsuario() {
+        function actualizarPanelUsuario() {
             let cuentas = JSON.parse(localStorage.getItem('devX_cuentas') || '{}');
             let misComics = (cuentas[usuarioLogueado] && cuentas[usuarioLogueado].comics) || [];
-            
-            document.getElementById('userComicCount').textContent = `Tus cómics subidos: ${misComics.length} / 2`;
+            document.getElementById('userComicCount').textContent = `Subidos: ${misComics.length} / 2`;
 
-            // Renderizar en la interfaz
             const grid = document.getElementById('comicsGrid');
-            
-            // Mantener los 3 oficiales y agregar los del usuario
-            let htmlOficial = `
-                <div class="comic-card">
-                    <img id="thumb1" class="comic-thumb" src="comic1/portada1.jpg" alt="Konosuba" onclick="abrirComic(1, true)">
-                    <div class="comic-actions"><button class="action-btn open" onclick="abrirComic(1, true)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div>
-                </div>
-                <div class="comic-card">
-                    <img id="thumb2" class="comic-thumb" src="comic2/1t.jpg" alt="Jane Doe" onclick="abrirComic(2, true)">
-                    <div class="comic-actions"><button class="action-btn open" onclick="abrirComic(2, true)">Abrir</button><a href="comic2/comic2.zip" class="action-btn" download>Descargar</a></div>
-                </div>
-                <div class="comic-card">
-                    <img id="thumb3" class="comic-thumb" src="comic3/1r.jpg" alt="Tonikaku" onclick="abrirComic(3, true)">
-                    <div class="comic-actions"><button class="action-btn open" onclick="abrirComic(3, true)">Abrir</button><a href="comic3/comic3.zip" class="action-btn" download>Descargar</a></div>
-                </div>
+            let html = `
+                <div class="comic-card" data-title="konosuba"><img class="comic-thumb" src="comic1/portada1.jpg" onclick="abrirComic(1)"><div class="comic-actions"><button class="action-btn open" onclick="abrirComic(1)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="comic-card" data-title="jane doe"><img class="comic-thumb" src="comic2/1t.jpg" onclick="abrirComic(2)"><div class="comic-actions"><button class="action-btn open" onclick="abrirComic(2)">Abrir</button><a href="comic2/comic2.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="comic-card" data-title="tonikaku"><img class="comic-thumb" src="comic3/1r.jpg" onclick="abrirComic(3)"><div class="comic-actions"><button class="action-btn open" onclick="abrirComic(3)">Abrir</button><a href="comic3/comic3.zip" class="action-btn" download>Descargar</a></div></div>
             `;
 
-            misComics.forEach((comic, idx) => {
-                htmlOficial += `
-                    <div class="comic-card">
-                        <img class="comic-thumb" src="${comic.portada}" alt="${comic.titulo}" onclick="abrirComicPersonalizado('${comic.id}')">
+            misComics.forEach(comic => {
+                html += `
+                    <div class="comic-card" data-title="${comic.titulo.toLowerCase()}">
+                        <img class="comic-thumb" src="${comic.portada}" onclick="abrirComicPersonalizado('${comic.id}')">
                         <div class="comic-actions">
                             <button class="action-btn open" onclick="abrirComicPersonalizado('${comic.id}')">Abrir</button>
-                            <span class="action-btn" style="background:var(--surface); color:var(--text-muted)">${comic.titulo}</span>
+                            <span class="action-btn" style="background:var(--surface); color:var(--text-muted);">${comic.titulo}</span>
                         </div>
                     </div>
                 `;
             });
 
-            // Completar slots vacíos hasta 6 si es necesario
-            const totalSlots = 3 + misComics.length;
-            for(let i = totalSlots + 1; i <= 6; i++) {
-                htmlOficial += `<div class="comic-card"><div class="placeholder-box">+ Slot ${i}</div></div>`;
+            const total = 3 + misComics.length;
+            for(let i = total + 1; i <= 6; i++) {
+                html += `<div class="comic-card" data-title="slot"><div class="placeholder-box">+ Slot ${i}</div></div>`;
             }
+            grid.innerHTML = html;
+        }
 
-            grid.innerHTML = htmlOficial;
+        function filtrarComics() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.comic-card');
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title') || '';
+                card.style.display = title.includes(query) ? 'flex' : 'none';
+            });
         }
 
         function obtenerUrl(c, n) {
@@ -758,7 +831,6 @@
             let cuentas = JSON.parse(localStorage.getItem('devX_cuentas') || '{}');
             let misComics = (cuentas[usuarioLogueado] && cuentas[usuarioLogueado].comics) || [];
             let comicEncontrado = misComics.find(c => c.id === comicId);
-
             if (comicEncontrado) {
                 comicActual = comicEncontrado;
                 paginaActual = 0;
@@ -768,16 +840,12 @@
             }
         }
 
-        function cerrarVisor() {
-            document.getElementById('viewerModal').style.display = 'none';
-        }
+        function cerrarVisor() { document.getElementById('viewerModal').style.display = 'none'; }
 
         function actualizarVista() {
             const img = document.getElementById('comicImg');
-            const urlActual = obtenerUrl(comicActual, paginaActual);
-
             img.classList.remove('loaded');
-            img.src = urlActual;
+            img.src = obtenerUrl(comicActual, paginaActual);
             img.onload = () => { img.classList.add('loaded'); };
         }
 
@@ -792,17 +860,11 @@
             if (!esComicUsuario) {
                 const max = configs[comicActual].max;
                 let nueva = paginaActual + dir;
-                if (nueva >= 0 && nueva <= max) {
-                    paginaActual = nueva;
-                    actualizarVista();
-                }
+                if (nueva >= 0 && nueva <= max) { paginaActual = nueva; actualizarVista(); }
             } else {
                 const max = comicActual.paginas.length - 1;
                 let nueva = paginaActual + dir;
-                if (nueva >= 0 && nueva <= max) {
-                    paginaActual = nueva;
-                    actualizarVistaPersonalizada();
-                }
+                if (nueva >= 0 && nueva <= max) { paginaActual = nueva; actualizarVistaPersonalizada(); }
             }
         }
 
