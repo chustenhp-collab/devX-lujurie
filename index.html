@@ -48,7 +48,7 @@
             border: 1px solid var(--border); padding: 10px 20px; font-size: 0.85rem; cursor: pointer; z-index: 10001;
         }
 
-        /* Gatekeeper & Auth */
+        /* Gatekeeper & Auth por Keys Únicas */
         #gatekeeperModal {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(9, 3, 5, 0.97); backdrop-filter: blur(16px);
@@ -85,17 +85,17 @@
 
         /* Sidebar */
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 9995; display: none; opacity: 0; transition: opacity 0.3s; }
-        .sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); z-index: 9996; display: flex; flex-direction: column; padding: 24px; gap: 24px; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; }
+        .sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); z-index: 9996; display: flex; flex-direction: column; padding: 24px; gap: 20px; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; }
         .sidebar.open { right: 0; }
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
         .sidebar-close { background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-main); width: 32px; height: 32px; cursor: pointer; }
-        .sidebar-section { display: flex; flex-direction: column; gap: 12px; }
+        .sidebar-section { display: flex; flex-direction: column; gap: 10px; }
         .sidebar-section h3 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); }
         .user-status-card { background: var(--bg-base); border: 1px solid var(--border); padding: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
-        .upload-form-box { display: flex; flex-direction: column; gap: 10px; background: var(--bg-base); border: 1px solid var(--border); padding: 12px; }
+        .upload-form-box { display: flex; flex-direction: column; gap: 8px; background: var(--bg-base); border: 1px solid var(--border); padding: 12px; }
         .upload-form-box input, .upload-form-box select { padding: 10px; border: 1px solid var(--border); background: var(--surface); color: white; font-size: 0.85rem; outline: none; }
 
-        /* Grid Categorías */
+        /* Opciones Principales (+18) */
         .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
         .option-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; text-decoration: none; transition: border-color 0.2s; }
         .option-card:hover { border-color: var(--accent); }
@@ -105,7 +105,7 @@
         .option-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
         .option-action { padding: 8px; background: var(--surface-hover); color: var(--text-main); border-top: 1px solid var(--border); font-size: 0.75rem; text-align: center; font-weight: 600; }
 
-        /* Secciones Cómics y Rule */
+        /* Secciones Dinámicas (Cómics y Rule) */
         .sub-section { display: none; flex-direction: column; gap: 12px; }
         .search-container { position: relative; width: 100%; }
         .search-input { width: 100%; padding: 14px 18px 14px 44px; background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 0.95rem; outline: none; }
@@ -118,7 +118,7 @@
         .action-btn.open { background: var(--accent); border-color: var(--accent); color: white; }
         .back-home-btn { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-weight: 600; cursor: pointer; text-align: center; }
 
-        /* Visor y Comentarios */
+        /* Visor & Sección Comentarios Globales */
         #viewerModal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9990; display: none; flex-direction: column; align-items: center; overflow-y: auto; }
         .viewer-image-container { position: relative; width: 100%; max-width: 600px; height: 65vh; display: flex; justify-content: center; align-items: center; margin-top: 50px; }
         .viewer-image-container img { width: 100%; height: 100%; object-fit: contain; }
@@ -139,6 +139,7 @@
         <button class="skip-video-btn" onclick="terminarVideo()">Omitir ❯</button>
     </div>
 
+    <!-- Gatekeeper con sistema de 10 Keys únicas -->
     <div id="gatekeeperModal">
         <div class="gate-card" id="stepAge">
             <div class="gate-logo">devX lujurie<span>.web</span></div>
@@ -149,14 +150,10 @@
             </div>
         </div>
         <div class="gate-card" id="stepAuth" style="display: none;">
-            <div class="gate-logo">Portal Global</div>
-            <div class="gate-title">Inicia sesión o regístrate</div>
-            <input type="email" id="emailInput" class="auth-input" placeholder="Correo electrónico">
-            <input type="password" id="passwordInput" class="auth-input" placeholder="Contraseña">
-            <div class="gate-btns">
-                <button class="btn btn-primary" id="loginBtn">Entrar</button>
-                <button class="btn btn-secondary" id="registerBtn">Registrarse</button>
-            </div>
+            <div class="gate-logo">Acceso Global</div>
+            <div class="gate-title">Introduce tu Key Única</div>
+            <input type="text" id="keyInput" class="auth-input" placeholder="Ej: k9X2mP7qL4vR">
+            <button class="btn btn-primary" id="loginKeyBtn">Acceder</button>
         </div>
     </div>
 
@@ -196,6 +193,7 @@
             </div>
         </div>
 
+        <!-- Sección Cómics -->
         <div id="comicsSection" class="sub-section">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="search-container">
@@ -205,6 +203,7 @@
             <div class="content-grid" id="comicsGrid"></div>
         </div>
 
+        <!-- Sección Rule -->
         <div id="ruleSection" class="sub-section">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="search-container">
@@ -215,21 +214,29 @@
         </div>
     </div>
 
+    <!-- Menú Lateral / Ajustes -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebarMenu">
         <div class="sidebar-header">
-            <h2>Menú Global</h2>
+            <h2>Menú & Ajustes</h2>
             <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
         </div>
         <div class="sidebar-section">
-            <h3>Usuario Activo</h3>
+            <h3>Perfil Actual</h3>
             <div class="user-status-card">
-                <span id="sidebarUserBadge">Invitado</span>
-                <button class="action-btn" style="width: auto; padding: 4px 8px;" id="logoutBtn">Salir</button>
+                <span id="sidebarUserBadge">Usuario</span>
+                <button class="action-btn" style="width: auto; padding: 4px 8px;" onclick="cerrarSesionKey()">Salir</button>
             </div>
         </div>
         <div class="sidebar-section">
-            <h3>Subir Contenido a la Nube</h3>
+            <h3>Ajustes (Editar Nombre)</h3>
+            <div class="upload-form-box">
+                <input type="text" id="newNameInput" placeholder="Nuevo nombre de usuario">
+                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" onclick="guardarNombre()">Guardar Nombre</button>
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <h3>Subir Contenido (Gratis)</h3>
             <div class="upload-form-box">
                 <select id="uploadCategory">
                     <option value="comic">Cómic</option>
@@ -237,11 +244,12 @@
                 </select>
                 <input type="text" id="newTitle" placeholder="Título">
                 <input type="file" id="newFile" accept="image/*" style="font-size: 0.75rem;">
-                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" id="uploadBtn">Publicar Global</button>
+                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" id="uploadBtn">Publicar</button>
             </div>
         </div>
     </div>
 
+    <!-- Visor -->
     <div id="viewerModal">
         <button class="btn-back-menu" onclick="cerrarVisor()">Volver</button>
         <div class="viewer-image-container">
@@ -260,11 +268,10 @@
         </div>
     </div>
 
+    <!-- Firebase SDK Modular -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCEX9KoTBwnHfgSZOg3uH4woJr-_-__j4g",
@@ -277,94 +284,96 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
-        const storage = getStorage(app);
 
-        // Asegurar persistencia local de sesión
-        setPersistence(auth, browserLocalPersistence);
+        // 10 Keys únicas, totalmente diferentes y aleatorias entre sí
+        const validKeys = {
+            "x7B9mP2qL4vR": "Alfa_User",
+            "k3Z8wY5jN6pH": "Beta_User",
+            "m9Q1dF3xR8tC": "Gamma_User",
+            "p4V6nB2sH7yK": "Delta_User",
+            "j2X5cL9mQ1wZ": "Epsilon_User",
+            "h8R3pK7vN4fD": "Zeta_User",
+            "t6Y1sX8zC2gB": "Eta_User",
+            "f5N4hM6dL9pK": "Theta_User",
+            "q1W7jT3xV8mS": "Iota_User",
+            "b3C9gP5fR2nH": "Omega_User"
+        };
 
-        let currentUser = null;
+        let currentKey = localStorage.getItem('devx_key');
+        let currentUserName = localStorage.getItem('devx_name') || (currentKey ? validKeys[currentKey] : "Invitado");
         let comicActualId = "comic1";
 
-        function desbloquearInterfaz(user) {
-            document.getElementById('gatekeeperModal').style.display = 'none';
-            document.getElementById('appContainer').classList.add('unlocked');
-            document.getElementById('sidebarUserBadge').textContent = "@" + user.email.split('@')[0];
+        if (currentKey && validKeys[currentKey]) {
+            desbloquearApp(currentUserName);
         }
 
-        // Registro
-        document.getElementById('registerBtn').onclick = async () => {
-            const email = document.getElementById('emailInput').value.trim();
-            const pass = document.getElementById('passwordInput').value.trim();
-            if(!email || !pass) return alert("Ingresa correo y contraseña.");
-            try {
-                const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                desbloquearInterfaz(cred.user);
-            } catch (e) { alert("Error al registrarse: " + e.message); }
-        };
-
-        // Inicio de sesión directo con forzado de respuesta
-        document.getElementById('loginBtn').onclick = async () => {
-            const email = document.getElementById('emailInput').value.trim();
-            const pass = document.getElementById('passwordInput').value.trim();
-            if(!email || !pass) return alert("Ingresa tu correo y contraseña.");
-            try {
-                const cred = await signInWithEmailAndPassword(auth, email, pass);
-                desbloquearInterfaz(cred.user);
-            } catch (e) { 
-                alert("Error al entrar: " + e.message); 
-            }
-        };
-
-        document.getElementById('logoutBtn').onclick = () => {
-            signOut(auth).then(() => {
-                location.reload();
-            });
-        };
-
-        // Control continuo de sesión
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            if (user) {
-                desbloquearInterfaz(user);
+        document.getElementById('loginKeyBtn').onclick = () => {
+            const val = document.getElementById('keyInput').value.trim();
+            if (validKeys[val]) {
+                localStorage.setItem('devx_key', val);
+                let defaultName = validKeys[val];
+                localStorage.setItem('devx_name', defaultName);
+                currentKey = val;
+                currentUserName = defaultName;
+                desbloquearApp(defaultName);
             } else {
-                document.getElementById('gatekeeperModal').style.display = 'flex';
-                document.getElementById('stepAge').style.display = 'none';
-                document.getElementById('stepAuth').style.display = 'flex';
-                document.getElementById('appContainer').classList.remove('unlocked');
+                alert("Key incorrecta. Introduce una de las 10 keys válidas.");
             }
-        });
+        };
 
-        // Subida de archivos
+        window.guardarNombre = () => {
+            const nuevo = document.getElementById('newNameInput').value.trim();
+            if (!nuevo) return alert("Escribe un nombre válido.");
+            currentUserName = nuevo;
+            localStorage.setItem('devx_name', nuevo);
+            document.getElementById('sidebarUserBadge').textContent = "@" + nuevo;
+            document.getElementById('newNameInput').value = '';
+            alert("¡Nombre actualizado con éxito!");
+        };
+
+        window.cerrarSesionKey = () => {
+            localStorage.removeItem('devx_key');
+            localStorage.removeItem('devx_name');
+            location.reload();
+        };
+
+        function desbloquearApp(nombre) {
+            document.getElementById('gatekeeperModal').style.display = 'none';
+            document.getElementById('appContainer').classList.add('unlocked');
+            document.getElementById('sidebarUserBadge').textContent = "@" + nombre;
+        }
+
+        // Subida de archivos a Firestore mediante Base64 (Gratis sin Storage)
         document.getElementById('uploadBtn').onclick = async () => {
-            if (!currentUser) return alert("Debes iniciar sesión primero.");
+            if (!currentKey) return alert("Inicia sesión primero.");
             const category = document.getElementById('uploadCategory').value;
             const title = document.getElementById('newTitle').value.trim();
             const file = document.getElementById('newFile').files[0];
 
-            if (!title || !file) return alert("Coloca un título y selecciona una imagen.");
+            if (!title || !file) return alert("Completa el título y selecciona una imagen.");
 
             try {
-                const storageRef = ref(storage, category + 's/' + Date.now() + '_' + file.name);
-                await uploadBytes(storageRef, file);
-                const url = await getDownloadURL(storageRef);
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = async () => {
+                    const base64Img = reader.result;
+                    await addDoc(collection(db, "contents"), {
+                        categoria: category,
+                        titulo: title,
+                        portadaUrl: base64Img,
+                        autor: currentUserName,
+                        timestamp: new Date()
+                    });
 
-                await addDoc(collection(db, "contents"), {
-                    categoria: category,
-                    titulo: title,
-                    portadaUrl: url,
-                    autor: currentUser.email,
-                    timestamp: new Date()
-                });
-
-                document.getElementById('newTitle').value = '';
-                document.getElementById('newFile').value = '';
-                alert("¡Publicado en la nube correctamente!");
-            } catch (e) { alert("Error al subir a Storage: " + e.message); }
+                    document.getElementById('newTitle').value = '';
+                    document.getElementById('newFile').value = '';
+                    alert("¡Publicado globalmente en la nube!");
+                };
+            } catch (e) { alert("Error al subir: " + e.message); }
         };
 
-        // Renderizado en tiempo real
+        // Sincronización en tiempo real de Cómics y Rule
         onSnapshot(collection(db, "contents"), (snapshot) => {
             const comicsGrid = document.getElementById('comicsGrid');
             const ruleGrid = document.getElementById('ruleGrid');
@@ -408,7 +417,7 @@
             ruleGrid.innerHTML = ruleHtml;
         });
 
-        // Comentarios
+        // Comentarios Globales en Tiempo Real
         window.cargarComentarios = (id) => {
             comicActualId = String(id);
             const q = query(collection(db, "comentarios"), where("comicId", "==", comicActualId));
@@ -424,10 +433,10 @@
 
         document.getElementById('sendCommentBtn').onclick = async () => {
             const input = document.getElementById('commentInput');
-            if (!input.value.trim() || !currentUser) return;
+            if (!input.value.trim() || !currentKey) return;
             await addDoc(collection(db, "comentarios"), {
                 comicId: comicActualId,
-                usuario: currentUser.email.split('@')[0],
+                usuario: currentUserName,
                 texto: input.value.trim(),
                 timestamp: new Date()
             });
