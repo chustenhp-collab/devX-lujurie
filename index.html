@@ -6,16 +6,16 @@
     <title>devX lujurie.web</title>
     <style>
         :root {
-            --bg-base: #05070f;
-            --surface: #0f172a;
-            --surface-hover: #1e293b;
-            --accent: #8b5cf6;
-            --accent-glow: rgba(139, 92, 246, 0.4);
-            --border: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --danger: #ef4444;
-            --success: #22c55e;
+            --bg-base: #090305;
+            --surface: #14080c;
+            --surface-hover: #220d14;
+            --accent: #e11d48;
+            --accent-glow: rgba(225, 29, 72, 0.4);
+            --border: #38121d;
+            --text-main: #ffeeef;
+            --text-muted: #b898a1;
+            --danger: #ff2a5f;
+            --success: #10b981;
         }
 
         * {
@@ -24,7 +24,7 @@
             padding: 0;
             -webkit-tap-highlight-color: transparent;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            border-radius: 0 !important; /* Forzar esquinas completamente rectas en todo */
+            border-radius: 0 !important;
         }
 
         body {
@@ -63,7 +63,7 @@
             position: absolute;
             bottom: 30px;
             right: 30px;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(20, 8, 12, 0.85);
             color: var(--text-main);
             border: 1px solid var(--border);
             padding: 10px 20px;
@@ -72,14 +72,14 @@
             z-index: 10001;
         }
 
-        /* --- Gatekeeper Modal (Edad y Key) --- */
+        /* --- Gatekeeper Modal (Solo Edad, Key removida) --- */
         #gatekeeperModal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(5, 7, 15, 0.97);
+            background: rgba(9, 3, 5, 0.97);
             backdrop-filter: blur(16px);
             z-index: 9999;
             display: none;
@@ -99,7 +99,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
         }
 
         .gate-logo {
@@ -148,7 +148,7 @@
         }
         .btn-secondary:active { opacity: 0.8; }
 
-        .key-input, .auth-input {
+        .auth-input {
             width: 100%;
             padding: 14px 16px;
             border: 1px solid var(--border);
@@ -158,7 +158,7 @@
             font-size: 1.05rem;
             outline: none;
         }
-        .key-input:focus, .auth-input:focus { border-color: var(--accent); }
+        .auth-input:focus { border-color: var(--accent); }
 
         .error-txt {
             color: var(--danger);
@@ -184,7 +184,7 @@
             pointer-events: auto;
         }
 
-        /* --- Header con Título Rectangular y Menú --- */
+        /* --- Header --- */
         header {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -220,34 +220,7 @@
         }
         .menu-toggle-btn:active { background: var(--accent); }
 
-        /* --- Barra de Búsqueda Superior --- */
-        .search-container {
-            position: relative;
-            width: 100%;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 14px 18px 14px 44px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            font-size: 0.95rem;
-            outline: none;
-        }
-
-        .search-input:focus { border-color: var(--accent); }
-
-        .search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        /* --- Menú Lateral Desplegable (Sidebar Rectangular) --- */
+        /* --- Menú Lateral Desplegable (Sidebar) --- */
         .sidebar-overlay {
             position: fixed;
             top: 0;
@@ -342,7 +315,110 @@
             outline: none;
         }
 
-        /* --- Cuadrícula de Cómics Rectangular --- */
+        /* --- Opciones Principales (+18): Cómics, Rule, Videos --- */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .option-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .option-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .option-thumb {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            background: linear-gradient(135deg, #220d14, #14080c);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .nsfw-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--danger);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .option-icon {
+            font-size: 2rem;
+            margin-bottom: 6px;
+        }
+
+        .option-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .option-action {
+            padding: 8px;
+            background: var(--surface-hover);
+            color: var(--text-main);
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* --- Contenedor de la Lista de Cómics (Se muestra al entrar a Cómics) --- */
+        #comicsSection {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 18px 14px 44px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .search-input:focus { border-color: var(--accent); }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
         .comics-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -355,11 +431,6 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: all 0.2s ease;
-        }
-
-        .comic-card:hover {
-            border-color: var(--accent);
         }
 
         .comic-thumb {
@@ -390,29 +461,23 @@
             text-align: center;
             text-decoration: none;
         }
-
         .action-btn.open {
             background: var(--accent);
             border-color: var(--accent);
             color: white;
         }
 
-        .action-btn:active { opacity: 0.8; }
-
-        .placeholder-box {
-            width: 100%;
-            aspect-ratio: 3 / 4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .back-home-btn {
             background: var(--surface-hover);
-            font-size: 0.65rem;
-            color: var(--text-muted);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px;
+            font-weight: 600;
+            cursor: pointer;
             text-align: center;
-            padding: 5px;
         }
 
-        /* --- Visor de Cómics --- */
+        /* --- Visor de Cómics / Rule --- */
         #viewerModal {
             position: fixed;
             top: 0;
@@ -467,7 +532,7 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(20, 8, 12, 0.85);
             color: #fff;
             border: 1px solid var(--border);
             width: 50px;
@@ -480,7 +545,6 @@
             z-index: 40;
             user-select: none;
         }
-
         .nav-arrow:active { background: var(--accent); }
         .arrow-left { left: 0; }
         .arrow-right { right: 0; }
@@ -489,7 +553,7 @@
             position: absolute;
             top: 16px;
             left: 16px;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(20, 8, 12, 0.9);
             color: var(--text-main);
             border: 1px solid var(--border);
             padding: 8px 14px;
@@ -508,7 +572,7 @@
         <button class="skip-video-btn" onclick="terminarVideo()">Omitir ❯</button>
     </div>
 
-    <!-- 2. Gatekeeper (Edad y Key) -->
+    <!-- 2. Gatekeeper (Solo Verificación de Edad, Key eliminada) -->
     <div id="gatekeeperModal">
         <div class="gate-card" id="stepAge">
             <div class="gate-logo">devX lujurie<span>.web</span></div>
@@ -519,15 +583,7 @@
             </div>
         </div>
 
-        <div class="gate-card" id="stepKey" style="display: none;">
-            <div class="gate-logo">devX lujurie<span>.web</span></div>
-            <div class="gate-title">Ingresa tu Key de Acceso</div>
-            <input type="password" id="accessKeyInput" class="key-input" placeholder="chusten">
-            <div class="error-txt" id="keyError">Key incorrecta. Inténtalo de nuevo.</div>
-            <button class="btn btn-primary" onclick="validarKey()">Acceder</button>
-        </div>
-
-        <!-- Sistema de Cuentas Integrado -->
+        <!-- Sistema de Cuentas Directo tras la Edad -->
         <div class="gate-card" id="stepAuth" style="display: none;">
             <div class="gate-logo">Portal de Cuentas</div>
             <div class="gate-title">Inicia sesión o regístrate</div>
@@ -543,47 +599,81 @@
 
     <!-- 3. Contenido Principal de la App -->
     <div class="app-container" id="appContainer">
-        <!-- Header con Título Exacto y Menú -->
+        <!-- Header -->
         <header>
             <h1 class="brand-title">devX lujurie<span>.web</span></h1>
             <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
         </header>
 
-        <!-- Barra de Búsqueda Superior -->
-        <div class="search-container">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" class="search-input" placeholder="Buscar cómics..." oninput="filtrarComics()">
+        <!-- Menú Principal con las 3 opciones +18 -->
+        <div id="mainHomeMenu">
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Categorías</div>
+            <div class="options-grid">
+                <div class="option-card" onclick="mostrarSeccionComics()">
+                    <div class="option-thumb">
+                        <span class="nsfw-badge">+18</span>
+                        <div class="option-icon">📚</div>
+                        <div class="option-name">Cómics</div>
+                    </div>
+                    <div class="option-action">Explorar</div>
+                </div>
+
+                <div class="option-card" onclick="abrirRule()">
+                    <div class="option-thumb">
+                        <span class="nsfw-badge">+18</span>
+                        <div class="option-icon">🔥</div>
+                        <div class="option-name">Rule</div>
+                    </div>
+                    <div class="option-action">Ver Imagen</div>
+                </div>
+
+                <a href="https://sites.google.com/view/devx-lujurie/p%C3%A1gina-principal" target="_blank" class="option-card">
+                    <div class="option-thumb">
+                        <span class="nsfw-badge">+18</span>
+                        <div class="option-icon">🎬</div>
+                        <div class="option-name">Videos</div>
+                    </div>
+                    <div class="option-action">Reproducir</div>
+                </a>
+            </div>
         </div>
 
-        <!-- Cuadrícula de Cómics Rectangular -->
-        <div class="comics-grid" id="comicsGrid">
-            <div class="comic-card" data-title="konosuba">
-                <img class="comic-thumb" src="comic1/portada1.jpg" alt="Konosuba" onclick="abrirComic(1)">
-                <div class="comic-actions">
-                    <button class="action-btn open" onclick="abrirComic(1)">Abrir</button>
-                    <a href="comic1/comic1.zip" class="action-btn" download>Descargar</a>
-                </div>
+        <!-- Sección de Cómics (Oculta hasta hacer clic en Cómics) -->
+        <div id="comicsSection">
+            <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar cómics..." oninput="filtrarComics()">
             </div>
-
-            <div class="comic-card" data-title="jane doe">
-                <img class="comic-thumb" src="comic2/1t.jpg" alt="Jane Doe" onclick="abrirComic(2)">
-                <div class="comic-actions">
-                    <button class="action-btn open" onclick="abrirComic(2)">Abrir</button>
-                    <a href="comic2/comic2.zip" class="action-btn" download>Descargar</a>
+            <div class="comics-grid" id="comicsGrid">
+                <div class="comic-card" data-title="konosuba">
+                    <img class="comic-thumb" src="comic1/portada1.jpg" alt="Konosuba" onclick="abrirComic(1)">
+                    <div class="comic-actions">
+                        <button class="action-btn open" onclick="abrirComic(1)">Abrir</button>
+                        <a href="comic1/comic1.zip" class="action-btn" download>Descargar</a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="comic-card" data-title="tonikaku">
-                <img class="comic-thumb" src="comic3/1r.jpg" alt="Tonikaku" onclick="abrirComic(3)">
-                <div class="comic-actions">
-                    <button class="action-btn open" onclick="abrirComic(3)">Abrir</button>
-                    <a href="comic3/comic3.zip" class="action-btn" download>Descargar</a>
+                <div class="comic-card" data-title="jane doe">
+                    <img class="comic-thumb" src="comic2/1t.jpg" alt="Jane Doe" onclick="abrirComic(2)">
+                    <div class="comic-actions">
+                        <button class="action-btn open" onclick="abrirComic(2)">Abrir</button>
+                        <a href="comic2/comic2.zip" class="action-btn" download>Descargar</a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="comic-card" data-title="slot 4"><div class="placeholder-box">+ Slot 4</div></div>
-            <div class="comic-card" data-title="slot 5"><div class="placeholder-box">+ Slot 5</div></div>
-            <div class="comic-card" data-title="slot 6"><div class="placeholder-box">+ Slot 6</div></div>
+                <div class="comic-card" data-title="tonikaku">
+                    <img class="comic-thumb" src="comic3/1r.jpg" alt="Tonikaku" onclick="abrirComic(3)">
+                    <div class="comic-actions">
+                        <button class="action-btn open" onclick="abrirComic(3)">Abrir</button>
+                        <a href="comic3/comic3.zip" class="action-btn" download>Descargar</a>
+                    </div>
+                </div>
+
+                <div class="comic-card" data-title="slot 4"><div class="comic-thumb" style="display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:0.7rem;">Slot 4</div></div>
+                <div class="comic-card" data-title="slot 5"><div class="comic-thumb" style="display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:0.7rem;">Slot 5</div></div>
+                <div class="comic-card" data-title="slot 6"><div class="comic-thumb" style="display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:0.7rem;">Slot 6</div></div>
+            </div>
         </div>
     </div>
 
@@ -614,14 +704,14 @@
         </div>
     </div>
 
-    <!-- 5. Visor de Cómics -->
+    <!-- 5. Visor de Cómics y Rule -->
     <div id="viewerModal">
         <button class="btn-back-menu" onclick="cerrarVisor()">Volver</button>
         <div class="viewer-image-container">
             <div class="loading-spinner"></div>
-            <div class="nav-arrow arrow-left" onclick="cambiarPagina(-1)">‹</div>
-            <div class="nav-arrow arrow-right" onclick="cambiarPagina(1)">›</div>
-            <img id="comicImg" src="" alt="Página">
+            <div class="nav-arrow arrow-left" id="arrowLeft" onclick="cambiarPagina(-1)">‹</div>
+            <div class="nav-arrow arrow-right" id="arrowRight" onclick="cambiarPagina(1)">›</div>
+            <img id="comicImg" src="" alt="Contenido">
         </div>
     </div>
 
@@ -629,6 +719,7 @@
         let comicActual = 1;
         let paginaActual = 0;
         let esComicUsuario = false;
+        let esModoRule = false;
         let usuarioLogueado = null;
 
         const configs = {
@@ -637,7 +728,7 @@
             3: { max: 24 }
         };
 
-        // Control del Video de Inicio (4 segundos)
+        // Video de Inicio (4 segundos)
         const videoElement = document.getElementById('introVideo');
         videoElement.addEventListener('timeupdate', () => {
             if (videoElement.currentTime >= 4.0) { terminarVideo(); }
@@ -657,18 +748,7 @@
                 window.location.href = "https://www.google.com";
             } else {
                 document.getElementById('stepAge').style.display = 'none';
-                document.getElementById('stepKey').style.display = 'flex';
-            }
-        }
-
-        function validarKey() {
-            const input = document.getElementById('accessKeyInput').value;
-            const error = document.getElementById('keyError');
-            if (input === "chusten") {
-                document.getElementById('stepKey').style.display = 'none';
                 document.getElementById('stepAuth').style.display = 'flex';
-            } else {
-                error.style.display = 'block';
             }
         }
 
@@ -732,6 +812,29 @@
                 setTimeout(() => { overlay.style.opacity = '1'; }, 10);
                 sidebar.classList.add('open');
             }
+        }
+
+        function mostrarSeccionComics() {
+            document.getElementById('mainHomeMenu').style.display = 'none';
+            document.getElementById('comicsSection').style.display = 'flex';
+        }
+
+        function volverAlMenuPrincipal() {
+            document.getElementById('comicsSection').style.display = 'none';
+            document.getElementById('mainHomeMenu').style.display = 'block';
+        }
+
+        function abrirRule() {
+            esModoRule = true;
+            document.getElementById('arrowLeft').style.display = 'none';
+            document.getElementById('arrowRight').style.display = 'none';
+            document.getElementById('viewerModal').style.display = 'flex';
+            
+            const img = document.getElementById('comicImg');
+            img.classList.remove('loaded');
+            // Aquí puedes cambiar la ruta por la imagen única que quieras para Rule
+            img.src = "comic1/portada1.jpg"; 
+            img.onload = () => { img.classList.add('loaded'); };
         }
 
         function subirComicUsuario() {
@@ -799,7 +902,7 @@
 
             const total = 3 + misComics.length;
             for(let i = total + 1; i <= 6; i++) {
-                html += `<div class="comic-card" data-title="slot"><div class="placeholder-box">+ Slot ${i}</div></div>`;
+                html += `<div class="comic-card" data-title="slot"><div class="comic-thumb" style="display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:0.7rem;">Slot ${i}</div></div>`;
             }
             grid.innerHTML = html;
         }
@@ -823,6 +926,9 @@
             comicActual = id;
             paginaActual = 0;
             esComicUsuario = false;
+            esModoRule = false;
+            document.getElementById('arrowLeft').style.display = 'flex';
+            document.getElementById('arrowRight').style.display = 'flex';
             document.getElementById('viewerModal').style.display = 'flex';
             actualizarVista();
         }
@@ -835,6 +941,9 @@
                 comicActual = comicEncontrado;
                 paginaActual = 0;
                 esComicUsuario = true;
+                esModoRule = false;
+                document.getElementById('arrowLeft').style.display = 'flex';
+                document.getElementById('arrowRight').style.display = 'flex';
                 document.getElementById('viewerModal').style.display = 'flex';
                 actualizarVistaPersonalizada();
             }
@@ -857,6 +966,7 @@
         }
 
         function cambiarPagina(dir) {
+            if (esModoRule) return;
             if (!esComicUsuario) {
                 const max = configs[comicActual].max;
                 let nueva = paginaActual + dir;
@@ -869,7 +979,7 @@
         }
 
         window.addEventListener('keydown', (e) => {
-            if (document.getElementById('viewerModal').style.display === 'flex') {
+            if (document.getElementById('viewerModal').style.display === 'flex' && !esModoRule) {
                 if (e.key === 'ArrowRight' || e.key === ' ') cambiarPagina(1);
                 if (e.key === 'ArrowLeft') cambiarPagina(-1);
             }
