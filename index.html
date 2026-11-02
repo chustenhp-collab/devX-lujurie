@@ -67,7 +67,6 @@
         .btn-primary { background: var(--accent); color: white; }
         .btn-secondary { background: var(--surface-hover); color: var(--text-muted); border: 1px solid var(--border); }
         .auth-input { width: 100%; padding: 14px 16px; border: 1px solid var(--border); background: var(--bg-base); color: #fff; text-align: center; font-size: 1.05rem; outline: none; }
-        .error-txt { color: var(--danger); font-size: 0.8rem; display: none; }
 
         /* Contenedor App */
         .app-container {
@@ -96,7 +95,7 @@
         .upload-form-box { display: flex; flex-direction: column; gap: 10px; background: var(--bg-base); border: 1px solid var(--border); padding: 12px; }
         .upload-form-box input, .upload-form-box select { padding: 10px; border: 1px solid var(--border); background: var(--surface); color: white; font-size: 0.85rem; outline: none; }
 
-        /* Opciones Principales (+18) */
+        /* Grid Categorías */
         .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
         .option-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; text-decoration: none; transition: border-color 0.2s; }
         .option-card:hover { border-color: var(--accent); }
@@ -106,7 +105,7 @@
         .option-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
         .option-action { padding: 8px; background: var(--surface-hover); color: var(--text-main); border-top: 1px solid var(--border); font-size: 0.75rem; text-align: center; font-weight: 600; }
 
-        /* Secciones Dinámicas (Cómics y Rule) */
+        /* Secciones Cómics y Rule */
         .sub-section { display: none; flex-direction: column; gap: 12px; }
         .search-container { position: relative; width: 100%; }
         .search-input { width: 100%; padding: 14px 18px 14px 44px; background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 0.95rem; outline: none; }
@@ -119,7 +118,7 @@
         .action-btn.open { background: var(--accent); border-color: var(--accent); color: white; }
         .back-home-btn { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-weight: 600; cursor: pointer; text-align: center; }
 
-        /* Visor & Sección Comentarios Globales */
+        /* Visor y Comentarios */
         #viewerModal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9990; display: none; flex-direction: column; align-items: center; overflow-y: auto; }
         .viewer-image-container { position: relative; width: 100%; max-width: 600px; height: 65vh; display: flex; justify-content: center; align-items: center; margin-top: 50px; }
         .viewer-image-container img { width: 100%; height: 100%; object-fit: contain; }
@@ -154,7 +153,6 @@
             <div class="gate-title">Inicia sesión o regístrate</div>
             <input type="email" id="emailInput" class="auth-input" placeholder="Correo electrónico">
             <input type="password" id="passwordInput" class="auth-input" placeholder="Contraseña">
-            <div class="error-txt" id="authError">Completa los datos correctamente.</div>
             <div class="gate-btns">
                 <button class="btn btn-primary" id="loginBtn">Entrar</button>
                 <button class="btn btn-secondary" id="registerBtn">Registrarse</button>
@@ -198,7 +196,6 @@
             </div>
         </div>
 
-        <!-- Sección Cómics -->
         <div id="comicsSection" class="sub-section">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="search-container">
@@ -208,7 +205,6 @@
             <div class="content-grid" id="comicsGrid"></div>
         </div>
 
-        <!-- Sección Rule (Rectángulos Dinámicos) -->
         <div id="ruleSection" class="sub-section">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="search-container">
@@ -264,10 +260,9 @@
         </div>
     </div>
 
-    <!-- Módulo JS de Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -286,49 +281,69 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
+        // Asegurar persistencia local de sesión
+        setPersistence(auth, browserLocalPersistence);
+
         let currentUser = null;
         let comicActualId = "comic1";
 
-        // Autenticación
+        function desbloquearInterfaz(user) {
+            document.getElementById('gatekeeperModal').style.display = 'none';
+            document.getElementById('appContainer').classList.add('unlocked');
+            document.getElementById('sidebarUserBadge').textContent = "@" + user.email.split('@')[0];
+        }
+
+        // Registro
         document.getElementById('registerBtn').onclick = async () => {
             const email = document.getElementById('emailInput').value.trim();
             const pass = document.getElementById('passwordInput').value.trim();
             if(!email || !pass) return alert("Ingresa correo y contraseña.");
             try {
-                await createUserWithEmailAndPassword(auth, email, pass);
-            } catch (e) { alert("Error: " + e.message); }
+                const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                desbloquearInterfaz(cred.user);
+            } catch (e) { alert("Error al registrarse: " + e.message); }
         };
 
+        // Inicio de sesión directo con forzado de respuesta
         document.getElementById('loginBtn').onclick = async () => {
             const email = document.getElementById('emailInput').value.trim();
             const pass = document.getElementById('passwordInput').value.trim();
-            if(!email || !pass) return alert("Ingresa correo y contraseña.");
+            if(!email || !pass) return alert("Ingresa tu correo y contraseña.");
             try {
-                await signInWithEmailAndPassword(auth, email, pass);
-            } catch (e) { alert("Error: " + e.message); }
+                const cred = await signInWithEmailAndPassword(auth, email, pass);
+                desbloquearInterfaz(cred.user);
+            } catch (e) { 
+                alert("Error al entrar: " + e.message); 
+            }
         };
 
-        document.getElementById('logoutBtn').onclick = () => signOut(auth);
+        document.getElementById('logoutBtn').onclick = () => {
+            signOut(auth).then(() => {
+                location.reload();
+            });
+        };
 
+        // Control continuo de sesión
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             if (user) {
-                document.getElementById('gatekeeperModal').style.display = 'none';
-                document.getElementById('appContainer').classList.add('unlocked');
-                document.getElementById('sidebarUserBadge').textContent = "@" + user.email.split('@')[0];
+                desbloquearInterfaz(user);
             } else {
+                document.getElementById('gatekeeperModal').style.display = 'flex';
+                document.getElementById('stepAge').style.display = 'none';
+                document.getElementById('stepAuth').style.display = 'flex';
                 document.getElementById('appContainer').classList.remove('unlocked');
             }
         });
 
-        // Subir Cómics o Rule a la Nube
+        // Subida de archivos
         document.getElementById('uploadBtn').onclick = async () => {
-            if (!currentUser) return alert("Inicia sesión primero.");
+            if (!currentUser) return alert("Debes iniciar sesión primero.");
             const category = document.getElementById('uploadCategory').value;
             const title = document.getElementById('newTitle').value.trim();
             const file = document.getElementById('newFile').files[0];
 
-            if (!title || !file) return alert("Completa el título y selecciona una imagen.");
+            if (!title || !file) return alert("Coloca un título y selecciona una imagen.");
 
             try {
                 const storageRef = ref(storage, category + 's/' + Date.now() + '_' + file.name);
@@ -336,7 +351,7 @@
                 const url = await getDownloadURL(storageRef);
 
                 await addDoc(collection(db, "contents"), {
-                    categoria: category, // 'comic' o 'rule'
+                    categoria: category,
                     titulo: title,
                     portadaUrl: url,
                     autor: currentUser.email,
@@ -345,23 +360,21 @@
 
                 document.getElementById('newTitle').value = '';
                 document.getElementById('newFile').value = '';
-                alert("¡Publicado globalmente en la nube!");
-            } catch (e) { alert("Error al subir: " + e.message); }
+                alert("¡Publicado en la nube correctamente!");
+            } catch (e) { alert("Error al subir a Storage: " + e.message); }
         };
 
-        // Sincronizar Cómics y Rule en Tiempo Real desde la Nube
+        // Renderizado en tiempo real
         onSnapshot(collection(db, "contents"), (snapshot) => {
             const comicsGrid = document.getElementById('comicsGrid');
             const ruleGrid = document.getElementById('ruleGrid');
 
-            // Cómics base estáticos + dinámicos
             let comicsHtml = `
                 <div class="content-card" data-title="konosuba"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirComic(1)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(1)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div></div>
                 <div class="content-card" data-title="jane doe"><img class="content-thumb" src="comic2/1t.jpg" onclick="window.abrirComic(2)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(2)">Abrir</button><a href="comic2/comic2.zip" class="action-btn" download>Descargar</a></div></div>
                 <div class="content-card" data-title="tonikaku"><img class="content-thumb" src="comic3/1r.jpg" onclick="window.abrirComic(3)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(3)">Abrir</button><a href="comic3/comic3.zip" class="action-btn" download>Descargar</a></div></div>
             `;
 
-            // Rule base estático + dinámicos
             let ruleHtml = `
                 <div class="content-card" data-title="rule inicial"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')"><div class="content-actions"><button class="action-btn open" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')">Ver</button></div></div>
             `;
@@ -395,7 +408,7 @@
             ruleGrid.innerHTML = ruleHtml;
         });
 
-        // Comentarios Globales en Tiempo Real
+        // Comentarios
         window.cargarComentarios = (id) => {
             comicActualId = String(id);
             const q = query(collection(db, "comentarios"), where("comicId", "==", comicActualId));
@@ -423,7 +436,6 @@
     </script>
 
     <script>
-        // Funciones de Control de Interfaz
         let comicActual = 1, paginaActual = 0, esModoRule = false;
         const configs = { 1: { max: 16 }, 2: { max: 25 }, 3: { max: 24 } };
 
