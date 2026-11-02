@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>devX h web</title>
+    <style>
+        :root {
+            --bg-base: #090d16;
+            --surface: #111827;
+            --surface-hover: #1f293d;
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.3);
+            --border: #1f2937;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px;
+            overflow-x: hidden;
+        }
+
+        #gatekeeperModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(9, 13, 22, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gate-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px 24px;
+            max-width: 380px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--accent-glow);
+        }
+
+        .gate-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--accent);
+        }
+
+        .gate-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .gate-btns {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+        .btn-primary:active { transform: scale(0.96); }
+
+        .btn-secondary {
+            background: var(--surface-hover);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:active { transform: scale(0.96); }
+
+        .key-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-base);
+            color: #fff;
+            text-align: center;
+            font-size: 1.05rem;
+            letter-spacing: 1px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .key-input:focus { border-color: var(--accent); }
+
+        .error-txt {
+            color: var(--danger);
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            filter: blur(16px);
+            pointer-events: none;
+            transition: filter 0.5s ease;
+        }
+
+        .app-container.unlocked {
+            filter: blur(0);
+            pointer-events: auto;
+        }
+
+        header {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .comics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .comic-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .comic-thumb {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            background: #000;
+            cursor: pointer;
+        }
+
+        .comic-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 6px;
+            background: var(--surface);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 6px 0;
+            background: var(--surface-hover);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .action-btn.open {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .action-btn:active { transform: scale(0.96); }
+
+        .placeholder-box {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface-hover);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            border-radius: 12px 12px 0 0;
+        }
+
+        /* --- Visor Ampliado para Imágenes Grandes y Nítidas --- */
+        #viewerModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9990;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .viewer-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-spinner {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            z-index: 5;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .viewer-image-container img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.1s ease;
+            z-index: 10;
+        }
+
+        .viewer-image-container img.loaded {
+            opacity: 1;
+        }
+
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(17, 24, 39, 0.6);
+            color: #fff;
+            border: 1px solid var(--border);
+            width: 50px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 40;
+            backdrop-filter: blur(4px);
+            user-select: none;
+        }
+
+        .nav-arrow:active { background: var(--accent); }
+
+        .arrow-left { left: 4px; border-radius: 0 10px 10px 0; }
+        .arrow-right { right: 4px; border-radius: 10px 0 0 10px; }
+
+        .btn-back-menu {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(17, 24, 39, 0.8);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 45;
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="gatekeeperModal">
+        <div class="gate-card" id="stepAge">
+            <div class="gate-logo">devX h web</div>
+            <div class="gate-title">¿Tienes más de 18 años?</div>
+            <div class="gate-btns">
+                <button class="btn btn-primary" onclick="confirmarEdad(true)">Sí</button>
+                <button class="btn btn-secondary" onclick="confirmarEdad(false)">No</button>
+            </div>
+        </div>
+
+        <div class="gate-card" id="stepKey" style="display: none;">
+            <div class="gate-logo">devX h web</div>
+            <div class="gate-title">Ingresa tu Key de Acceso</div>
+            <input type="password" id="accessKeyInput" class="key-input" placeholder="chusten">
+            <div class="error-txt" id="keyError">Key incorrecta. Inténtalo de nuevo.</div>
+            <button class="btn btn-primary" onclick="validarKey()">Acceder</button>
+        </div>
+    </div>
+
+    <div class="app-container" id="appContainer">
+        <header>
+            <h1>devX h web</h1>
+        </header>
+
+        <div class="comics-grid">
+            <div class="comic-card">
+                <img id="thumb1" class="comic-thumb" src="comic1/portada1.jpg" alt="Konosuba" onclick="abrirComic(1)">
+                <div class="comic-actions">
+                    <button class="action-btn open" onclick="abrirComic(1)">Abrir</button>
+                    <a href="comic1/comic1.zip" class="action-btn" download>Descargar</a>
+                </div>
+            </div>
+
+            <div class="comic-card">
+                <img id="thumb2" class="comic-thumb" src="comic2/1t.jpg" alt="Jane Doe" onclick="abrirComic(2)">
+                <div class="comic-actions">
+                    <button class="action-btn open" onclick="abrirComic(2)">Abrir</button>
+                    <a href="comic2/comic2.zip" class="action-btn" download>Descargar</a>
+                </div>
+            </div>
+
+            <div class="comic-card">
+                <img id="thumb3" class="comic-thumb" src="comic3/1r.jpg" alt="Tonikaku" onclick="abrirComic(3)">
+                <div class="comic-actions">
+                    <button class="action-btn open" onclick="abrirComic(3)">Abrir</button>
+                    <a href="comic3/comic3.zip" class="action-btn" download>Descargar</a>
+                </div>
+            </div>
+
+            <div class="comic-card"><div class="placeholder-box">+ Slot 4</div></div>
+            <div class="comic-card"><div class="placeholder-box">+ Slot 5</div></div>
+            <div class="comic-card"><div class="placeholder-box">+ Slot 6</div></div>
+        </div>
+    </div>
+
+    <div id="viewerModal">
+        <button class="btn-back-menu" onclick="cerrarVisor()">Volver</button>
+        <div class="viewer-image-container">
+            <div class="loading-spinner"></div>
+            <div class="nav-arrow arrow-left" onclick="cambiarPagina(-1)">‹</div>
+            <div class="nav-arrow arrow-right" onclick="cambiarPagina(1)">›</div>
+            <img id="comicImg" src="" alt="Página">
+        </div>
+    </div>
+
+    <script>
+        let comicActual = 1;
+        let paginaActual = 0;
+        
+        const configs = {
+            1: { max: 16 },
+            2: { max: 25 },
+            3: { max: 24 }
+        };
+        
+        const cacheImgs = {};
+
+        function confirmarEdad(esMayor) {
+            if (!esMayor) {
+                window.location.href = "https://www.google.com";
+            } else {
+                document.getElementById('stepAge').style.display = 'none';
+                document.getElementById('stepKey').style.display = 'flex';
+            }
+        }
+
+        function validarKey() {
+            const input = document.getElementById('accessKeyInput').value;
+            const error = document.getElementById('keyError');
+            
+            // Validación directa en cliente para GitHub Pages
+            if (input === "chusten") {
+                document.getElementById('gatekeeperModal').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('gatekeeperModal').style.display = 'none';
+                }, 400);
+                document.getElementById('appContainer').classList.add('unlocked');
+            } else {
+                error.style.display = 'block';
+            }
+        }
+
+        function obtenerUrl(c, n) {
+            if (c === 1) {
+                return n === 0 ? "comic1/portada1.jpg" : `comic1/${n}.jpg`;
+            } else if (c === 2) {
+                return n === 0 ? "comic2/1t.jpg" : `comic2/${n}t.jpg`;
+            } else if (c === 3) {
+                return n === 0 ? "comic3/1r.jpg" : `comic3/${n}r.jpg`;
+            }
+        }
+
+        function precargarVecinas(c, n) {
+            const max = configs[c].max;
+            [n + 1, n - 1].forEach(target => {
+                if (target >= 0 && target <= max) {
+                    const url = obtenerUrl(c, target);
+                    if (!cacheImgs[url]) {
+                        const img = new Image();
+                        img.src = url;
+                        cacheImgs[url] = img;
+                    }
+                }
+            });
+        }
+
+        function abrirComic(id) {
+            comicActual = id;
+            paginaActual = 0;
+            document.getElementById('viewerModal').style.display = 'flex';
+            actualizarVista();
+        }
+
+        function cerrarVisor() {
+            document.getElementById('viewerModal').style.display = 'none';
+        }
+
+        function actualizarVista() {
+            const img = document.getElementById('comicImg');
+            const urlActual = obtenerUrl(comicActual, paginaActual);
+
+            img.classList.remove('loaded');
+            img.src = urlActual;
+            img.onload = () => {
+                img.classList.add('loaded');
+            };
+
+            precargarVecinas(comicActual, paginaActual);
+        }
+
+        function cambiarPagina(dir) {
+            const max = configs[comicActual].max;
+            let nueva = paginaActual + dir;
+            if (nueva >= 0 && nueva <= max) {
+                paginaActual = nueva;
+                actualizarVista();
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (document.getElementById('viewerModal').style.display === 'flex') {
+                if (e.key === 'ArrowRight' || e.key === ' ') cambiarPagina(1);
+                if (e.key === 'ArrowLeft') cambiarPagina(-1);
+            }
+        });
+    </script>
+</body>
+</html>
