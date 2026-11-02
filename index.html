@@ -10,12 +10,10 @@
             --surface: #14080c;
             --surface-hover: #220d14;
             --accent: #e11d48;
-            --accent-glow: rgba(225, 29, 72, 0.4);
             --border: #38121d;
             --text-main: #ffeeef;
             --text-muted: #b898a1;
             --danger: #ff2a5f;
-            --success: #10b981;
         }
 
         * {
@@ -35,544 +33,113 @@
             flex-direction: column;
             align-items: center;
             padding: 16px;
-            overflow-x: hidden;
         }
 
-        /* --- Intro Video Overlay --- */
+        /* Intro Video */
         #introVideoModal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center;
             transition: opacity 0.6s ease;
         }
-
-        #introVideoModal video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        #introVideoModal video { width: 100%; height: 100%; object-fit: cover; }
         .skip-video-btn {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(20, 8, 12, 0.85);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 10px 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            z-index: 10001;
+            position: absolute; bottom: 30px; right: 30px;
+            background: rgba(20, 8, 12, 0.85); color: var(--text-main);
+            border: 1px solid var(--border); padding: 10px 20px; font-size: 0.85rem; cursor: pointer; z-index: 10001;
         }
 
-        /* --- Gatekeeper Modal (Solo Edad, Key removida) --- */
+        /* Gatekeeper & Auth */
         #gatekeeperModal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(9, 3, 5, 0.97);
-            backdrop-filter: blur(16px);
-            z-index: 9999;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            text-align: center;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(9, 3, 5, 0.97); backdrop-filter: blur(16px);
+            z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center;
         }
-
         .gate-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 32px 24px;
-            max-width: 400px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            background: var(--surface); border: 1px solid var(--border); padding: 32px 24px;
+            max-width: 400px; width: 100%; display: flex; flex-direction: column; gap: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
         }
+        .gate-logo { font-size: 1.8rem; font-weight: 800; color: #fff; }
+        .gate-logo span { color: var(--danger); }
+        .gate-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
+        .gate-btns { display: flex; gap: 12px; }
+        .btn { flex: 1; padding: 12px; border: none; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-secondary { background: var(--surface-hover); color: var(--text-muted); border: 1px solid var(--border); }
+        .auth-input { width: 100%; padding: 14px 16px; border: 1px solid var(--border); background: var(--bg-base); color: #fff; text-align: center; font-size: 1.05rem; outline: none; }
+        .error-txt { color: var(--danger); font-size: 0.8rem; display: none; }
 
-        .gate-logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: #fff;
-        }
-
-        .gate-logo span {
-            color: var(--danger);
-        }
-
-        .gate-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-main);
-            line-height: 1.4;
-        }
-
-        .gate-btns {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-        .btn-primary:active { opacity: 0.8; }
-
-        .btn-secondary {
-            background: var(--surface-hover);
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
-        .btn-secondary:active { opacity: 0.8; }
-
-        .auth-input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid var(--border);
-            background: var(--bg-base);
-            color: #fff;
-            text-align: center;
-            font-size: 1.05rem;
-            outline: none;
-        }
-        .auth-input:focus { border-color: var(--accent); }
-
-        .error-txt {
-            color: var(--danger);
-            font-size: 0.8rem;
-            font-weight: 500;
-            display: none;
-        }
-
-        /* --- App Container --- */
+        /* Contenedor App */
         .app-container {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            filter: blur(16px);
-            pointer-events: none;
-            transition: filter 0.5s ease;
+            width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px;
+            filter: blur(16px); pointer-events: none; transition: filter 0.5s ease;
         }
+        .app-container.unlocked { filter: blur(0); pointer-events: auto; }
 
-        .app-container.unlocked {
-            filter: blur(0);
-            pointer-events: auto;
-        }
-
-        /* --- Header --- */
         header {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background: var(--surface); border: 1px solid var(--border); padding: 16px 20px;
+            display: flex; justify-content: space-between; align-items: center;
         }
+        .brand-title { font-size: 1.4rem; font-weight: 900; color: #ffffff; }
+        .brand-title span { color: var(--danger); }
+        .menu-toggle-btn { background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-main); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; }
 
-        .brand-title {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-        }
-
-        .brand-title span {
-            color: var(--danger);
-        }
-
-        .menu-toggle-btn {
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-        .menu-toggle-btn:active { background: var(--accent); }
-
-        /* --- Menú Lateral Desplegable (Sidebar) --- */
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 9995;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            right: -320px;
-            width: 300px;
-            height: 100vh;
-            background: var(--surface);
-            border-left: 1px solid var(--border);
-            z-index: 9996;
-            display: flex;
-            flex-direction: column;
-            padding: 24px;
-            gap: 24px;
-            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-        }
-
+        /* Sidebar */
+        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 9995; display: none; opacity: 0; transition: opacity 0.3s; }
+        .sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); z-index: 9996; display: flex; flex-direction: column; padding: 24px; gap: 24px; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .sidebar.open { right: 0; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+        .sidebar-close { background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-main); width: 32px; height: 32px; cursor: pointer; }
+        .sidebar-section { display: flex; flex-direction: column; gap: 12px; }
+        .sidebar-section h3 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); }
+        .user-status-card { background: var(--bg-base); border: 1px solid var(--border); padding: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
+        .upload-form-box { display: flex; flex-direction: column; gap: 10px; background: var(--bg-base); border: 1px solid var(--border); padding: 12px; }
+        .upload-form-box input { padding: 10px; border: 1px solid var(--border); background: var(--surface); color: white; font-size: 0.85rem; outline: none; }
 
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 16px;
-        }
+        /* Opciones Principales (+18) */
+        .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+        .option-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; text-decoration: none; transition: border-color 0.2s; }
+        .option-card:hover { border-color: var(--accent); }
+        .option-thumb { width: 100%; aspect-ratio: 3/4; background: linear-gradient(135deg, #220d14, #14080c); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 10px; text-align: center; }
+        .nsfw-badge { position: absolute; top: 6px; right: 6px; background: var(--danger); color: white; font-size: 0.6rem; font-weight: 800; padding: 2px 5px; }
+        .option-icon { font-size: 2rem; margin-bottom: 6px; }
+        .option-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
+        .option-action { padding: 8px; background: var(--surface-hover); color: var(--text-main); border-top: 1px solid var(--border); font-size: 0.75rem; text-align: center; font-weight: 600; }
 
-        .sidebar-close {
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-        }
+        /* Sección Cómics */
+        #comicsSection { display: none; flex-direction: column; gap: 12px; }
+        .search-container { position: relative; width: 100%; }
+        .search-input { width: 100%; padding: 14px 18px 14px 44px; background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 0.95rem; outline: none; }
+        .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .comics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .comic-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; }
+        .comic-thumb { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #000; cursor: pointer; }
+        .comic-actions { display: flex; flex-direction: column; gap: 6px; padding: 8px; background: var(--surface); }
+        .action-btn { width: 100%; padding: 7px 0; background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); font-size: 0.7rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; }
+        .action-btn.open { background: var(--accent); border-color: var(--accent); color: white; }
+        .back-home-btn { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-weight: 600; cursor: pointer; text-align: center; }
 
-        .sidebar-section {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        /* Visor & Sección Comentarios Globales */
+        #viewerModal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9990; display: none; flex-direction: column; align-items: center; overflow-y: auto; }
+        .viewer-image-container { position: relative; width: 100%; max-width: 600px; height: 65vh; display: flex; justify-content: center; align-items: center; margin-top: 50px; }
+        .viewer-image-container img { width: 100%; height: 100%; object-fit: contain; }
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(20, 8, 12, 0.85); color: #fff; border: 1px solid var(--border); width: 45px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; z-index: 40; }
+        .arrow-left { left: 0; } .arrow-right { right: 0; }
+        .btn-back-menu { position: absolute; top: 16px; left: 16px; background: rgba(20, 8, 12, 0.9); color: var(--text-main); border: 1px solid var(--border); padding: 8px 14px; font-size: 0.85rem; font-weight: 600; cursor: pointer; z-index: 45; }
 
-        .sidebar-section h3 {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-        }
-
-        .user-status-card {
-            background: var(--bg-base);
-            border: 1px solid var(--border);
-            padding: 12px;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .upload-form-box {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: var(--bg-base);
-            border: 1px solid var(--border);
-            padding: 12px;
-        }
-
-        .upload-form-box input {
-            padding: 10px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: white;
-            font-size: 0.85rem;
-            outline: none;
-        }
-
-        /* --- Opciones Principales (+18): Cómics, Rule, Videos --- */
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .option-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-        }
-
-        .option-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        .option-thumb {
-            width: 100%;
-            aspect-ratio: 3 / 4;
-            background: linear-gradient(135deg, #220d14, #14080c);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .nsfw-badge {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            background: var(--danger);
-            color: white;
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 2px 5px;
-            letter-spacing: 0.5px;
-        }
-
-        .option-icon {
-            font-size: 2rem;
-            margin-bottom: 6px;
-        }
-
-        .option-name {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-main);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .option-action {
-            padding: 8px;
-            background: var(--surface-hover);
-            color: var(--text-main);
-            border-top: 1px solid var(--border);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        /* --- Contenedor de la Lista de Cómics (Se muestra al entrar a Cómics) --- */
-        #comicsSection {
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .search-container {
-            position: relative;
-            width: 100%;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 14px 18px 14px 44px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            font-size: 0.95rem;
-            outline: none;
-        }
-        .search-input:focus { border-color: var(--accent); }
-
-        .search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        .comics-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .comic-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .comic-thumb {
-            width: 100%;
-            aspect-ratio: 3 / 4;
-            object-fit: cover;
-            background: #000;
-            cursor: pointer;
-        }
-
-        .comic-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 8px;
-            background: var(--surface);
-        }
-
-        .action-btn {
-            width: 100%;
-            padding: 7px 0;
-            background: var(--surface-hover);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            font-size: 0.7rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-        }
-        .action-btn.open {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
-
-        .back-home-btn {
-            background: var(--surface-hover);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        /* --- Visor de Cómics / Rule --- */
-        #viewerModal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
-            z-index: 9990;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .viewer-image-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .loading-spinner {
-            position: absolute;
-            width: 48px;
-            height: 48px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--accent);
-            animation: spin 0.8s linear infinite;
-            z-index: 5;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .viewer-image-container img {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            opacity: 0;
-            transition: opacity 0.1s ease;
-            z-index: 10;
-        }
-
-        .viewer-image-container img.loaded { opacity: 1; }
-
-        .nav-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(20, 8, 12, 0.85);
-            color: #fff;
-            border: 1px solid var(--border);
-            width: 50px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            cursor: pointer;
-            z-index: 40;
-            user-select: none;
-        }
-        .nav-arrow:active { background: var(--accent); }
-        .arrow-left { left: 0; }
-        .arrow-right { right: 0; }
-
-        .btn-back-menu {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background: rgba(20, 8, 12, 0.9);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 8px 14px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            z-index: 45;
-        }
+        .comments-section { width: 100%; max-width: 600px; padding: 16px; background: var(--surface); border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        .comments-list { display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto; }
+        .comment-item { background: var(--bg-base); padding: 8px 12px; border: 1px solid var(--border); font-size: 0.8rem; word-break: break-word; }
+        .comment-item strong { color: var(--accent); }
     </style>
 </head>
 <body>
 
-    <!-- 1. Video de Inicio de 4 Segundos -->
     <div id="introVideoModal">
         <video id="introVideo" src="intro.mp4" autoplay muted playsinline></video>
         <button class="skip-video-btn" onclick="terminarVideo()">Omitir ❯</button>
     </div>
 
-    <!-- 2. Gatekeeper (Solo Verificación de Edad, Key eliminada) -->
     <div id="gatekeeperModal">
         <div class="gate-card" id="stepAge">
             <div class="gate-logo">devX lujurie<span>.web</span></div>
@@ -582,32 +149,27 @@
                 <button class="btn btn-secondary" onclick="confirmarEdad(false)">No</button>
             </div>
         </div>
-
-        <!-- Sistema de Cuentas Directo tras la Edad -->
         <div class="gate-card" id="stepAuth" style="display: none;">
-            <div class="gate-logo">Portal de Cuentas</div>
+            <div class="gate-logo">Portal Global</div>
             <div class="gate-title">Inicia sesión o regístrate</div>
-            <input type="text" id="usernameInput" class="auth-input" placeholder="Nombre de usuario">
+            <input type="email" id="emailInput" class="auth-input" placeholder="Correo electrónico">
             <input type="password" id="passwordInput" class="auth-input" placeholder="Contraseña">
-            <div class="error-txt" id="authError">Completa los campos correctamente.</div>
+            <div class="error-txt" id="authError">Completa los datos correctamente.</div>
             <div class="gate-btns">
-                <button class="btn btn-primary" onclick="manejarAuth('login')">Entrar</button>
-                <button class="btn btn-secondary" onclick="manejarAuth('register')">Registrarse</button>
+                <button class="btn btn-primary" id="loginBtn">Entrar</button>
+                <button class="btn btn-secondary" id="registerBtn">Registrarse</button>
             </div>
         </div>
     </div>
 
-    <!-- 3. Contenido Principal de la App -->
     <div class="app-container" id="appContainer">
-        <!-- Header -->
         <header>
             <h1 class="brand-title">devX lujurie<span>.web</span></h1>
             <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
         </header>
 
-        <!-- Menú Principal con las 3 opciones +18 -->
         <div id="mainHomeMenu">
-            <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Categorías</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Categorías</div>
             <div class="options-grid">
                 <div class="option-card" onclick="mostrarSeccionComics()">
                     <div class="option-thumb">
@@ -617,7 +179,6 @@
                     </div>
                     <div class="option-action">Explorar</div>
                 </div>
-
                 <div class="option-card" onclick="abrirRule()">
                     <div class="option-thumb">
                         <span class="nsfw-badge">+18</span>
@@ -626,8 +187,7 @@
                     </div>
                     <div class="option-action">Ver Imagen</div>
                 </div>
-
-                <a href="AQUÍ_PEGAS_TU_ENLACE_DE_GOOGLE_SITES" target="_blank" class="option-card">
+                <a href="https://sites.google.com" target="_blank" class="option-card">
                     <div class="option-thumb">
                         <span class="nsfw-badge">+18</span>
                         <div class="option-icon">🎬</div>
@@ -638,180 +198,217 @@
             </div>
         </div>
 
-        <!-- Sección de Cómics (Oculta hasta hacer clic en Cómics) -->
         <div id="comicsSection">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="search-container">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" class="search-input" placeholder="Buscar cómics..." oninput="filtrarComics()">
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar..." oninput="filtrarComics()">
             </div>
             <div class="comics-grid" id="comicsGrid">
-                <div class="comic-card" data-title="konosuba">
-                    <img class="comic-thumb" src="comic1/portada1.jpg" alt="Konosuba" onclick="abrirComic(1)">
-                    <div class="comic-actions">
-                        <button class="action-btn open" onclick="abrirComic(1)">Abrir</button>
-                        <a href="comic1/comic1.zip" class="action-btn" download>Descargar</a>
-                    </div>
-                </div>
-
-                <div class="comic-card" data-title="jane doe">
-                    <img class="comic-thumb" src="comic2/1t.jpg" alt="Jane Doe" onclick="abrirComic(2)">
-                    <div class="comic-actions">
-                        <button class="action-btn open" onclick="abrirComic(2)">Abrir</button>
-                        <a href="comic2/comic2.zip" class="action-btn" download>Descargar</a>
-                    </div>
-                </div>
-
-                <div class="comic-card" data-title="tonikaku">
-                    <img class="comic-thumb" src="comic3/1r.jpg" alt="Tonikaku" onclick="abrirComic(3)">
-                    <div class="comic-actions">
-                        <button class="action-btn open" onclick="abrirComic(3)">Abrir</button>
-                        <a href="comic3/comic3.zip" class="action-btn" download>Descargar</a>
-                    </div>
-                </div>
-
-                <div class="comic-card" data-title="slot 4"><div class="comic-thumb" style="display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:0.7rem;">Slot 4</div></div>
-                <div class="comic-card" data-title="slot 5"><div class="comic-thumb" style="display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:0.7rem;">Slot 5</div></div>
-                <div class="comic-card" data-title="slot 6"><div class="comic-thumb" style="display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:0.7rem;">Slot 6</div></div>
+                <!-- Se cargan los cómics base e imágenes subidas en la nube -->
             </div>
         </div>
     </div>
 
-    <!-- 4. Menú Lateral Desplegable (Sidebar) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebarMenu">
         <div class="sidebar-header">
-            <h2 style="font-size: 1.1rem;">Menú & Ajustes</h2>
+            <h2>Menú Global</h2>
             <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
         </div>
-
         <div class="sidebar-section">
-            <h3>Sesión Actual</h3>
+            <h3>Usuario Activo</h3>
             <div class="user-status-card">
                 <span id="sidebarUserBadge">Invitado</span>
-                <button class="action-btn" style="width: auto; padding: 4px 8px;" onclick="cerrarSesion()">Salir</button>
+                <button class="action-btn" style="width: auto; padding: 4px 8px;" id="logoutBtn">Salir</button>
             </div>
         </div>
-
         <div class="sidebar-section">
-            <h3>Subir Cómics (Máx. 2)</h3>
+            <h3>Subir Cómic (Máx 2 en Nube)</h3>
             <div class="upload-form-box">
-                <span id="userComicCount" style="font-size: 0.75rem; color: var(--text-muted);">Subidos: 0 / 2</span>
-                <input type="text" id="newComicTitle" placeholder="Título del cómic">
-                <input type="file" id="newComicCover" accept="image/jpeg" style="font-size: 0.75rem;">
-                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" onclick="subirComicUsuario()">Publicar</button>
+                <input type="text" id="newComicTitle" placeholder="Título">
+                <input type="file" id="newComicCover" accept="image/*" style="font-size: 0.75rem;">
+                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" id="uploadComicBtn">Publicar Global</button>
             </div>
         </div>
     </div>
 
-    <!-- 5. Visor de Cómics y Rule -->
     <div id="viewerModal">
         <button class="btn-back-menu" onclick="cerrarVisor()">Volver</button>
         <div class="viewer-image-container">
-            <div class="loading-spinner"></div>
             <div class="nav-arrow arrow-left" id="arrowLeft" onclick="cambiarPagina(-1)">‹</div>
             <div class="nav-arrow arrow-right" id="arrowRight" onclick="cambiarPagina(1)">›</div>
             <img id="comicImg" src="" alt="Contenido">
         </div>
+        
+        <!-- Comentarios Globales en Vivo -->
+        <div class="comments-section" id="commentsSection">
+            <h4 style="font-size:0.85rem; color:var(--text-muted);">Comentarios Globales</h4>
+            <div class="comments-list" id="commentsList"></div>
+            <div style="display:flex; gap:8px;">
+                <input type="text" id="commentInput" class="auth-input" placeholder="Escribe algo..." style="text-align:left; font-size:0.8rem;">
+                <button class="btn btn-primary" style="flex:none; padding:8px 12px; font-size:0.8rem;" id="sendCommentBtn">Enviar</button>
+            </div>
+        </div>
     </div>
 
-    <script>
-        let comicActual = 1;
-        let paginaActual = 0;
-        let esComicUsuario = false;
-        let esModoRule = false;
-        let usuarioLogueado = null;
+    <!-- Módulo JS de Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-        const configs = {
-            1: { max: 16 },
-            2: { max: 25 },
-            3: { max: 24 }
+        const firebaseConfig = {
+            apiKey: "AIzaSyCEX9KoTBwnHfgSZOg3uH4woJr-_-__j4g",
+            authDomain: "devx-lujurie.firebaseapp.com",
+            projectId: "devx-lujurie",
+            storageBucket: "devx-lujurie.firebasestorage.app",
+            messagingSenderId: "544978018000",
+            appId: "1:544978018000:web:ce4034f34edcae55f5c8d5",
+            measurementId: "G-X6B8R3NBFG"
         };
 
-        // Video de Inicio (4 segundos)
-        const videoElement = document.getElementById('introVideo');
-        videoElement.addEventListener('timeupdate', () => {
-            if (videoElement.currentTime >= 4.0) { terminarVideo(); }
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        let currentUser = null;
+        let comicActualId = "comic1";
+
+        // Registro e Inicio de Sesión Global
+        document.getElementById('registerBtn').onclick = async () => {
+            const email = document.getElementById('emailInput').value.trim();
+            const pass = document.getElementById('passwordInput').value.trim();
+            if(!email || !pass) return alert("Ingresa correo y contraseña.");
+            try {
+                await createUserWithEmailAndPassword(auth, email, pass);
+            } catch (e) { alert("Error al registrarse: " + e.message); }
+        };
+
+        document.getElementById('loginBtn').onclick = async () => {
+            const email = document.getElementById('emailInput').value.trim();
+            const pass = document.getElementById('passwordInput').value.trim();
+            if(!email || !pass) return alert("Ingresa correo y contraseña.");
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+            } catch (e) { alert("Error: " + e.message); }
+        };
+
+        document.getElementById('logoutBtn').onclick = () => signOut(auth);
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                document.getElementById('gatekeeperModal').style.display = 'none';
+                document.getElementById('appContainer').classList.add('unlocked');
+                document.getElementById('sidebarUserBadge').textContent = "@" + user.email.split('@')[0];
+            } else {
+                document.getElementById('appContainer').classList.remove('unlocked');
+            }
         });
 
+        // Subir Cómics a la Nube (Storage + Firestore)
+        document.getElementById('uploadComicBtn').onclick = async () => {
+            if (!currentUser) return alert("Inicia sesión primero.");
+            const title = document.getElementById('newComicTitle').value.trim();
+            const file = document.getElementById('newComicCover').files[0];
+
+            if (!title || !file) return alert("Sube un título y una imagen.");
+
+            try {
+                const storageRef = ref(storage, 'portadas/' + Date.now() + '_' + file.name);
+                await uploadBytes(storageRef, file);
+                const url = await getDownloadURL(storageRef);
+
+                await addDoc(collection(db, "comics"), {
+                    titulo: title,
+                    portadaUrl: url,
+                    autor: currentUser.email,
+                    timestamp: new Date()
+                });
+
+                document.getElementById('newComicTitle').value = '';
+                document.getElementById('newComicCover').value = '';
+                alert("¡Cómic subido globalmente a la nube!");
+            } catch (e) { alert("Error al subir: " + e.message); }
+        };
+
+        // Escuchar Cómics Globales en Tiempo Real
+        onSnapshot(collection(db, "comics"), (snapshot) => {
+            const grid = document.getElementById('comicsGrid');
+            let html = `
+                <div class="comic-card" data-title="konosuba"><img class="comic-thumb" src="comic1/portada1.jpg" onclick="window.abrirComic(1)"><div class="comic-actions"><button class="action-btn open" onclick="window.abrirComic(1)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="comic-card" data-title="jane doe"><img class="comic-thumb" src="comic2/1t.jpg" onclick="window.abrirComic(2)"><div class="comic-actions"><button class="action-btn open" onclick="window.abrirComic(2)">Abrir</button><a href="comic2/comic2.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="comic-card" data-title="tonikaku"><img class="comic-thumb" src="comic3/1r.jpg" onclick="window.abrirComic(3)"><div class="comic-actions"><button class="action-btn open" onclick="window.abrirComic(3)">Abrir</button><a href="comic3/comic3.zip" class="action-btn" download>Descargar</a></div></div>
+            `;
+
+            snapshot.forEach(doc => {
+                const c = doc.data();
+                html += `
+                    <div class="comic-card" data-title="${c.titulo.toLowerCase()}">
+                        <img class="comic-thumb" src="${c.portadaUrl}" onclick="window.abrirComicOnline('${c.portadaUrl}', '${doc.id}')">
+                        <div class="comic-actions">
+                            <button class="action-btn open" onclick="window.abrirComicOnline('${c.portadaUrl}', '${doc.id}')">Abrir</button>
+                            <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        });
+
+        // Comentarios Globales en Tiempo Real
+        window.cargarComentarios = (id) => {
+            comicActualId = String(id);
+            const q = query(collection(db, "comentarios"), where("comicId", "==", comicActualId));
+            onSnapshot(q, (snapshot) => {
+                const list = document.getElementById('commentsList');
+                list.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    list.innerHTML += `<div class="comment-item"><strong>@${data.usuario}:</strong> ${data.texto}</div>`;
+                });
+            });
+        };
+
+        document.getElementById('sendCommentBtn').onclick = async () => {
+            const input = document.getElementById('commentInput');
+            if (!input.value.trim() || !currentUser) return;
+            await addDoc(collection(db, "comentarios"), {
+                comicId: comicActualId,
+                usuario: currentUser.email.split('@')[0],
+                texto: input.value.trim(),
+                timestamp: new Date()
+            });
+            input.value = '';
+        };
+    </script>
+
+    <script>
+        // Funciones de Control de Interfaz
+        let comicActual = 1, paginaActual = 0, esModoRule = false;
+        const configs = { 1: { max: 16 }, 2: { max: 25 }, 3: { max: 24 } };
+
+        const videoElement = document.getElementById('introVideo');
+        videoElement.addEventListener('timeupdate', () => { if (videoElement.currentTime >= 4.0) terminarVideo(); });
+
         function terminarVideo() {
-            const modalVideo = document.getElementById('introVideoModal');
-            modalVideo.style.opacity = '0';
-            setTimeout(() => {
-                modalVideo.style.display = 'none';
-                document.getElementById('gatekeeperModal').style.display = 'flex';
-            }, 600);
+            const m = document.getElementById('introVideoModal');
+            m.style.opacity = '0';
+            setTimeout(() => { m.style.display = 'none'; document.getElementById('gatekeeperModal').style.display = 'flex'; }, 600);
         }
 
-        function confirmarEdad(esMayor) {
-            if (!esMayor) {
-                window.location.href = "https://www.google.com";
-            } else {
-                document.getElementById('stepAge').style.display = 'none';
-                document.getElementById('stepAuth').style.display = 'flex';
-            }
-        }
-
-        function manejarAuth(tipo) {
-            const user = document.getElementById('usernameInput').value.trim();
-            const pass = document.getElementById('passwordInput').value.trim();
-            const error = document.getElementById('authError');
-
-            if (!user || !pass) { error.style.display = 'block'; return; }
-
-            let cuentas = JSON.parse(localStorage.getItem('devX_cuentas') || '{}');
-
-            if (tipo === 'register') {
-                if (cuentas[user]) {
-                    error.textContent = "El usuario ya existe.";
-                    error.style.display = 'block';
-                    return;
-                }
-                cuentas[user] = { pass: pass, comics: [] };
-                localStorage.setItem('devX_cuentas', JSON.stringify(cuentas));
-            } else {
-                if (!cuentas[user] || cuentas[user].pass !== pass) {
-                    error.textContent = "Datos incorrectos.";
-                    error.style.display = 'block';
-                    return;
-                }
-            }
-
-            usuarioLogueado = user;
-            iniciarSesionExitosa();
-        }
-
-        function iniciarSesionExitosa() {
-            document.getElementById('gatekeeperModal').style.opacity = '0';
-            setTimeout(() => { document.getElementById('gatekeeperModal').style.display = 'none'; }, 400);
-            document.getElementById('appContainer').classList.add('unlocked');
-            document.getElementById('sidebarUserBadge').textContent = "@" + usuarioLogueado;
-            actualizarPanelUsuario();
-        }
-
-        function cerrarSesion() {
-            usuarioLogueado = null;
-            location.reload();
+        function confirmarEdad(m) {
+            if (!m) window.location.href = "https://www.google.com";
+            else { document.getElementById('stepAge').style.display = 'none'; document.getElementById('stepAuth').style.display = 'flex'; }
         }
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebarMenu');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isOpen = sidebar.classList.contains('open');
-
-            if (isOpen) {
-                sidebar.classList.remove('open');
-                overlay.style.opacity = '0';
-                setTimeout(() => { overlay.style.display = 'none'; }, 300);
-            } else {
-                if (!usuarioLogueado) {
-                    alert("Por favor inicia sesión primero.");
-                    return;
-                }
-                overlay.style.display = 'block';
-                setTimeout(() => { overlay.style.opacity = '1'; }, 10);
-                sidebar.classList.add('open');
-            }
+            const s = document.getElementById('sidebarMenu'), o = document.getElementById('sidebarOverlay');
+            if (s.classList.contains('open')) { s.classList.remove('open'); o.style.display = 'none'; }
+            else { o.style.display = 'block'; setTimeout(() => o.style.opacity = '1', 10); s.classList.add('open'); }
         }
 
         function mostrarSeccionComics() {
@@ -828,162 +425,53 @@
             esModoRule = true;
             document.getElementById('arrowLeft').style.display = 'none';
             document.getElementById('arrowRight').style.display = 'none';
+            document.getElementById('commentsSection').style.display = 'none';
             document.getElementById('viewerModal').style.display = 'flex';
-            
-            const img = document.getElementById('comicImg');
-            img.classList.remove('loaded');
-            // Aquí puedes cambiar la ruta por la imagen única que quieras para Rule
-            img.src = "comic1/portada1.jpg"; 
-            img.onload = () => { img.classList.add('loaded'); };
+            document.getElementById('comicImg').src = "comic1/portada1.jpg";
         }
 
-        function subirComicUsuario() {
-            if (!usuarioLogueado) return;
-            const titulo = document.getElementById('newComicTitle').value.trim();
-            const archivoInput = document.getElementById('newComicCover');
-
-            if (!titulo || archivoInput.files.length === 0) {
-                alert("Ingresa título y portada.");
-                return;
-            }
-
-            let cuentas = JSON.parse(localStorage.getItem('devX_cuentas') || '{}');
-            let misComics = cuentas[usuarioLogueado].comics || [];
-
-            if (misComics.length >= 2) {
-                alert("Límite alcanzado: máximo 2 cómics por cuenta.");
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const nuevoComic = {
-                    id: 'usr_' + Date.now(),
-                    titulo: titulo,
-                    portada: e.target.result,
-                    paginas: [e.target.result]
-                };
-
-                misComics.push(nuevoComic);
-                cuentas[usuarioLogueado].comics = misComics;
-                localStorage.setItem('devX_cuentas', JSON.stringify(cuentas));
-
-                document.getElementById('newComicTitle').value = '';
-                archivoInput.value = '';
-                actualizarPanelUsuario();
-                alert("¡Cómic publicado con éxito!");
-            };
-            reader.readAsDataURL(archivoInput.files[0]);
-        }
-
-        function actualizarPanelUsuario() {
-            let cuentas = JSON.parse(localStorage.getItem('devX_cuentas') || '{}');
-            let misComics = (cuentas[usuarioLogueado] && cuentas[usuarioLogueado].comics) || [];
-            document.getElementById('userComicCount').textContent = `Subidos: ${misComics.length} / 2`;
-
-            const grid = document.getElementById('comicsGrid');
-            let html = `
-                <div class="comic-card" data-title="konosuba"><img class="comic-thumb" src="comic1/portada1.jpg" onclick="abrirComic(1)"><div class="comic-actions"><button class="action-btn open" onclick="abrirComic(1)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div></div>
-                <div class="comic-card" data-title="jane doe"><img class="comic-thumb" src="comic2/1t.jpg" onclick="abrirComic(2)"><div class="comic-actions"><button class="action-btn open" onclick="abrirComic(2)">Abrir</button><a href="comic2/comic2.zip" class="action-btn" download>Descargar</a></div></div>
-                <div class="comic-card" data-title="tonikaku"><img class="comic-thumb" src="comic3/1r.jpg" onclick="abrirComic(3)"><div class="comic-actions"><button class="action-btn open" onclick="abrirComic(3)">Abrir</button><a href="comic3/comic3.zip" class="action-btn" download>Descargar</a></div></div>
-            `;
-
-            misComics.forEach(comic => {
-                html += `
-                    <div class="comic-card" data-title="${comic.titulo.toLowerCase()}">
-                        <img class="comic-thumb" src="${comic.portada}" onclick="abrirComicPersonalizado('${comic.id}')">
-                        <div class="comic-actions">
-                            <button class="action-btn open" onclick="abrirComicPersonalizado('${comic.id}')">Abrir</button>
-                            <span class="action-btn" style="background:var(--surface); color:var(--text-muted);">${comic.titulo}</span>
-                        </div>
-                    </div>
-                `;
-            });
-
-            const total = 3 + misComics.length;
-            for(let i = total + 1; i <= 6; i++) {
-                html += `<div class="comic-card" data-title="slot"><div class="comic-thumb" style="display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:0.7rem;">Slot ${i}</div></div>`;
-            }
-            grid.innerHTML = html;
-        }
-
-        function filtrarComics() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.comic-card');
-            cards.forEach(card => {
-                const title = card.getAttribute('data-title') || '';
-                card.style.display = title.includes(query) ? 'flex' : 'none';
-            });
-        }
-
-        function obtenerUrl(c, n) {
-            if (c === 1) return n === 0 ? "comic1/portada1.jpg" : `comic1/${n}.jpg`;
-            if (c === 2) return n === 0 ? "comic2/1t.jpg" : `comic2/${n}t.jpg`;
-            if (c === 3) return n === 0 ? "comic3/1r.jpg" : `comic3/${n}r.jpg`;
-        }
-
-        function abrirComic(id) {
-            comicActual = id;
-            paginaActual = 0;
-            esComicUsuario = false;
-            esModoRule = false;
+        window.abrirComic = function(id) {
+            comicActual = id; paginaActual = 0; esModoRule = false;
             document.getElementById('arrowLeft').style.display = 'flex';
             document.getElementById('arrowRight').style.display = 'flex';
+            document.getElementById('commentsSection').style.display = 'flex';
             document.getElementById('viewerModal').style.display = 'flex';
             actualizarVista();
-        }
+            if (window.cargarComentarios) window.cargarComentarios(id);
+        };
 
-        function abrirComicPersonalizado(comicId) {
-            let cuentas = JSON.parse(localStorage.getItem('devX_cuentas') || '{}');
-            let misComics = (cuentas[usuarioLogueado] && cuentas[usuarioLogueado].comics) || [];
-            let comicEncontrado = misComics.find(c => c.id === comicId);
-            if (comicEncontrado) {
-                comicActual = comicEncontrado;
-                paginaActual = 0;
-                esComicUsuario = true;
-                esModoRule = false;
-                document.getElementById('arrowLeft').style.display = 'flex';
-                document.getElementById('arrowRight').style.display = 'flex';
-                document.getElementById('viewerModal').style.display = 'flex';
-                actualizarVistaPersonalizada();
-            }
-        }
+        window.abrirComicOnline = function(url, docId) {
+            esModoRule = true;
+            document.getElementById('arrowLeft').style.display = 'none';
+            document.getElementById('arrowRight').style.display = 'none';
+            document.getElementById('commentsSection').style.display = 'flex';
+            document.getElementById('viewerModal').style.display = 'flex';
+            document.getElementById('comicImg').src = url;
+            if (window.cargarComentarios) window.cargarComentarios(docId);
+        };
 
         function cerrarVisor() { document.getElementById('viewerModal').style.display = 'none'; }
 
         function actualizarVista() {
             const img = document.getElementById('comicImg');
-            img.classList.remove('loaded');
-            img.src = obtenerUrl(comicActual, paginaActual);
-            img.onload = () => { img.classList.add('loaded'); };
-        }
-
-        function actualizarVistaPersonalizada() {
-            const img = document.getElementById('comicImg');
-            img.classList.remove('loaded');
-            img.src = comicActual.paginas[paginaActual];
-            img.onload = () => { img.classList.add('loaded'); };
+            img.src = comicActual === 1 ? (paginaActual === 0 ? "comic1/portada1.jpg" : `comic1/${paginaActual}.jpg`) :
+                      comicActual === 2 ? (paginaActual === 0 ? "comic2/1t.jpg" : `comic2/${paginaActual}t.jpg`) :
+                      (paginaActual === 0 ? "comic3/1r.jpg" : `comic3/${paginaActual}r.jpg`);
         }
 
         function cambiarPagina(dir) {
             if (esModoRule) return;
-            if (!esComicUsuario) {
-                const max = configs[comicActual].max;
-                let nueva = paginaActual + dir;
-                if (nueva >= 0 && nueva <= max) { paginaActual = nueva; actualizarVista(); }
-            } else {
-                const max = comicActual.paginas.length - 1;
-                let nueva = paginaActual + dir;
-                if (nueva >= 0 && nueva <= max) { paginaActual = nueva; actualizarVistaPersonalizada(); }
-            }
+            let max = configs[comicActual].max;
+            let nueva = paginaActual + dir;
+            if (nueva >= 0 && nueva <= max) { paginaActual = nueva; actualizarVista(); }
         }
 
-        window.addEventListener('keydown', (e) => {
-            if (document.getElementById('viewerModal').style.display === 'flex' && !esModoRule) {
-                if (e.key === 'ArrowRight' || e.key === ' ') cambiarPagina(1);
-                if (e.key === 'ArrowLeft') cambiarPagina(-1);
-            }
-        });
+        function filtrarComics() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.comic-card').forEach(c => {
+                c.style.display = (c.getAttribute('data-title') || '').includes(q) ? 'flex' : 'none';
+            });
+        }
     </script>
 </body>
 </html>
