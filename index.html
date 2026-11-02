@@ -86,7 +86,7 @@
 
         /* Sidebar */
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 9995; display: none; opacity: 0; transition: opacity 0.3s; }
-        .sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); z-index: 9996; display: flex; flex-direction: column; padding: 24px; gap: 24px; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); z-index: 9996; display: flex; flex-direction: column; padding: 24px; gap: 24px; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; }
         .sidebar.open { right: 0; }
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
         .sidebar-close { background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-main); width: 32px; height: 32px; cursor: pointer; }
@@ -94,7 +94,7 @@
         .sidebar-section h3 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); }
         .user-status-card { background: var(--bg-base); border: 1px solid var(--border); padding: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
         .upload-form-box { display: flex; flex-direction: column; gap: 10px; background: var(--bg-base); border: 1px solid var(--border); padding: 12px; }
-        .upload-form-box input { padding: 10px; border: 1px solid var(--border); background: var(--surface); color: white; font-size: 0.85rem; outline: none; }
+        .upload-form-box input, .upload-form-box select { padding: 10px; border: 1px solid var(--border); background: var(--surface); color: white; font-size: 0.85rem; outline: none; }
 
         /* Opciones Principales (+18) */
         .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
@@ -106,15 +106,15 @@
         .option-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
         .option-action { padding: 8px; background: var(--surface-hover); color: var(--text-main); border-top: 1px solid var(--border); font-size: 0.75rem; text-align: center; font-weight: 600; }
 
-        /* Sección Cómics */
-        #comicsSection { display: none; flex-direction: column; gap: 12px; }
+        /* Secciones Dinámicas (Cómics y Rule) */
+        .sub-section { display: none; flex-direction: column; gap: 12px; }
         .search-container { position: relative; width: 100%; }
         .search-input { width: 100%; padding: 14px 18px 14px 44px; background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 0.95rem; outline: none; }
         .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-        .comics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .comic-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; }
-        .comic-thumb { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #000; cursor: pointer; }
-        .comic-actions { display: flex; flex-direction: column; gap: 6px; padding: 8px; background: var(--surface); }
+        .content-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .content-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; }
+        .content-thumb { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #000; cursor: pointer; }
+        .content-actions { display: flex; flex-direction: column; gap: 6px; padding: 8px; background: var(--surface); }
         .action-btn { width: 100%; padding: 7px 0; background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); font-size: 0.7rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; }
         .action-btn.open { background: var(--accent); border-color: var(--accent); color: white; }
         .back-home-btn { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-weight: 600; cursor: pointer; text-align: center; }
@@ -171,7 +171,7 @@
         <div id="mainHomeMenu">
             <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Categorías</div>
             <div class="options-grid">
-                <div class="option-card" onclick="mostrarSeccionComics()">
+                <div class="option-card" onclick="mostrarSeccion('comicsSection')">
                     <div class="option-thumb">
                         <span class="nsfw-badge">+18</span>
                         <div class="option-icon">📚</div>
@@ -179,13 +179,13 @@
                     </div>
                     <div class="option-action">Explorar</div>
                 </div>
-                <div class="option-card" onclick="abrirRule()">
+                <div class="option-card" onclick="mostrarSeccion('ruleSection')">
                     <div class="option-thumb">
                         <span class="nsfw-badge">+18</span>
                         <div class="option-icon">🔥</div>
                         <div class="option-name">Rule</div>
                     </div>
-                    <div class="option-action">Ver Imagen</div>
+                    <div class="option-action">Explorar</div>
                 </div>
                 <a href="https://sites.google.com" target="_blank" class="option-card">
                     <div class="option-thumb">
@@ -198,15 +198,24 @@
             </div>
         </div>
 
-        <div id="comicsSection">
+        <!-- Sección Cómics -->
+        <div id="comicsSection" class="sub-section">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="search-container">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" class="search-input" placeholder="Buscar..." oninput="filtrarComics()">
+                <input type="text" id="searchComics" class="search-input" placeholder="Buscar cómics..." oninput="filtrarContenido('comicsGrid', this.value)">
             </div>
-            <div class="comics-grid" id="comicsGrid">
-                <!-- Se cargan los cómics base e imágenes subidas en la nube -->
+            <div class="content-grid" id="comicsGrid"></div>
+        </div>
+
+        <!-- Sección Rule (Rectángulos Dinámicos) -->
+        <div id="ruleSection" class="sub-section">
+            <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchRule" class="search-input" placeholder="Buscar en Rule..." oninput="filtrarContenido('ruleGrid', this.value)">
             </div>
+            <div class="content-grid" id="ruleGrid"></div>
         </div>
     </div>
 
@@ -224,11 +233,15 @@
             </div>
         </div>
         <div class="sidebar-section">
-            <h3>Subir Cómic (Máx 2 en Nube)</h3>
+            <h3>Subir Contenido a la Nube</h3>
             <div class="upload-form-box">
-                <input type="text" id="newComicTitle" placeholder="Título">
-                <input type="file" id="newComicCover" accept="image/*" style="font-size: 0.75rem;">
-                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" id="uploadComicBtn">Publicar Global</button>
+                <select id="uploadCategory">
+                    <option value="comic">Cómic</option>
+                    <option value="rule">Rule (Imagen)</option>
+                </select>
+                <input type="text" id="newTitle" placeholder="Título">
+                <input type="file" id="newFile" accept="image/*" style="font-size: 0.75rem;">
+                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" id="uploadBtn">Publicar Global</button>
             </div>
         </div>
     </div>
@@ -241,7 +254,6 @@
             <img id="comicImg" src="" alt="Contenido">
         </div>
         
-        <!-- Comentarios Globales en Vivo -->
         <div class="comments-section" id="commentsSection">
             <h4 style="font-size:0.85rem; color:var(--text-muted);">Comentarios Globales</h4>
             <div class="comments-list" id="commentsList"></div>
@@ -277,14 +289,14 @@
         let currentUser = null;
         let comicActualId = "comic1";
 
-        // Registro e Inicio de Sesión Global
+        // Autenticación
         document.getElementById('registerBtn').onclick = async () => {
             const email = document.getElementById('emailInput').value.trim();
             const pass = document.getElementById('passwordInput').value.trim();
             if(!email || !pass) return alert("Ingresa correo y contraseña.");
             try {
                 await createUserWithEmailAndPassword(auth, email, pass);
-            } catch (e) { alert("Error al registrarse: " + e.message); }
+            } catch (e) { alert("Error: " + e.message); }
         };
 
         document.getElementById('loginBtn').onclick = async () => {
@@ -309,54 +321,78 @@
             }
         });
 
-        // Subir Cómics a la Nube (Storage + Firestore)
-        document.getElementById('uploadComicBtn').onclick = async () => {
+        // Subir Cómics o Rule a la Nube
+        document.getElementById('uploadBtn').onclick = async () => {
             if (!currentUser) return alert("Inicia sesión primero.");
-            const title = document.getElementById('newComicTitle').value.trim();
-            const file = document.getElementById('newComicCover').files[0];
+            const category = document.getElementById('uploadCategory').value;
+            const title = document.getElementById('newTitle').value.trim();
+            const file = document.getElementById('newFile').files[0];
 
-            if (!title || !file) return alert("Sube un título y una imagen.");
+            if (!title || !file) return alert("Completa el título y selecciona una imagen.");
 
             try {
-                const storageRef = ref(storage, 'portadas/' + Date.now() + '_' + file.name);
+                const storageRef = ref(storage, category + 's/' + Date.now() + '_' + file.name);
                 await uploadBytes(storageRef, file);
                 const url = await getDownloadURL(storageRef);
 
-                await addDoc(collection(db, "comics"), {
+                await addDoc(collection(db, "contents"), {
+                    categoria: category, // 'comic' o 'rule'
                     titulo: title,
                     portadaUrl: url,
                     autor: currentUser.email,
                     timestamp: new Date()
                 });
 
-                document.getElementById('newComicTitle').value = '';
-                document.getElementById('newComicCover').value = '';
-                alert("¡Cómic subido globalmente a la nube!");
+                document.getElementById('newTitle').value = '';
+                document.getElementById('newFile').value = '';
+                alert("¡Publicado globalmente en la nube!");
             } catch (e) { alert("Error al subir: " + e.message); }
         };
 
-        // Escuchar Cómics Globales en Tiempo Real
-        onSnapshot(collection(db, "comics"), (snapshot) => {
-            const grid = document.getElementById('comicsGrid');
-            let html = `
-                <div class="comic-card" data-title="konosuba"><img class="comic-thumb" src="comic1/portada1.jpg" onclick="window.abrirComic(1)"><div class="comic-actions"><button class="action-btn open" onclick="window.abrirComic(1)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div></div>
-                <div class="comic-card" data-title="jane doe"><img class="comic-thumb" src="comic2/1t.jpg" onclick="window.abrirComic(2)"><div class="comic-actions"><button class="action-btn open" onclick="window.abrirComic(2)">Abrir</button><a href="comic2/comic2.zip" class="action-btn" download>Descargar</a></div></div>
-                <div class="comic-card" data-title="tonikaku"><img class="comic-thumb" src="comic3/1r.jpg" onclick="window.abrirComic(3)"><div class="comic-actions"><button class="action-btn open" onclick="window.abrirComic(3)">Abrir</button><a href="comic3/comic3.zip" class="action-btn" download>Descargar</a></div></div>
+        // Sincronizar Cómics y Rule en Tiempo Real desde la Nube
+        onSnapshot(collection(db, "contents"), (snapshot) => {
+            const comicsGrid = document.getElementById('comicsGrid');
+            const ruleGrid = document.getElementById('ruleGrid');
+
+            // Cómics base estáticos + dinámicos
+            let comicsHtml = `
+                <div class="content-card" data-title="konosuba"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirComic(1)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(1)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="content-card" data-title="jane doe"><img class="content-thumb" src="comic2/1t.jpg" onclick="window.abrirComic(2)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(2)">Abrir</button><a href="comic2/comic2.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="content-card" data-title="tonikaku"><img class="content-thumb" src="comic3/1r.jpg" onclick="window.abrirComic(3)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(3)">Abrir</button><a href="comic3/comic3.zip" class="action-btn" download>Descargar</a></div></div>
+            `;
+
+            // Rule base estático + dinámicos
+            let ruleHtml = `
+                <div class="content-card" data-title="rule inicial"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')"><div class="content-actions"><button class="action-btn open" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')">Ver</button></div></div>
             `;
 
             snapshot.forEach(doc => {
                 const c = doc.data();
-                html += `
-                    <div class="comic-card" data-title="${c.titulo.toLowerCase()}">
-                        <img class="comic-thumb" src="${c.portadaUrl}" onclick="window.abrirComicOnline('${c.portadaUrl}', '${doc.id}')">
-                        <div class="comic-actions">
-                            <button class="action-btn open" onclick="window.abrirComicOnline('${c.portadaUrl}', '${doc.id}')">Abrir</button>
-                            <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
+                if (c.categoria === 'comic') {
+                    comicsHtml += `
+                        <div class="content-card" data-title="${c.titulo.toLowerCase()}">
+                            <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirComicOnline('${c.portadaUrl}', '${doc.id}')">
+                            <div class="content-actions">
+                                <button class="action-btn open" onclick="window.abrirComicOnline('${c.portadaUrl}', '${doc.id}')">Abrir</button>
+                                <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                } else if (c.categoria === 'rule') {
+                    ruleHtml += `
+                        <div class="content-card" data-title="${c.titulo.toLowerCase()}">
+                            <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${doc.id}')">
+                            <div class="content-actions">
+                                <button class="action-btn open" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${doc.id}')">Ver</button>
+                                <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
+                            </div>
+                        </div>
+                    `;
+                }
             });
-            grid.innerHTML = html;
+
+            comicsGrid.innerHTML = comicsHtml;
+            ruleGrid.innerHTML = ruleHtml;
         });
 
         // Comentarios Globales en Tiempo Real
@@ -411,23 +447,15 @@
             else { o.style.display = 'block'; setTimeout(() => o.style.opacity = '1', 10); s.classList.add('open'); }
         }
 
-        function mostrarSeccionComics() {
+        function mostrarSeccion(seccionId) {
             document.getElementById('mainHomeMenu').style.display = 'none';
-            document.getElementById('comicsSection').style.display = 'flex';
+            document.querySelectorAll('.sub-section').forEach(el => el.style.display = 'none');
+            document.getElementById(seccionId).style.display = 'flex';
         }
 
         function volverAlMenuPrincipal() {
-            document.getElementById('comicsSection').style.display = 'none';
+            document.querySelectorAll('.sub-section').forEach(el => el.style.display = 'none');
             document.getElementById('mainHomeMenu').style.display = 'block';
-        }
-
-        function abrirRule() {
-            esModoRule = true;
-            document.getElementById('arrowLeft').style.display = 'none';
-            document.getElementById('arrowRight').style.display = 'none';
-            document.getElementById('commentsSection').style.display = 'none';
-            document.getElementById('viewerModal').style.display = 'flex';
-            document.getElementById('comicImg').src = "comic1/portada1.jpg";
         }
 
         window.abrirComic = function(id) {
@@ -441,6 +469,16 @@
         };
 
         window.abrirComicOnline = function(url, docId) {
+            comicActual = 999; paginaActual = 0; esModoRule = false;
+            document.getElementById('arrowLeft').style.display = 'none';
+            document.getElementById('arrowRight').style.display = 'none';
+            document.getElementById('commentsSection').style.display = 'flex';
+            document.getElementById('viewerModal').style.display = 'flex';
+            document.getElementById('comicImg').src = url;
+            if (window.cargarComentarios) window.cargarComentarios(docId);
+        };
+
+        window.abrirRuleOnline = function(url, docId) {
             esModoRule = true;
             document.getElementById('arrowLeft').style.display = 'none';
             document.getElementById('arrowRight').style.display = 'none';
@@ -461,14 +499,14 @@
 
         function cambiarPagina(dir) {
             if (esModoRule) return;
-            let max = configs[comicActual].max;
+            let max = configs[comicActual] ? configs[comicActual].max : 0;
             let nueva = paginaActual + dir;
             if (nueva >= 0 && nueva <= max) { paginaActual = nueva; actualizarVista(); }
         }
 
-        function filtrarComics() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.comic-card').forEach(c => {
+        function filtrarContenido(gridId, queryText) {
+            const q = queryText.toLowerCase();
+            document.querySelectorAll(`#${gridId} .content-card`).forEach(c => {
                 c.style.display = (c.getAttribute('data-title') || '').includes(q) ? 'flex' : 'none';
             });
         }
