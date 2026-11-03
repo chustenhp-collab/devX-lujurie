@@ -93,15 +93,15 @@
         .sidebar-section h3 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); }
         .user-status-card { background: var(--bg-base); border: 1px solid var(--border); padding: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
         .upload-form-box { display: flex; flex-direction: column; gap: 8px; background: var(--bg-base); border: 1px solid var(--border); padding: 12px; }
-        .upload-form-box input, .upload-form-box select { padding: 10px; border: 1px solid var(--border); background: var(--surface); color: white; font-size: 0.85rem; outline: none; }
+        .upload-form-box input, .upload-form-box select, .upload-form-box textarea { padding: 10px; border: 1px solid var(--border); background: var(--surface); color: white; font-size: 0.85rem; outline: none; }
 
-        /* Opciones Principales (+18) */
-        .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+        /* Opciones Principales (+18) - Añadido Sixchan */
+        .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
         .option-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; text-decoration: none; transition: border-color 0.2s; }
         .option-card:hover { border-color: var(--accent); }
-        .option-thumb { width: 100%; aspect-ratio: 3/4; background: linear-gradient(135deg, #220d14, #14080c); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 10px; text-align: center; }
+        .option-thumb { width: 100%; aspect-ratio: 4/3; background: linear-gradient(135deg, #220d14, #14080c); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 10px; text-align: center; }
         .nsfw-badge { position: absolute; top: 6px; right: 6px; background: var(--danger); color: white; font-size: 0.6rem; font-weight: 800; padding: 2px 5px; }
-        .option-icon { font-size: 2rem; margin-bottom: 6px; }
+        .option-icon { font-size: 1.8rem; margin-bottom: 4px; }
         .option-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
         .option-action { padding: 8px; background: var(--surface-hover); color: var(--text-main); border-top: 1px solid var(--border); font-size: 0.75rem; text-align: center; font-weight: 600; }
 
@@ -118,7 +118,16 @@
         .action-btn.open { background: var(--accent); border-color: var(--accent); color: white; }
         .back-home-btn { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-weight: 600; cursor: pointer; text-align: center; }
 
-        /* Interfaz de Videos Nativos GitHub */
+        /* Estilo Interfaz Sixchan (Tablón estilo 4chan) */
+        .sixchan-feed { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+        .sixchan-post { background: var(--surface); border: 1px solid var(--border); padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .sixchan-post-header { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+        .sixchan-post-header strong { color: var(--accent); }
+        .sixchan-post-body { display: flex; gap: 12px; align-items: flex-start; }
+        .sixchan-post-body img { width: 120px; aspect-ratio: 3/4; object-fit: cover; border: 1px solid var(--border); cursor: pointer; }
+        .sixchan-post-text { font-size: 0.85rem; color: var(--text-main); word-break: break-word; line-height: 1.4; }
+
+        /* Videos */
         .video-list-grid { display: flex; flex-direction: column; gap: 16px; width: 100%; }
         .video-card-item { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
         .video-player-container { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; }
@@ -198,6 +207,14 @@
                     </div>
                     <div class="option-action">Reproducir</div>
                 </div>
+                <div class="option-card" onclick="mostrarSeccion('sixchanSection')">
+                    <div class="option-thumb">
+                        <span class="nsfw-badge">+18</span>
+                        <div class="option-icon">💬</div>
+                        <div class="option-name">Sixchan</div>
+                    </div>
+                    <div class="option-action">Tablón</div>
+                </div>
             </div>
         </div>
 
@@ -221,70 +238,30 @@
             <div class="content-grid" id="ruleGrid"></div>
         </div>
 
-        <!-- Sección Videos Nativos de GitHub (Con nombres corregidos) -->
+        <!-- Sección Videos -->
         <div id="videosSection" class="sub-section">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="search-container">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="searchVideos" class="search-input" placeholder="Buscar videos..." oninput="filtrarVideos(this.value)">
             </div>
-            
             <div class="video-list-grid" id="videosListGrid">
-                <!-- Videos por defecto alojados en GitHub -->
-                <div class="video-card-item" data-title="konosuba">
-                    <div class="video-player-container">
-                        <video controls preload="metadata">
-                            <source src="konosuba.mp4" type="video/mp4">
-                            Tu navegador no soporta video.
-                        </video>
-                    </div>
-                    <div class="video-card-info">Konosuba <span>+18</span></div>
-                </div>
-
-                <div class="video-card-item" data-title="nobara">
-                    <div class="video-player-container">
-                        <video controls preload="metadata">
-                            <source src="nobara.mp4" type="video/mp4">
-                            Tu navegador no soporta video.
-                        </video>
-                    </div>
-                    <div class="video-card-info">Nobara <span>+18</span></div>
-                </div>
-
-                <div class="video-card-item" data-title="konosuba 4">
-                    <div class="video-player-container">
-                        <video controls preload="metadata">
-                            <source src="konosuba 4.mp4" type="video/mp4">
-                            Tu navegador no soporta video.
-                        </video>
-                    </div>
-                    <div class="video-card-info">Konosuba 4 <span>+18</span></div>
-                </div>
-
-                <div class="video-card-item" data-title="yor">
-                    <div class="video-player-container">
-                        <video controls preload="metadata">
-                            <source src="yor.mp4" type="video/mp4">
-                            Tu navegador no soporta video.
-                        </video>
-                    </div>
-                    <div class="video-card-info">Yor <span>+18</span></div>
-                </div>
-
-                <div class="video-card-item" data-title="xx2">
-                    <div class="video-player-container">
-                        <video controls preload="metadata">
-                            <source src="xx2.mp4" type="video/mp4">
-                            Tu navegador no soporta video.
-                        </video>
-                    </div>
-                    <div class="video-card-info">XX2 <span>+18</span></div>
-                </div>
+                <div class="video-card-item" data-title="konosuba"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba <span>+18</span></div></div>
+                <div class="video-card-item" data-title="nobara"><div class="video-player-container"><video controls preload="metadata"><source src="nobara.mp4" type="video/mp4"></video></div><div class="video-card-info">Nobara <span>+18</span></div></div>
+                <div class="video-card-item" data-title="konosuba 4"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba 4.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba 4 <span>+18</span></div></div>
+                <div class="video-card-item" data-title="yor"><div class="video-player-container"><video controls preload="metadata"><source src="yor.mp4" type="video/mp4"></video></div><div class="video-card-info">Yor <span>+18</span></div></div>
+                <div class="video-card-item" data-title="xx2"><div class="video-player-container"><video controls preload="metadata"><source src="xx2.mp4" type="video/mp4"></video></div><div class="video-card-info">XX2 <span>+18</span></div></div>
             </div>
+        </div>
+
+        <!-- Sección Sixchan (Tablón Estilo 4chan) -->
+        <div id="sixchanSection" class="sub-section">
+            <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
+            <div class="sixchan-feed" id="sixchanFeed"></div>
         </div>
     </div>
 
-    <!-- Menú Lateral / Ajustes y Subida Pública de Contenido -->
+    <!-- Menú Lateral / Ajustes y Subidas Organizadas -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebarMenu">
         <div class="sidebar-header">
@@ -305,22 +282,31 @@
                 <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" onclick="guardarNombre()">Guardar Nombre</button>
             </div>
         </div>
+
+        <!-- Opciones de Subida Separadas por Categoría -->
         <div class="sidebar-section">
-            <h3>Subir Contenido (Gratis)</h3>
+            <h3>Publicar Contenido</h3>
             <div class="upload-form-box">
-                <select id="uploadCategory" onchange="cambiarTipoSubida(this.value)">
-                    <option value="comic">Cómic</option>
-                    <option value="rule">Rule (Imagen)</option>
-                    <option value="video">Video (Máx 5 min)</option>
+                <select id="uploadCategory" onchange="actualizarFormularioSubida(this.value)">
+                    <option value="video">Videos (Sólo video, máx 5 min)</option>
+                    <option value="comic">Cómics (Seleccionar múltiples páginas)</option>
+                    <option value="rule">Rule (Imagen simple)</option>
+                    <option value="sixchan">Sixchan (Foto y Texto)</option>
                 </select>
-                <input type="text" id="newTitle" placeholder="Título">
-                <input type="file" id="newFile" accept="image/*" style="font-size: 0.75rem;">
+
+                <input type="text" id="newTitle" placeholder="Título / Descripción principal">
+
+                <!-- Contenedor dinámico según lo que elija -->
+                <div id="dynamicUploadArea" style="display:flex; flex-direction:column; gap:8px;">
+                    <input type="file" id="newFile" accept="video/mp4" style="font-size: 0.75rem;">
+                </div>
+
                 <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" id="uploadBtn">Publicar</button>
             </div>
         </div>
     </div>
 
-    <!-- Visor de Imágenes -->
+    <!-- Visor de Imágenes y Cómics -->
     <div id="viewerModal">
         <button class="btn-back-menu" onclick="cerrarVisor()">Volver</button>
         <div class="viewer-image-container">
@@ -373,6 +359,8 @@
         let currentKey = localStorage.getItem('devx_key');
         let currentUserName = localStorage.getItem('devx_name') || (currentKey ? validKeys[currentKey] : "Invitado");
         let comicActualId = "comic1";
+        let comicPaginasActuales = [];
+        let comicIndiceActual = 0;
 
         if (currentKey && validKeys[currentKey]) {
             desbloquearApp(currentUserName);
@@ -414,93 +402,151 @@
             document.getElementById('sidebarUserBadge').textContent = "@" + nombre;
         }
 
-        window.cambiarTipoSubida = (tipo) => {
-            const fileInput = document.getElementById('newFile');
+        // Cambio de interfaz de subida según la categoría elegida
+        window.actualizarFormularioSubida = (tipo) => {
+            const area = document.getElementById('dynamicUploadArea');
             if (tipo === 'video') {
-                fileInput.accept = "video/mp4";
-            } else {
-                fileInput.accept = "image/*";
+                area.innerHTML = `<input type="file" id="newFile" accept="video/mp4" style="font-size: 0.75rem;">`;
+            } else if (tipo === 'comic') {
+                area.innerHTML = `
+                    <span style="font-size:0.75rem; color:var(--text-muted);">Sube las páginas. La primera seleccionada será la portada, luego se ordenarán como 1, 2, 3...</span>
+                    <input type="file" id="newFile" accept="image/*" multiple style="font-size: 0.75rem;">
+                `;
+            } else if (tipo === 'rule') {
+                area.innerHTML = `<input type="file" id="newFile" accept="image/*" style="font-size: 0.75rem;">`;
+            } else if (tipo === 'sixchan') {
+                area.innerHTML = `
+                    <textarea id="sixchanText" class="auth-input" placeholder="Escribe tu texto estilo 4chan..." style="text-align:left; font-size:0.8rem; height:80px;"></textarea>
+                    <input type="file" id="newFile" accept="image/*" style="font-size: 0.75rem;">
+                `;
             }
         };
 
+        // Lógica de Publicación Avanzada
         document.getElementById('uploadBtn').onclick = async () => {
             if (!currentKey) return alert("Inicia sesión primero.");
             const category = document.getElementById('uploadCategory').value;
             const title = document.getElementById('newTitle').value.trim();
             const fileInput = document.getElementById('newFile');
-            const file = fileInput.files[0];
 
-            if (!title || !file) return alert("Completa el título y selecciona un archivo.");
+            if (!title) return alert("Escribe un título o descripción.");
 
             if (category === 'video') {
-                const videoElementCheck = document.createElement('video');
-                videoElementCheck.preload = 'metadata';
-                videoElementCheck.onloadedmetadata = async function() {
-                    window.URL.revokeObjectURL(videoElementCheck.src);
-                    if (videoElementCheck.duration > 300) {
-                        alert("El video dura más de 5 minutos. Por favor selecciona uno más corto.");
-                        return;
-                    }
-                    procesarYSubirBase64(category, title, file);
-                }
-                videoElementCheck.src = URL.createObjectURL(file);
-            } else {
-                procesarYSubirBase64(category, title, file);
+                const file = fileInput.files[0];
+                if (!file) return alert("Selecciona un video.");
+                const videoCheck = document.createElement('video');
+                videoCheck.preload = 'metadata';
+                videoCheck.onloadedmetadata = async () => {
+                    window.URL.revokeObjectURL(videoCheck.src);
+                    if (videoCheck.duration > 300) return alert("El video supera los 5 minutos.");
+                    subirArchivoBase64(category, title, file);
+                };
+                videoCheck.src = URL.createObjectURL(file);
+            } 
+            else if (category === 'rule') {
+                const file = fileInput.files[0];
+                if (!file) return alert("Selecciona una imagen.");
+                subirArchivoBase64(category, title, file);
             }
-        };
-
-        async function procesarYSubirBase64(category, title, file) {
-            try {
+            else if (category === 'sixchan') {
+                const textBody = document.getElementById('sixchanText').value.trim();
+                const file = fileInput.files[0];
+                if (!file || !textBody) return alert("Completa el texto y la imagen para Sixchan.");
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = async () => {
-                    const base64Data = reader.result;
                     await addDoc(collection(db, "contents"), {
-                        categoria: category,
+                        categoria: 'sixchan',
                         titulo: title,
-                        portadaUrl: base64Data,
+                        texto: textBody,
+                        portadaUrl: reader.result,
                         autor: currentUserName,
                         timestamp: new Date()
                     });
-
                     document.getElementById('newTitle').value = '';
-                    document.getElementById('newFile').value = '';
-                    alert("¡Publicado globalmente en la nube!");
+                    document.getElementById('sixchanText').value = '';
+                    fileInput.value = '';
+                    alert("¡Publicado en Sixchan!");
                 };
-            } catch (e) { alert("Error al subir: " + e.message); }
+            }
+            else if (category === 'comic') {
+                const files = fileInput.files;
+                if (!files || files.length === 0) return alert("Selecciona al menos una página de cómic.");
+                
+                let loadedFiles = 0;
+                let base64Pages = [];
+
+                Array.from(files).forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => {
+                        base64Pages[index] = reader.result;
+                        loadedFiles++;
+                        if (loadedFiles === files.length) {
+                            // La primera imagen es la portada, las demás el array secuencial
+                            addDoc(collection(db, "contents"), {
+                                categoria: 'comic',
+                                titulo: title,
+                                portadaUrl: base64Pages[0],
+                                paginas: base64Pages,
+                                autor: currentUserName,
+                                timestamp: new Date()
+                            }).then(() => {
+                                document.getElementById('newTitle').value = '';
+                                fileInput.value = '';
+                                alert("¡Cómic publicado con éxito!");
+                            });
+                        }
+                    };
+                });
+            }
+        };
+
+        async function subirArchivoBase64(category, title, file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async () => {
+                await addDoc(collection(db, "contents"), {
+                    categoria: category,
+                    titulo: title,
+                    portadaUrl: reader.result,
+                    autor: currentUserName,
+                    timestamp: new Date()
+                });
+                document.getElementById('newTitle').value = '';
+                document.getElementById('newFile').value = '';
+                alert("¡Publicado globalmente en la nube!");
+            };
         }
 
+        // Sincronización en tiempo real de todas las categorías
         onSnapshot(collection(db, "contents"), (snapshot) => {
             const comicsGrid = document.getElementById('comicsGrid');
             const ruleGrid = document.getElementById('ruleGrid');
-            const videosListGrid = document.getElementById('videosListGrid');
+            const sixchanFeed = document.getElementById('sixchanFeed');
 
             let comicsHtml = `
-                <div class="content-card" data-title="konosuba"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirComic(1)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(1)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div></div>
-                <div class="content-card" data-title="jane doe"><img class="content-thumb" src="comic2/1t.jpg" onclick="window.abrirComic(2)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(2)">Abrir</button><a href="comic2/comic2.zip" class="action-btn" download>Descargar</a></div></div>
-                <div class="content-card" data-title="tonikaku"><img class="content-thumb" src="comic3/1r.jpg" onclick="window.abrirComic(3)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(3)">Abrir</button><a href="comic3/comic3.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="content-card" data-title="konosuba"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirComicLocal(1)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComicLocal(1)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="content-card" data-title="jane doe"><img class="content-thumb" src="comic2/1t.jpg" onclick="window.abrirComicLocal(2)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComicLocal(2)">Abrir</button><a href="comic2/comic2.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="content-card" data-title="tonikaku"><img class="content-thumb" src="comic3/1r.jpg" onclick="window.abrirComicLocal(3)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComicLocal(3)">Abrir</button><a href="comic3/comic3.zip" class="action-btn" download>Descargar</a></div></div>
             `;
 
             let ruleHtml = `
                 <div class="content-card" data-title="rule inicial"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')"><div class="content-actions"><button class="action-btn open" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')">Ver</button></div></div>
             `;
 
-            let videosHtml = `
-                <div class="video-card-item" data-title="konosuba"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba <span>+18</span></div></div>
-                <div class="video-card-item" data-title="nobara"><div class="video-player-container"><video controls preload="metadata"><source src="nobara.mp4" type="video/mp4"></video></div><div class="video-card-info">Nobara <span>+18</span></div></div>
-                <div class="video-card-item" data-title="konosuba 4"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba 4.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba 4 <span>+18</span></div></div>
-                <div class="video-card-item" data-title="yor"><div class="video-player-container"><video controls preload="metadata"><source src="yor.mp4" type="video/mp4"></video></div><div class="video-card-info">Yor <span>+18</span></div></div>
-                <div class="video-card-item" data-title="xx2"><div class="video-player-container"><video controls preload="metadata"><source src="xx2.mp4" type="video/mp4"></video></div><div class="video-card-info">XX2 <span>+18</span></div></div>
-            `;
+            let sixchanHtml = '';
 
             snapshot.forEach(doc => {
                 const c = doc.data();
                 if (c.categoria === 'comic') {
+                    // Si el cómic viene de Firebase con múltiples páginas
+                    const paginasJson = c.paginas ? JSON.stringify(c.paginas).replace(/"/g, '&quot;') : '';
                     comicsHtml += `
                         <div class="content-card" data-title="${c.titulo.toLowerCase()}">
-                            <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirComicOnline('${c.portadaUrl}', '${doc.id}')">
+                            <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirComicFirebase('${paginasJson}', '${doc.id}')">
                             <div class="content-actions">
-                                <button class="action-btn open" onclick="window.abrirComicOnline('${c.portadaUrl}', '${doc.id}')">Abrir</button>
+                                <button class="action-btn open" onclick="window.abrirComicFirebase('${paginasJson}', '${doc.id}')">Abrir</button>
                                 <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
                             </div>
                         </div>
@@ -515,15 +561,18 @@
                             </div>
                         </div>
                     `;
-                } else if (c.categoria === 'video') {
-                    videosHtml += `
-                        <div class="video-card-item" data-title="${c.titulo.toLowerCase()}">
-                            <div class="video-player-container">
-                                <video controls preload="metadata">
-                                    <source src="${c.portadaUrl}" type="video/mp4">
-                                </video>
+                } else if (c.categoria === 'sixchan') {
+                    sixchanHtml += `
+                        <div class="sixchan-post">
+                            <div class="sixchan-post-header">
+                                <span>Anónimo <strong>@${c.autor}</strong></span>
+                                <span>${new Date().toLocaleDateString()}</span>
                             </div>
-                            <div class="video-card-info">${c.titulo} <span>+18</span></div>
+                            <div style="font-weight:700; font-size:0.9rem; color:var(--text-main);">${c.titulo}</div>
+                            <div class="sixchan-post-body">
+                                <img src="${c.portadaUrl}" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${doc.id}')">
+                                <div class="sixchan-post-text">${c.texto}</div>
+                            </div>
                         </div>
                     `;
                 }
@@ -531,9 +580,10 @@
 
             comicsGrid.innerHTML = comicsHtml;
             ruleGrid.innerHTML = ruleHtml;
-            videosListGrid.innerHTML = videosHtml;
+            sixchanFeed.innerHTML = sixchanHtml || '<div style="color:var(--text-muted); text-align:center; padding:20px;">No hay publicaciones en Sixchan aún. ¡Sé el primero en postear!</div>';
         });
 
+        // Comentarios globales
         window.cargarComentarios = (id) => {
             comicActualId = String(id);
             const q = query(collection(db, "comentarios"), where("comicId", "==", comicActualId));
@@ -562,6 +612,7 @@
 
     <script>
         let comicActual = 1, paginaActual = 0, esModoRule = false;
+        let paginasFirebaseActuales = [];
         const configs = { 1: { max: 16 }, 2: { max: 25 }, 3: { max: 24 } };
 
         const videoElement = document.getElementById('introVideo');
@@ -595,28 +646,29 @@
             document.getElementById('mainHomeMenu').style.display = 'block';
         }
 
-        window.abrirComic = function(id) {
-            comicActual = id; paginaActual = 0; esModoRule = false;
+        window.abrirComicLocal = function(id) {
+            comicActual = id; paginaActual = 0; esModoRule = false; paginasFirebaseActuales = [];
             document.getElementById('arrowLeft').style.display = 'flex';
             document.getElementById('arrowRight').style.display = 'flex';
             document.getElementById('commentsSection').style.display = 'flex';
             document.getElementById('viewerModal').style.display = 'flex';
-            actualizarVista();
+            actualizarVistaLocal();
             if (window.cargarComentarios) window.cargarComentarios(id);
         };
 
-        window.abrirComicOnline = function(url, docId) {
+        window.abrirComicFirebase = function(paginasString, docId) {
             comicActual = 999; paginaActual = 0; esModoRule = false;
-            document.getElementById('arrowLeft').style.display = 'none';
-            document.getElementById('arrowRight').style.display = 'none';
+            paginasFirebaseActuales = JSON.parse(paginasString);
+            document.getElementById('arrowLeft').style.display = 'flex';
+            document.getElementById('arrowRight').style.display = 'flex';
             document.getElementById('commentsSection').style.display = 'flex';
             document.getElementById('viewerModal').style.display = 'flex';
-            document.getElementById('comicImg').src = url;
+            document.getElementById('comicImg').src = paginasFirebaseActuales[0];
             if (window.cargarComentarios) window.cargarComentarios(docId);
         };
 
         window.abrirRuleOnline = function(url, docId) {
-            esModoRule = true;
+            esModoRule = true; paginasFirebaseActuales = [];
             document.getElementById('arrowLeft').style.display = 'none';
             document.getElementById('arrowRight').style.display = 'none';
             document.getElementById('commentsSection').style.display = 'flex';
@@ -627,7 +679,7 @@
 
         function cerrarVisor() { document.getElementById('viewerModal').style.display = 'none'; }
 
-        function actualizarVista() {
+        function actualizarVistaLocal() {
             const img = document.getElementById('comicImg');
             img.src = comicActual === 1 ? (paginaActual === 0 ? "comic1/portada1.jpg" : `comic1/${paginaActual}.jpg`) :
                       comicActual === 2 ? (paginaActual === 0 ? "comic2/1t.jpg" : `comic2/${paginaActual}t.jpg`) :
@@ -636,9 +688,17 @@
 
         function cambiarPagina(dir) {
             if (esModoRule) return;
+            if (paginasFirebaseActuales.length > 0) {
+                let nueva = paginaActual + dir;
+                if (nueva >= 0 && nueva < paginasFirebaseActuales.length) {
+                    paginaActual = nueva;
+                    document.getElementById('comicImg').src = paginasFirebaseActuales[paginaActual];
+                }
+                return;
+            }
             let max = configs[comicActual] ? configs[comicActual].max : 0;
             let nueva = paginaActual + dir;
-            if (nueva >= 0 && nueva <= max) { paginaActual = nueva; actualizarVista(); }
+            if (nueva >= 0 && nueva <= max) { paginaActual = nueva; actualizarVistaLocal(); }
         }
 
         function filtrarContenido(gridId, queryText) {
