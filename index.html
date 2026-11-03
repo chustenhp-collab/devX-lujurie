@@ -105,7 +105,7 @@
         .option-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
         .option-action { padding: 8px; background: var(--surface-hover); color: var(--text-main); border-top: 1px solid var(--border); font-size: 0.75rem; text-align: center; font-weight: 600; }
 
-        /* Secciones Dinámicas (Cómics y Rule) */
+        /* Secciones Dinámicas (Cómics, Rule y Videos) */
         .sub-section { display: none; flex-direction: column; gap: 12px; }
         .search-container { position: relative; width: 100%; }
         .search-input { width: 100%; padding: 14px 18px 14px 44px; background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 0.95rem; outline: none; }
@@ -117,6 +117,14 @@
         .action-btn { width: 100%; padding: 7px 0; background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); font-size: 0.7rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; }
         .action-btn.open { background: var(--accent); border-color: var(--accent); color: white; }
         .back-home-btn { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-weight: 600; cursor: pointer; text-align: center; }
+
+        /* Tarjetas Específicas de Video */
+        .video-list-grid { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+        .video-card-item { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+        .video-frame-container { width: 100%; aspect-ratio: 16/9; background: #000; }
+        .video-frame-container iframe { width: 100%; height: 100%; border: none; }
+        .video-card-info { padding: 10px 12px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; border-top: 1px solid var(--border); background: var(--surface); display: flex; justify-content: space-between; align-items: center; }
+        .video-card-info span { color: var(--danger); font-size: 0.7rem; font-weight: 800; background: var(--surface-hover); padding: 2px 6px; border: 1px solid var(--border); }
 
         /* Visor & Sección Comentarios Globales */
         #viewerModal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9990; display: none; flex-direction: column; align-items: center; overflow-y: auto; }
@@ -182,14 +190,14 @@
                     </div>
                     <div class="option-action">Explorar</div>
                 </div>
-                <a href="https://sites.google.com/view/lujurie-devx/p%C3%A1gina-principal?authuser=2" target="_blank" class="option-card">
+                <div class="option-card" onclick="mostrarSeccion('videosSection')">
                     <div class="option-thumb">
                         <span class="nsfw-badge">+18</span>
                         <div class="option-icon">🎬</div>
                         <div class="option-name">Videos</div>
                     </div>
                     <div class="option-action">Reproducir</div>
-                </a>
+                </div>
             </div>
         </div>
 
@@ -211,6 +219,72 @@
                 <input type="text" id="searchRule" class="search-input" placeholder="Buscar en Rule..." oninput="filtrarContenido('ruleGrid', this.value)">
             </div>
             <div class="content-grid" id="ruleGrid"></div>
+        </div>
+
+        <!-- Sección Videos (Integrada en la App) -->
+        <div id="videosSection" class="sub-section">
+            <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchVideos" class="search-input" placeholder="Buscar videos..." oninput="filtrarVideos(this.value)">
+            </div>
+            
+            <div class="video-list-grid" id="videosListGrid">
+                <!-- Video 1 -->
+                <div class="video-card-item" data-title="aqua pierde el juego">
+                    <div class="video-frame-container">
+                        <iframe src="https://drive.google.com/file/d/17BiVZF28KbLUxQ3u7QIBlISik1xWWilK/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        Aqua pierde el juego
+                        <span>+18</span>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="video-card-item" data-title="clases de reze">
+                    <div class="video-frame-container">
+                        <iframe src="https://drive.google.com/file/d/1BgVwVMaYWw63ctddaMy2im9HU4VZeIHT/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        Clases de reze
+                        <span>+18</span>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                <div class="video-card-item" data-title="una noche fantasmal">
+                    <div class="video-frame-container">
+                        <iframe src="https://drive.google.com/file/d/1O4kokMHNwv0hrXyfB7_uP1zRgUNCrIF-/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        Una noche fantasmal
+                        <span>+18</span>
+                    </div>
+                </div>
+
+                <!-- Video 4 -->
+                <div class="video-card-item" data-title="un black flashs">
+                    <div class="video-frame-container">
+                        <iframe src="https://drive.google.com/file/d/1OtZAfGWfx47oOToRV2qdTOJzgIdYh-e_/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        Un black flashs
+                        <span>+18</span>
+                    </div>
+                </div>
+
+                <!-- Video 5 -->
+                <div class="video-card-item" data-title="demonio carmesi">
+                    <div class="video-frame-container">
+                        <iframe src="https://drive.google.com/file/d/1Qvc7h8Iq4qQH1O14pT00ycSxea9ptRh0/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-info">
+                        Demonio carmesi
+                        <span>+18</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -529,6 +603,13 @@
             const q = queryText.toLowerCase();
             document.querySelectorAll(`#${gridId} .content-card`).forEach(c => {
                 c.style.display = (c.getAttribute('data-title') || '').includes(q) ? 'flex' : 'none';
+            });
+        }
+
+        function filtrarVideos(queryText) {
+            const q = queryText.toLowerCase();
+            document.querySelectorAll('#videosListGrid .video-card-item').forEach(v => {
+                v.style.display = (v.getAttribute('data-title') || '').includes(q) ? 'flex' : 'none';
             });
         }
     </script>
