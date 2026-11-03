@@ -105,7 +105,7 @@
         .option-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
         .option-action { padding: 8px; background: var(--surface-hover); color: var(--text-main); border-top: 1px solid var(--border); font-size: 0.75rem; text-align: center; font-weight: 600; }
 
-        /* Secciones Dinámicas (Cómics, Rule y Videos) */
+        /* Secciones Dinámicas */
         .sub-section { display: none; flex-direction: column; gap: 12px; }
         .search-container { position: relative; width: 100%; }
         .search-input { width: 100%; padding: 14px 18px 14px 44px; background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 0.95rem; outline: none; }
@@ -118,15 +118,15 @@
         .action-btn.open { background: var(--accent); border-color: var(--accent); color: white; }
         .back-home-btn { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-weight: 600; cursor: pointer; text-align: center; }
 
-        /* Tarjetas Específicas de Video */
+        /* Nueva Interfaz de Videos Nativos GitHub */
         .video-list-grid { display: flex; flex-direction: column; gap: 16px; width: 100%; }
         .video-card-item { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
-        .video-frame-container { width: 100%; aspect-ratio: 16/9; background: #000; }
-        .video-frame-container iframe { width: 100%; height: 100%; border: none; }
+        .video-player-container { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; }
+        .video-player-container video { width: 100%; height: 100%; object-fit: cover; }
         .video-card-info { padding: 10px 12px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; border-top: 1px solid var(--border); background: var(--surface); display: flex; justify-content: space-between; align-items: center; }
         .video-card-info span { color: var(--danger); font-size: 0.7rem; font-weight: 800; background: var(--surface-hover); padding: 2px 6px; border: 1px solid var(--border); }
 
-        /* Visor & Sección Comentarios Globales */
+        /* Visor de Cómics / Imágenes */
         #viewerModal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9990; display: none; flex-direction: column; align-items: center; overflow-y: auto; }
         .viewer-image-container { position: relative; width: 100%; max-width: 600px; height: 65vh; display: flex; justify-content: center; align-items: center; margin-top: 50px; }
         .viewer-image-container img { width: 100%; height: 100%; object-fit: contain; }
@@ -221,7 +221,7 @@
             <div class="content-grid" id="ruleGrid"></div>
         </div>
 
-        <!-- Sección Videos (Integrada en la App) -->
+        <!-- Sección Videos Nativos de GitHub -->
         <div id="videosSection" class="sub-section">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="search-container">
@@ -230,65 +230,61 @@
             </div>
             
             <div class="video-list-grid" id="videosListGrid">
-                <!-- Video 1 -->
-                <div class="video-card-item" data-title="aqua pierde el juego">
-                    <div class="video-frame-container">
-                        <iframe src="https://drive.google.com/file/d/17BiVZF28KbLUxQ3u7QIBlISik1xWWilK/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                <!-- Videos por defecto alojados en GitHub -->
+                <div class="video-card-item" data-title="konosuba">
+                    <div class="video-player-container">
+                        <video controls preload="metadata">
+                            <source src="konosuba.mp4" type="video/mp4">
+                            Tu navegador no soporta video.
+                        </video>
                     </div>
-                    <div class="video-card-info">
-                        Aqua pierde el juego
-                        <span>+18</span>
-                    </div>
+                    <div class="video-card-info">Konosuba <span>+18</span></div>
                 </div>
 
-                <!-- Video 2 -->
-                <div class="video-card-item" data-title="clases de reze">
-                    <div class="video-frame-container">
-                        <iframe src="https://drive.google.com/file/d/1BgVwVMaYWw63ctddaMy2im9HU4VZeIHT/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                <div class="video-card-item" data-title="nobara">
+                    <div class="video-player-container">
+                        <video controls preload="metadata">
+                            <source src="nobara.mp4" type="video/mp4">
+                            Tu navegador no soporta video.
+                        </video>
                     </div>
-                    <div class="video-card-info">
-                        Clases de reze
-                        <span>+18</span>
-                    </div>
+                    <div class="video-card-info">Nobara <span>+18</span></div>
                 </div>
 
-                <!-- Video 3 -->
-                <div class="video-card-item" data-title="una noche fantasmal">
-                    <div class="video-frame-container">
-                        <iframe src="https://drive.google.com/file/d/1O4kokMHNwv0hrXyfB7_uP1zRgUNCrIF-/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                <div class="video-card-item" data-title="konosuba4">
+                    <div class="video-player-container">
+                        <video controls preload="metadata">
+                            <source src="konosuba4.mp4" type="video/mp4">
+                            Tu navegador no soporta video.
+                        </video>
                     </div>
-                    <div class="video-card-info">
-                        Una noche fantasmal
-                        <span>+18</span>
-                    </div>
+                    <div class="video-card-info">Konosuba 4 <span>+18</span></div>
                 </div>
 
-                <!-- Video 4 -->
-                <div class="video-card-item" data-title="un black flashs">
-                    <div class="video-frame-container">
-                        <iframe src="https://drive.google.com/file/d/1OtZAfGWfx47oOToRV2qdTOJzgIdYh-e_/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                <div class="video-card-item" data-title="yor">
+                    <div class="video-player-container">
+                        <video controls preload="metadata">
+                            <source src="yor.mp4" type="video/mp4">
+                            Tu navegador no soporta video.
+                        </video>
                     </div>
-                    <div class="video-card-info">
-                        Un black flashs
-                        <span>+18</span>
-                    </div>
+                    <div class="video-card-info">Yor <span>+18</span></div>
                 </div>
 
-                <!-- Video 5 -->
-                <div class="video-card-item" data-title="demonio carmesi">
-                    <div class="video-frame-container">
-                        <iframe src="https://drive.google.com/file/d/1Qvc7h8Iq4qQH1O14pT00ycSxea9ptRh0/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                <div class="video-card-item" data-title="xx2">
+                    <div class="video-player-container">
+                        <video controls preload="metadata">
+                            <source src="xx2.mp4" type="video/mp4">
+                            Tu navegador no soporta video.
+                        </video>
                     </div>
-                    <div class="video-card-info">
-                        Demonio carmesi
-                        <span>+18</span>
-                    </div>
+                    <div class="video-card-info">XX2 <span>+18</span></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Menú Lateral / Ajustes -->
+    <!-- Menú Lateral / Ajustes y Subida Pública de Contenido -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebarMenu">
         <div class="sidebar-header">
@@ -312,9 +308,10 @@
         <div class="sidebar-section">
             <h3>Subir Contenido (Gratis)</h3>
             <div class="upload-form-box">
-                <select id="uploadCategory">
+                <select id="uploadCategory" onchange="cambiarTipoSubida(this.value)">
                     <option value="comic">Cómic</option>
                     <option value="rule">Rule (Imagen)</option>
+                    <option value="video">Video (Máx 5 min)</option>
                 </select>
                 <input type="text" id="newTitle" placeholder="Título">
                 <input type="file" id="newFile" accept="image/*" style="font-size: 0.75rem;">
@@ -323,7 +320,7 @@
         </div>
     </div>
 
-    <!-- Visor -->
+    <!-- Visor de Imágenes -->
     <div id="viewerModal">
         <button class="btn-back-menu" onclick="cerrarVisor()">Volver</button>
         <div class="viewer-image-container">
@@ -360,7 +357,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 10 Keys únicas, totalmente diferentes y aleatorias entre sí
         const validKeys = {
             "x7B9mP2qL4vR": "Alfa_User",
             "k3Z8wY5jN6pH": "Beta_User",
@@ -418,24 +414,53 @@
             document.getElementById('sidebarUserBadge').textContent = "@" + nombre;
         }
 
-        // Subida de archivos a Firestore mediante Base64 (Gratis sin Storage)
+        window.cambiarTipoSubida = (tipo) => {
+            const fileInput = document.getElementById('newFile');
+            if (tipo === 'video') {
+                fileInput.accept = "video/mp4";
+            } else {
+                fileInput.accept = "image/*";
+            }
+        };
+
+        // Subida de archivos (Imágenes o Videos de menos de 5 min) mediante Base64 a Firestore
         document.getElementById('uploadBtn').onclick = async () => {
             if (!currentKey) return alert("Inicia sesión primero.");
             const category = document.getElementById('uploadCategory').value;
             const title = document.getElementById('newTitle').value.trim();
-            const file = document.getElementById('newFile').files[0];
+            const fileInput = document.getElementById('newFile');
+            const file = fileInput.files[0];
 
-            if (!title || !file) return alert("Completa el título y selecciona una imagen.");
+            if (!title || !file) return alert("Completa el título y selecciona un archivo.");
 
+            // Validación de duración si es video (máximo 5 minutos = 300 segundos)
+            if (category === 'video') {
+                const videoElementCheck = document.createElement('video');
+                videoElementCheck.preload = 'metadata';
+                videoElementCheck.onloadedmetadata = async function() {
+                    window.URL.revokeObjectURL(videoElementCheck.src);
+                    if (videoElementCheck.duration > 300) {
+                        alert("El video dura más de 5 minutos. Por favor selecciona uno más corto.");
+                        return;
+                    }
+                    procesarYSubirBase64(category, title, file);
+                }
+                videoElementCheck.src = URL.createObjectURL(file);
+            } else {
+                procesarYSubirBase64(category, title, file);
+            }
+        };
+
+        async function procesarYSubirBase64(category, title, file) {
             try {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = async () => {
-                    const base64Img = reader.result;
+                    const base64Data = reader.result;
                     await addDoc(collection(db, "contents"), {
                         categoria: category,
                         titulo: title,
-                        portadaUrl: base64Img,
+                        portadaUrl: base64Data, // Funciona tanto para imágenes como videos en Base64
                         autor: currentUserName,
                         timestamp: new Date()
                     });
@@ -445,12 +470,13 @@
                     alert("¡Publicado globalmente en la nube!");
                 };
             } catch (e) { alert("Error al subir: " + e.message); }
-        };
+        }
 
-        // Sincronización en tiempo real de Cómics y Rule
+        // Sincronización en tiempo real de Cómics, Rule y Videos subidos por otros usuarios
         onSnapshot(collection(db, "contents"), (snapshot) => {
             const comicsGrid = document.getElementById('comicsGrid');
             const ruleGrid = document.getElementById('ruleGrid');
+            const videosListGrid = document.getElementById('videosListGrid');
 
             let comicsHtml = `
                 <div class="content-card" data-title="konosuba"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirComic(1)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(1)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div></div>
@@ -460,6 +486,14 @@
 
             let ruleHtml = `
                 <div class="content-card" data-title="rule inicial"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')"><div class="content-actions"><button class="action-btn open" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')">Ver</button></div></div>
+            `;
+
+            let videosHtml = `
+                <div class="video-card-item" data-title="konosuba"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba <span>+18</span></div></div>
+                <div class="video-card-item" data-title="nobara"><div class="video-player-container"><video controls preload="metadata"><source src="nobara.mp4" type="video/mp4"></video></div><div class="video-card-info">Nobara <span>+18</span></div></div>
+                <div class="video-card-item" data-title="konosuba4"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba4.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba 4 <span>+18</span></div></div>
+                <div class="video-card-item" data-title="yor"><div class="video-player-container"><video controls preload="metadata"><source src="yor.mp4" type="video/mp4"></video></div><div class="video-card-info">Yor <span>+18</span></div></div>
+                <div class="video-card-item" data-title="xx2"><div class="video-player-container"><video controls preload="metadata"><source src="xx2.mp4" type="video/mp4"></video></div><div class="video-card-info">XX2 <span>+18</span></div></div>
             `;
 
             snapshot.forEach(doc => {
@@ -484,11 +518,23 @@
                             </div>
                         </div>
                     `;
+                } else if (c.categoria === 'video') {
+                    videosHtml += `
+                        <div class="video-card-item" data-title="${c.titulo.toLowerCase()}">
+                            <div class="video-player-container">
+                                <video controls preload="metadata">
+                                    <source src="${c.portadaUrl}" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="video-card-info">${c.titulo} <span>+18</span></div>
+                        </div>
+                    `;
                 }
             });
 
             comicsGrid.innerHTML = comicsHtml;
             ruleGrid.innerHTML = ruleHtml;
+            videosListGrid.innerHTML = videosHtml;
         });
 
         // Comentarios Globales en Tiempo Real
