@@ -49,7 +49,7 @@
             border: 1px solid var(--border); padding: 10px 20px; font-size: 0.85rem; cursor: pointer; z-index: 10001;
         }
 
-        /* Gatekeeper & Auth por Keys Únicas */
+        /* Gatekeeper & Auth */
         #gatekeeperModal {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(9, 3, 5, 0.97); backdrop-filter: blur(16px);
@@ -67,11 +67,10 @@
         .btn { flex: 1; padding: 12px; border: none; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
         .btn-primary { background: var(--accent); color: white; }
         .btn-secondary { background: var(--surface-hover); color: var(--text-muted); border: 1px solid var(--border); }
-        .btn-danger { background: var(--danger); color: white; }
         .btn-admin { background: var(--admin); color: black; font-weight: 700; }
         .auth-input { width: 100%; padding: 14px 16px; border: 1px solid var(--border); background: var(--bg-base); color: #fff; text-align: center; font-size: 1.05rem; outline: none; }
 
-        /* Avatar de Perfil */
+        /* Avatares */
         .avatar-img { width: 32px; height: 32px; border-radius: 50% !important; object-fit: cover; border: 1px solid var(--border); }
         .avatar-img-lg { width: 48px; height: 48px; border-radius: 50% !important; object-fit: cover; border: 2px solid var(--accent); }
 
@@ -89,6 +88,25 @@
         .brand-title { font-size: 1.4rem; font-weight: 900; color: #ffffff; }
         .brand-title span { color: var(--danger); }
         .menu-toggle-btn { background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-main); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; }
+
+        /* Iconos de Opciones Mejorados (Grid Estilizado) */
+        .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 10px; }
+        .option-card {
+            background: linear-gradient(145deg, var(--surface), var(--surface-hover));
+            border: 1px solid var(--border);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 24px 16px; gap: 12px; cursor: pointer; position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .option-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(225,29,72,0.2); }
+        .nsfw-badge { position: absolute; top: 8px; right: 8px; background: var(--danger); color: white; font-size: 0.6rem; font-weight: 800; padding: 2px 6px; }
+        .option-icon-wrapper {
+            width: 64px; height: 64px; background: rgba(225,29,72,0.1); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center; font-size: 2rem;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+        }
+        .option-name { font-size: 0.95rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* Sidebar */
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 9995; display: none; opacity: 0; transition: opacity 0.3s; }
@@ -108,16 +126,6 @@
         .pages-grid-builder { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
         .page-slot { background: var(--surface); border: 1px solid var(--border); padding: 6px; font-size: 0.7rem; display: flex; flex-direction: column; gap: 2px; }
 
-        /* Opciones Principales (+18) */
-        .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
-        .option-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; text-decoration: none; transition: border-color 0.2s; }
-        .option-card:hover { border-color: var(--accent); }
-        .option-thumb { width: 100%; aspect-ratio: 4/3; background: linear-gradient(135deg, #220d14, #14080c); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 10px; text-align: center; }
-        .nsfw-badge { position: absolute; top: 6px; right: 6px; background: var(--danger); color: white; font-size: 0.6rem; font-weight: 800; padding: 2px 5px; }
-        .option-icon { font-size: 1.8rem; margin-bottom: 4px; }
-        .option-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
-        .option-action { padding: 8px; background: var(--surface-hover); color: var(--text-main); border-top: 1px solid var(--border); font-size: 0.75rem; text-align: center; font-weight: 600; }
-
         /* Secciones Dinámicas */
         .sub-section { display: none; flex-direction: column; gap: 12px; }
         .search-container { position: relative; width: 100%; }
@@ -127,8 +135,9 @@
         .content-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; position: relative; }
         .content-thumb { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #000; cursor: pointer; }
         .content-actions { display: flex; flex-direction: column; gap: 6px; padding: 8px; background: var(--surface); }
-        .action-btn { width: 100%; padding: 7px 0; background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); font-size: 0.7rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; }
+        .action-btn { width: 100%; padding: 7px 0; background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); font-size: 0.7rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 4px; }
         .action-btn.open { background: var(--accent); border-color: var(--accent); color: white; }
+        .like-btn { background: rgba(225,29,72,0.15); color: var(--accent); border-color: var(--accent); }
         .delete-btn { position: absolute; top: 6px; left: 6px; background: rgba(255, 42, 95, 0.9); color: white; border: none; font-size: 0.65rem; font-weight: 800; padding: 3px 6px; cursor: pointer; z-index: 10; }
         .admin-delete-btn { background: var(--admin); color: black; }
         .back-home-btn { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-weight: 600; cursor: pointer; text-align: center; }
@@ -141,6 +150,7 @@
         .sixchan-post-body { display: flex; gap: 12px; align-items: flex-start; }
         .sixchan-post-body img { width: 120px; aspect-ratio: 3/4; object-fit: cover; border: 1px solid var(--border); cursor: pointer; }
         .sixchan-post-text { font-size: 0.85rem; color: var(--text-main); word-break: break-word; line-height: 1.4; }
+        .sixchan-footer { display: flex; justify-content: flex-end; align-items: center; gap: 6px; border-top: 1px solid var(--border); padding-top: 6px; }
 
         /* Videos */
         .video-list-grid { display: flex; flex-direction: column; gap: 16px; width: 100%; }
@@ -171,7 +181,7 @@
         <button class="skip-video-btn" onclick="terminarVideo()">Omitir ❯</button>
     </div>
 
-    <!-- Gatekeeper con sistema de Auth y Key de Admin -->
+    <!-- Gatekeeper -->
     <div id="gatekeeperModal">
         <div class="gate-card" id="stepAge">
             <div class="gate-logo">devX lujurie<span>.web</span></div>
@@ -195,40 +205,29 @@
             <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
         </header>
 
+        <!-- Menú Principal con Iconos Mejorados -->
         <div id="mainHomeMenu">
             <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Categorías</div>
             <div class="options-grid">
                 <div class="option-card" onclick="mostrarSeccion('comicsSection')">
-                    <div class="option-thumb">
-                        <span class="nsfw-badge">+18</span>
-                        <div class="option-icon">📚</div>
-                        <div class="option-name">Cómics</div>
-                    </div>
-                    <div class="option-action">Explorar</div>
+                    <span class="nsfw-badge">+18</span>
+                    <div class="option-icon-wrapper">📚</div>
+                    <div class="option-name">Cómics</div>
                 </div>
                 <div class="option-card" onclick="mostrarSeccion('ruleSection')">
-                    <div class="option-thumb">
-                        <span class="nsfw-badge">+18</span>
-                        <div class="option-icon">🔥</div>
-                        <div class="option-name">Rule</div>
-                    </div>
-                    <div class="option-action">Explorar</div>
+                    <span class="nsfw-badge">+18</span>
+                    <div class="option-icon-wrapper">🔥</div>
+                    <div class="option-name">Rule</div>
                 </div>
                 <div class="option-card" onclick="mostrarSeccion('videosSection')">
-                    <div class="option-thumb">
-                        <span class="nsfw-badge">+18</span>
-                        <div class="option-icon">🎬</div>
-                        <div class="option-name">Videos</div>
-                    </div>
-                    <div class="option-action">Reproducir</div>
+                    <span class="nsfw-badge">+18</span>
+                    <div class="option-icon-wrapper">🎬</div>
+                    <div class="option-name">Videos</div>
                 </div>
                 <div class="option-card" onclick="mostrarSeccion('sixchanSection')">
-                    <div class="option-thumb">
-                        <span class="nsfw-badge">+18</span>
-                        <div class="option-icon">💬</div>
-                        <div class="option-name">Sixchan</div>
-                    </div>
-                    <div class="option-action">Tablón</div>
+                    <span class="nsfw-badge">+18</span>
+                    <div class="option-icon-wrapper">💬</div>
+                    <div class="option-name">Sixchan</div>
                 </div>
             </div>
         </div>
@@ -276,7 +275,7 @@
         </div>
     </div>
 
-    <!-- Menú Lateral / Ajustes, Perfil y Panel de Admin -->
+    <!-- Menú Lateral -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebarMenu">
         <div class="sidebar-header">
@@ -295,7 +294,6 @@
             </div>
         </div>
 
-        <!-- Personalizar Nombre y Foto de Perfil -->
         <div class="sidebar-section">
             <h3>Editar Perfil</h3>
             <div class="upload-form-box">
@@ -305,7 +303,6 @@
             </div>
         </div>
 
-        <!-- Panel Exclusivo de Administrador (Key Especial) -->
         <div class="sidebar-section" id="adminPanelBox" style="display:none; border:1px solid var(--admin); padding:10px;">
             <h3 style="color:var(--admin);">👑 Panel de Administrador</h3>
             <div class="upload-form-box">
@@ -314,7 +311,6 @@
             </div>
         </div>
 
-        <!-- Subida por Categoría -->
         <div class="sidebar-section">
             <h3>Publicar Contenido</h3>
             <div class="upload-form-box">
@@ -358,7 +354,7 @@
     <!-- Firebase SDK Modular -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, increment, getDoc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCEX9KoTBwnHfgSZOg3uH4woJr-_-__j4g",
@@ -373,9 +369,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Key Especial de Administrador
         const ADMIN_KEY = "devxMaster2026";
-
         const validKeys = {
             "x7B9mP2qL4vR": "Alfa_User",
             "k3Z8wY5jN6pH": "Beta_User",
@@ -396,7 +390,6 @@
         let isAdmin = (currentKey === ADMIN_KEY);
         let comicActualId = "comic1";
 
-        // Comprobación de Baneo Global
         if (currentUserName) {
             verificarSiEstaBaneado(currentUserName);
         }
@@ -462,14 +455,9 @@
             if (!isAdmin) return;
             const targetUser = document.getElementById('banUserInput').value.trim();
             if (!targetUser) return alert("Escribe un usuario.");
-
-            await addDoc(collection(db, "banned_users"), {
-                usuario: targetUser,
-                timestamp: new Date()
-            });
-
+            await addDoc(collection(db, "banned_users"), { usuario: targetUser, timestamp: new Date() });
             document.getElementById('banUserInput').value = '';
-            alert(`El usuario @${targetUser} ha sido baneado permanentemente.`);
+            alert(`El usuario @${targetUser} ha sido baneado.`);
         };
 
         window.cerrarSesionKey = () => {
@@ -492,7 +480,6 @@
             }
         }
 
-        // Subidas
         window.actualizarFormularioSubida = (tipo) => {
             const area = document.getElementById('dynamicUploadArea');
             if (tipo === 'video') {
@@ -537,12 +524,7 @@
                 const linkVal = document.getElementById('videoLinkInput').value.trim();
                 if (!linkVal) return alert("Introduce el enlace del video.");
                 await addDoc(collection(db, "contents"), {
-                    categoria: 'video',
-                    titulo: title,
-                    portadaUrl: linkVal,
-                    autor: currentUserName,
-                    avatar: currentUserAvatar,
-                    timestamp: new Date()
+                    categoria: 'video', titulo: title, portadaUrl: linkVal, autor: currentUserName, avatar: currentUserAvatar, likes: 0, timestamp: new Date()
                 });
                 document.getElementById('newTitle').value = '';
                 document.getElementById('videoLinkInput').value = '';
@@ -561,13 +543,7 @@
                 reader.readAsDataURL(fileInput.files[0]);
                 reader.onload = async () => {
                     await addDoc(collection(db, "contents"), {
-                        categoria: 'sixchan',
-                        titulo: title,
-                        texto: textBody,
-                        portadaUrl: reader.result,
-                        autor: currentUserName,
-                        avatar: currentUserAvatar,
-                        timestamp: new Date()
+                        categoria: 'sixchan', titulo: title, texto: textBody, portadaUrl: reader.result, autor: currentUserName, avatar: currentUserAvatar, likes: 0, timestamp: new Date()
                     });
                     document.getElementById('newTitle').value = '';
                     document.getElementById('sixchanText').value = '';
@@ -599,15 +575,8 @@
 
                 Promise.all(archivosPendientes).then(async (resultados) => {
                     await addDoc(collection(db, "contents"), {
-                        categoria: 'comic',
-                        titulo: title,
-                        portadaUrl: resultados[0],
-                        paginas: resultados,
-                        autor: currentUserName,
-                        avatar: currentUserAvatar,
-                        timestamp: new Date()
+                        categoria: 'comic', titulo: title, portadaUrl: resultados[0], paginas: resultados, autor: currentUserName, avatar: currentUserAvatar, likes: 0, timestamp: new Date()
                     });
-
                     document.getElementById('newTitle').value = '';
                     alert("¡Cómic publicado!");
                 });
@@ -619,19 +588,19 @@
             reader.readAsDataURL(file);
             reader.onload = async () => {
                 await addDoc(collection(db, "contents"), {
-                    categoria: cat,
-                    titulo: title,
-                    portadaUrl: reader.result,
-                    autor: currentUserName,
-                    avatar: currentUserAvatar,
-                    timestamp: new Date()
+                    categoria: cat, titulo: title, portadaUrl: reader.result, autor: currentUserName, avatar: currentUserAvatar, likes: 0, timestamp: new Date()
                 });
                 document.getElementById('newTitle').value = '';
                 alert("¡Publicado!");
             };
         }
 
-        // Borrado por Dueño o Administrador
+        // Sistema de Likes
+        window.darLike = async (docId) => {
+            const ref = doc(db, "contents", docId);
+            await updateDoc(ref, { likes: increment(1) });
+        };
+
         window.borrarPublicacion = async (docId, autorPost) => {
             if (!isAdmin && currentUserName !== autorPost) {
                 return alert("No tienes permisos para borrar esta publicación.");
@@ -644,7 +613,6 @@
             }
         };
 
-        // Escuchador en Tiempo Real
         onSnapshot(collection(db, "contents"), (snapshot) => {
             const comicsGrid = document.getElementById('comicsGrid');
             const ruleGrid = document.getElementById('ruleGrid');
@@ -676,6 +644,7 @@
                 const docId = docSnap.id;
                 const esDueño = currentUserName === c.autor;
                 const userAvatar = c.avatar || "https://api.dicebear.com/7.x/bottts/svg?seed=" + c.autor;
+                const totalLikes = c.likes || 0;
                 
                 let botonBorrarHtml = '';
                 if (isAdmin) {
@@ -692,7 +661,7 @@
                             <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirComicFirebase('${paginasJson}', '${docId}')">
                             <div class="content-actions">
                                 <button class="action-btn open" onclick="window.abrirComicFirebase('${paginasJson}', '${docId}')">Abrir</button>
-                                <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
+                                <button class="action-btn like-btn" onclick="window.darLike('${docId}')">❤️ ${totalLikes}</button>
                             </div>
                         </div>
                     `;
@@ -703,7 +672,7 @@
                             <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${docId}')">
                             <div class="content-actions">
                                 <button class="action-btn open" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${docId}')">Ver</button>
-                                <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
+                                <button class="action-btn like-btn" onclick="window.darLike('${docId}')">❤️ ${totalLikes}</button>
                             </div>
                         </div>
                     `;
@@ -711,12 +680,8 @@
                     videosHtml += `
                         <div class="video-card-item" data-title="${c.titulo.toLowerCase()}">
                             ${botonBorrarHtml}
-                            <div class="video-player-container">
-                                <video controls preload="metadata">
-                                    <source src="${c.portadaUrl}" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-card-info">${c.titulo} <span>+18</span></div>
+                            <div class="video-player-container"><video controls preload="metadata"><source src="${c.portadaUrl}" type="video/mp4"></video></div>
+                            <div class="video-card-info">${c.titulo} <button class="action-btn like-btn" style="width:auto; padding:2px 8px;" onclick="window.darLike('${docId}')">❤️ ${totalLikes}</button></div>
                         </div>
                     `;
                 } else if (c.categoria === 'sixchan') {
@@ -732,6 +697,9 @@
                                 <img src="${c.portadaUrl}" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${docId}')">
                                 <div class="sixchan-post-text">${c.texto}</div>
                             </div>
+                            <div class="sixchan-footer">
+                                <button class="action-btn like-btn" style="width:auto; padding:4px 10px;" onclick="window.darLike('${docId}')">❤️ ${totalLikes}</button>
+                            </div>
                         </div>
                     `;
                 }
@@ -743,7 +711,6 @@
             sixchanFeed.innerHTML = sixchanHtml || '<div style="color:var(--text-muted); text-align:center; padding:20px;">No hay publicaciones en Sixchan aún.</div>';
         });
 
-        // Comentarios
         window.cargarComentarios = (id) => {
             comicActualId = String(id);
             const q = query(collection(db, "comentarios"), where("comicId", "==", comicActualId));
@@ -767,11 +734,7 @@
             const input = document.getElementById('commentInput');
             if (!input.value.trim() || !currentKey) return;
             await addDoc(collection(db, "comentarios"), {
-                comicId: comicActualId,
-                usuario: currentUserName,
-                avatar: currentUserAvatar,
-                texto: input.value.trim(),
-                timestamp: new Date()
+                comicId: comicActualId, usuario: currentUserName, avatar: currentUserAvatar, texto: input.value.trim(), timestamp: new Date()
             });
             input.value = '';
         };
