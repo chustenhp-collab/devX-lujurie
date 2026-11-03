@@ -14,6 +14,7 @@
             --text-main: #ffeeef;
             --text-muted: #b898a1;
             --danger: #ff2a5f;
+            --admin: #eab308;
         }
 
         * {
@@ -66,7 +67,13 @@
         .btn { flex: 1; padding: 12px; border: none; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
         .btn-primary { background: var(--accent); color: white; }
         .btn-secondary { background: var(--surface-hover); color: var(--text-muted); border: 1px solid var(--border); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-admin { background: var(--admin); color: black; font-weight: 700; }
         .auth-input { width: 100%; padding: 14px 16px; border: 1px solid var(--border); background: var(--bg-base); color: #fff; text-align: center; font-size: 1.05rem; outline: none; }
+
+        /* Avatar de Perfil */
+        .avatar-img { width: 32px; height: 32px; border-radius: 50% !important; object-fit: cover; border: 1px solid var(--border); }
+        .avatar-img-lg { width: 48px; height: 48px; border-radius: 50% !important; object-fit: cover; border: 2px solid var(--accent); }
 
         /* Contenedor App */
         .app-container {
@@ -85,17 +92,23 @@
 
         /* Sidebar */
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 9995; display: none; opacity: 0; transition: opacity 0.3s; }
-        .sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); z-index: 9996; display: flex; flex-direction: column; padding: 24px; gap: 20px; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; }
+        .sidebar { position: fixed; top: 0; right: -340px; width: 320px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); z-index: 9996; display: flex; flex-direction: column; padding: 24px; gap: 20px; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; }
         .sidebar.open { right: 0; }
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
         .sidebar-close { background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-main); width: 32px; height: 32px; cursor: pointer; }
         .sidebar-section { display: flex; flex-direction: column; gap: 10px; }
         .sidebar-section h3 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); }
-        .user-status-card { background: var(--bg-base); border: 1px solid var(--border); padding: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
+        .user-status-card { background: var(--bg-base); border: 1px solid var(--border); padding: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; gap: 10px; }
         .upload-form-box { display: flex; flex-direction: column; gap: 8px; background: var(--bg-base); border: 1px solid var(--border); padding: 12px; }
         .upload-form-box input, .upload-form-box select, .upload-form-box textarea { padding: 10px; border: 1px solid var(--border); background: var(--surface); color: white; font-size: 0.85rem; outline: none; }
 
-        /* Opciones Principales (+18) - Añadido Sixchan */
+        /* Creador Cómics */
+        .comic-builder-container { display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto; border: 1px solid var(--border); padding: 8px; background: var(--bg-base); }
+        .portada-box { background: #220d14; border: 2px dashed var(--accent); padding: 8px; text-align: center; font-size: 0.75rem; display: flex; flex-direction: column; gap: 4px; }
+        .pages-grid-builder { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .page-slot { background: var(--surface); border: 1px solid var(--border); padding: 6px; font-size: 0.7rem; display: flex; flex-direction: column; gap: 2px; }
+
+        /* Opciones Principales (+18) */
         .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
         .option-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; text-decoration: none; transition: border-color 0.2s; }
         .option-card:hover { border-color: var(--accent); }
@@ -111,17 +124,19 @@
         .search-input { width: 100%; padding: 14px 18px 14px 44px; background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 0.95rem; outline: none; }
         .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
         .content-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .content-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; }
+        .content-card { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; position: relative; }
         .content-thumb { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #000; cursor: pointer; }
         .content-actions { display: flex; flex-direction: column; gap: 6px; padding: 8px; background: var(--surface); }
         .action-btn { width: 100%; padding: 7px 0; background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); font-size: 0.7rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; }
         .action-btn.open { background: var(--accent); border-color: var(--accent); color: white; }
+        .delete-btn { position: absolute; top: 6px; left: 6px; background: rgba(255, 42, 95, 0.9); color: white; border: none; font-size: 0.65rem; font-weight: 800; padding: 3px 6px; cursor: pointer; z-index: 10; }
+        .admin-delete-btn { background: var(--admin); color: black; }
         .back-home-btn { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-weight: 600; cursor: pointer; text-align: center; }
 
-        /* Estilo Interfaz Sixchan (Tablón estilo 4chan) */
+        /* Sixchan */
         .sixchan-feed { display: flex; flex-direction: column; gap: 16px; width: 100%; }
-        .sixchan-post { background: var(--surface); border: 1px solid var(--border); padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-        .sixchan-post-header { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+        .sixchan-post { background: var(--surface); border: 1px solid var(--border); padding: 12px; display: flex; flex-direction: column; gap: 10px; position: relative; }
+        .sixchan-post-header { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
         .sixchan-post-header strong { color: var(--accent); }
         .sixchan-post-body { display: flex; gap: 12px; align-items: flex-start; }
         .sixchan-post-body img { width: 120px; aspect-ratio: 3/4; object-fit: cover; border: 1px solid var(--border); cursor: pointer; }
@@ -129,13 +144,13 @@
 
         /* Videos */
         .video-list-grid { display: flex; flex-direction: column; gap: 16px; width: 100%; }
-        .video-card-item { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+        .video-card-item { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; position: relative; }
         .video-player-container { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; }
         .video-player-container video { width: 100%; height: 100%; object-fit: cover; }
         .video-card-info { padding: 10px 12px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; border-top: 1px solid var(--border); background: var(--surface); display: flex; justify-content: space-between; align-items: center; }
         .video-card-info span { color: var(--danger); font-size: 0.7rem; font-weight: 800; background: var(--surface-hover); padding: 2px 6px; border: 1px solid var(--border); }
 
-        /* Visor de Cómics / Imágenes */
+        /* Visor */
         #viewerModal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9990; display: none; flex-direction: column; align-items: center; overflow-y: auto; }
         .viewer-image-container { position: relative; width: 100%; max-width: 600px; height: 65vh; display: flex; justify-content: center; align-items: center; margin-top: 50px; }
         .viewer-image-container img { width: 100%; height: 100%; object-fit: contain; }
@@ -145,7 +160,7 @@
 
         .comments-section { width: 100%; max-width: 600px; padding: 16px; background: var(--surface); border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
         .comments-list { display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto; }
-        .comment-item { background: var(--bg-base); padding: 8px 12px; border: 1px solid var(--border); font-size: 0.8rem; word-break: break-word; }
+        .comment-item { background: var(--bg-base); padding: 8px 12px; border: 1px solid var(--border); font-size: 0.8rem; word-break: break-word; display: flex; align-items: center; gap: 8px; }
         .comment-item strong { color: var(--accent); }
     </style>
 </head>
@@ -156,7 +171,7 @@
         <button class="skip-video-btn" onclick="terminarVideo()">Omitir ❯</button>
     </div>
 
-    <!-- Gatekeeper con sistema de 10 Keys únicas -->
+    <!-- Gatekeeper con sistema de Auth y Key de Admin -->
     <div id="gatekeeperModal">
         <div class="gate-card" id="stepAge">
             <div class="gate-logo">devX lujurie<span>.web</span></div>
@@ -254,14 +269,14 @@
             </div>
         </div>
 
-        <!-- Sección Sixchan (Tablón Estilo 4chan) -->
+        <!-- Sección Sixchan -->
         <div id="sixchanSection" class="sub-section">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="sixchan-feed" id="sixchanFeed"></div>
         </div>
     </div>
 
-    <!-- Menú Lateral / Ajustes y Subidas Organizadas -->
+    <!-- Menú Lateral / Ajustes, Perfil y Panel de Admin -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebarMenu">
         <div class="sidebar-header">
@@ -271,34 +286,49 @@
         <div class="sidebar-section">
             <h3>Perfil Actual</h3>
             <div class="user-status-card">
-                <span id="sidebarUserBadge">Usuario</span>
+                <img id="sidebarAvatar" src="https://via.placeholder.com/40" class="avatar-img-lg">
+                <div style="display:flex; flex-direction:column; flex:1;">
+                    <span id="sidebarUserBadge" style="font-weight:700;">Usuario</span>
+                    <span id="sidebarUserRole" style="font-size:0.7rem; color:var(--text-muted);">Miembro</span>
+                </div>
                 <button class="action-btn" style="width: auto; padding: 4px 8px;" onclick="cerrarSesionKey()">Salir</button>
             </div>
         </div>
+
+        <!-- Personalizar Nombre y Foto de Perfil -->
         <div class="sidebar-section">
-            <h3>Ajustes (Editar Nombre)</h3>
+            <h3>Editar Perfil</h3>
             <div class="upload-form-box">
                 <input type="text" id="newNameInput" placeholder="Nuevo nombre de usuario">
-                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" onclick="guardarNombre()">Guardar Nombre</button>
+                <input type="file" id="newAvatarFile" accept="image/*" style="font-size:0.7rem;">
+                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" onclick="guardarPerfil()">Guardar Cambios</button>
             </div>
         </div>
 
-        <!-- Opciones de Subida Separadas por Categoría -->
+        <!-- Panel Exclusivo de Administrador (Key Especial) -->
+        <div class="sidebar-section" id="adminPanelBox" style="display:none; border:1px solid var(--admin); padding:10px;">
+            <h3 style="color:var(--admin);">👑 Panel de Administrador</h3>
+            <div class="upload-form-box">
+                <input type="text" id="banUserInput" placeholder="Nombre de usuario a banear">
+                <button class="btn btn-admin" style="padding: 8px; font-size: 0.8rem;" onclick="banearUsuario()">🚫 Banear Usuario</button>
+            </div>
+        </div>
+
+        <!-- Subida por Categoría -->
         <div class="sidebar-section">
             <h3>Publicar Contenido</h3>
             <div class="upload-form-box">
                 <select id="uploadCategory" onchange="actualizarFormularioSubida(this.value)">
-                    <option value="video">Videos (Sólo video, máx 5 min)</option>
-                    <option value="comic">Cómics (Seleccionar múltiples páginas)</option>
+                    <option value="video">Videos (GitHub / Enlace)</option>
+                    <option value="comic">Cómics (Creador 30 Páginas + Portada)</option>
                     <option value="rule">Rule (Imagen simple)</option>
                     <option value="sixchan">Sixchan (Foto y Texto)</option>
                 </select>
 
                 <input type="text" id="newTitle" placeholder="Título / Descripción principal">
 
-                <!-- Contenedor dinámico según lo que elija -->
                 <div id="dynamicUploadArea" style="display:flex; flex-direction:column; gap:8px;">
-                    <input type="file" id="newFile" accept="video/mp4" style="font-size: 0.75rem;">
+                    <input type="text" id="videoLinkInput" class="auth-input" placeholder="Enlace directo al video (.mp4)" style="text-align:left; font-size:0.8rem;">
                 </div>
 
                 <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" id="uploadBtn">Publicar</button>
@@ -306,7 +336,7 @@
         </div>
     </div>
 
-    <!-- Visor de Imágenes y Cómics -->
+    <!-- Visor -->
     <div id="viewerModal">
         <button class="btn-back-menu" onclick="cerrarVisor()">Volver</button>
         <div class="viewer-image-container">
@@ -328,7 +358,7 @@
     <!-- Firebase SDK Modular -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCEX9KoTBwnHfgSZOg3uH4woJr-_-__j4g",
@@ -343,6 +373,9 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Key Especial de Administrador
+        const ADMIN_KEY = "devxMaster2026";
+
         const validKeys = {
             "x7B9mP2qL4vR": "Alfa_User",
             "k3Z8wY5jN6pH": "Beta_User",
@@ -353,14 +386,29 @@
             "t6Y1sX8zC2gB": "Eta_User",
             "f5N4hM6dL9pK": "Theta_User",
             "q1W7jT3xV8mS": "Iota_User",
-            "b3C9gP5fR2nH": "Omega_User"
+            "b3C9gP5fR2nH": "Omega_User",
+            [ADMIN_KEY]: "Admin_Supreme"
         };
 
         let currentKey = localStorage.getItem('devx_key');
         let currentUserName = localStorage.getItem('devx_name') || (currentKey ? validKeys[currentKey] : "Invitado");
+        let currentUserAvatar = localStorage.getItem('devx_avatar') || "https://api.dicebear.com/7.x/bottts/svg?seed=" + currentUserName;
+        let isAdmin = (currentKey === ADMIN_KEY);
         let comicActualId = "comic1";
-        let comicPaginasActuales = [];
-        let comicIndiceActual = 0;
+
+        // Comprobación de Baneo Global
+        if (currentUserName) {
+            verificarSiEstaBaneado(currentUserName);
+        }
+
+        async function verificarSiEstaBaneado(nombre) {
+            const q = query(collection(db, "banned_users"), where("usuario", "==", nombre));
+            const snap = await getDocs(q);
+            if (!snap.empty) {
+                alert("🚫 Has sido baneado de devX lujurie.web.");
+                cerrarSesionKey();
+            }
+        }
 
         if (currentKey && validKeys[currentKey]) {
             desbloquearApp(currentUserName);
@@ -374,25 +422,60 @@
                 localStorage.setItem('devx_name', defaultName);
                 currentKey = val;
                 currentUserName = defaultName;
+                isAdmin = (val === ADMIN_KEY);
                 desbloquearApp(defaultName);
             } else {
-                alert("Key incorrecta. Introduce una de las 10 keys válidas.");
+                alert("Key incorrecta.");
             }
         };
 
-        window.guardarNombre = () => {
-            const nuevo = document.getElementById('newNameInput').value.trim();
-            if (!nuevo) return alert("Escribe un nombre válido.");
-            currentUserName = nuevo;
-            localStorage.setItem('devx_name', nuevo);
-            document.getElementById('sidebarUserBadge').textContent = "@" + nuevo;
+        window.guardarPerfil = () => {
+            const nuevoNombre = document.getElementById('newNameInput').value.trim();
+            const avatarFile = document.getElementById('newAvatarFile').files[0];
+
+            if (nuevoNombre) {
+                currentUserName = nuevoNombre;
+                localStorage.setItem('devx_name', nuevoNombre);
+            }
+
+            if (avatarFile) {
+                const reader = new FileReader();
+                reader.readAsDataURL(avatarFile);
+                reader.onload = () => {
+                    currentUserAvatar = reader.result;
+                    localStorage.setItem('devx_avatar', currentUserAvatar);
+                    aplicarCambiosPerfil();
+                };
+            } else {
+                aplicarCambiosPerfil();
+            }
+        };
+
+        function aplicarCambiosPerfil() {
+            document.getElementById('sidebarUserBadge').textContent = "@" + currentUserName;
+            document.getElementById('sidebarAvatar').src = currentUserAvatar;
             document.getElementById('newNameInput').value = '';
-            alert("¡Nombre actualizado con éxito!");
+            alert("¡Perfil actualizado!");
+        }
+
+        window.banearUsuario = async () => {
+            if (!isAdmin) return;
+            const targetUser = document.getElementById('banUserInput').value.trim();
+            if (!targetUser) return alert("Escribe un usuario.");
+
+            await addDoc(collection(db, "banned_users"), {
+                usuario: targetUser,
+                timestamp: new Date()
+            });
+
+            document.getElementById('banUserInput').value = '';
+            alert(`El usuario @${targetUser} ha sido baneado permanentemente.`);
         };
 
         window.cerrarSesionKey = () => {
             localStorage.removeItem('devx_key');
             localStorage.removeItem('devx_name');
+            localStorage.removeItem('devx_avatar');
             location.reload();
         };
 
@@ -400,60 +483,82 @@
             document.getElementById('gatekeeperModal').style.display = 'none';
             document.getElementById('appContainer').classList.add('unlocked');
             document.getElementById('sidebarUserBadge').textContent = "@" + nombre;
+            document.getElementById('sidebarAvatar').src = currentUserAvatar;
+
+            if (isAdmin) {
+                document.getElementById('sidebarUserRole').textContent = "👑 Administrador";
+                document.getElementById('sidebarUserRole').style.color = "var(--admin)";
+                document.getElementById('adminPanelBox').style.display = 'flex';
+            }
         }
 
-        // Cambio de interfaz de subida según la categoría elegida
+        // Subidas
         window.actualizarFormularioSubida = (tipo) => {
             const area = document.getElementById('dynamicUploadArea');
             if (tipo === 'video') {
-                area.innerHTML = `<input type="file" id="newFile" accept="video/mp4" style="font-size: 0.75rem;">`;
-            } else if (tipo === 'comic') {
-                area.innerHTML = `
-                    <span style="font-size:0.75rem; color:var(--text-muted);">Sube las páginas. La primera seleccionada será la portada, luego se ordenarán como 1, 2, 3...</span>
-                    <input type="file" id="newFile" accept="image/*" multiple style="font-size: 0.75rem;">
-                `;
+                area.innerHTML = `<input type="text" id="videoLinkInput" class="auth-input" placeholder="Enlace directo al video (.mp4)" style="text-align:left; font-size:0.8rem;">`;
             } else if (tipo === 'rule') {
-                area.innerHTML = `<input type="file" id="newFile" accept="image/*" style="font-size: 0.75rem;">`;
+                area.innerHTML = `<input type="file" id="singleFile" accept="image/*" style="font-size: 0.75rem;">`;
             } else if (tipo === 'sixchan') {
                 area.innerHTML = `
-                    <textarea id="sixchanText" class="auth-input" placeholder="Escribe tu texto estilo 4chan..." style="text-align:left; font-size:0.8rem; height:80px;"></textarea>
-                    <input type="file" id="newFile" accept="image/*" style="font-size: 0.75rem;">
+                    <textarea id="sixchanText" class="auth-input" placeholder="Escribe tu texto estilo 4chan..." style="text-align:left; font-size:0.8rem; height:70px;"></textarea>
+                    <input type="file" id="singleFile" accept="image/*" style="font-size: 0.75rem;">
                 `;
+            } else if (tipo === 'comic') {
+                let htmlSlots = `
+                    <div class="comic-builder-container">
+                        <div class="portada-box">
+                            <strong>⭐ PORTADA DEL CÓMIC</strong>
+                            <input type="file" id="comicPortada" accept="image/*" style="font-size:0.7rem;">
+                        </div>
+                        <div class="pages-grid-builder">
+                `;
+                for (let i = 1; i <= 30; i++) {
+                    htmlSlots += `
+                        <div class="page-slot">
+                            <span>Página ${i}</span>
+                            <input type="file" id="comicPag_${i}" accept="image/*" style="font-size:0.65rem;">
+                        </div>
+                    `;
+                }
+                htmlSlots += `</div></div>`;
+                area.innerHTML = htmlSlots;
             }
         };
 
-        // Lógica de Publicación Avanzada
         document.getElementById('uploadBtn').onclick = async () => {
             if (!currentKey) return alert("Inicia sesión primero.");
             const category = document.getElementById('uploadCategory').value;
             const title = document.getElementById('newTitle').value.trim();
-            const fileInput = document.getElementById('newFile');
 
-            if (!title) return alert("Escribe un título o descripción.");
+            if (!title) return alert("Escribe un título.");
 
             if (category === 'video') {
-                const file = fileInput.files[0];
-                if (!file) return alert("Selecciona un video.");
-                const videoCheck = document.createElement('video');
-                videoCheck.preload = 'metadata';
-                videoCheck.onloadedmetadata = async () => {
-                    window.URL.revokeObjectURL(videoCheck.src);
-                    if (videoCheck.duration > 300) return alert("El video supera los 5 minutos.");
-                    subirArchivoBase64(category, title, file);
-                };
-                videoCheck.src = URL.createObjectURL(file);
-            } 
+                const linkVal = document.getElementById('videoLinkInput').value.trim();
+                if (!linkVal) return alert("Introduce el enlace del video.");
+                await addDoc(collection(db, "contents"), {
+                    categoria: 'video',
+                    titulo: title,
+                    portadaUrl: linkVal,
+                    autor: currentUserName,
+                    avatar: currentUserAvatar,
+                    timestamp: new Date()
+                });
+                document.getElementById('newTitle').value = '';
+                document.getElementById('videoLinkInput').value = '';
+                alert("¡Video publicado!");
+            }
             else if (category === 'rule') {
-                const file = fileInput.files[0];
-                if (!file) return alert("Selecciona una imagen.");
-                subirArchivoBase64(category, title, file);
+                const fileInput = document.getElementById('singleFile');
+                if (!fileInput.files[0]) return alert("Selecciona una imagen.");
+                procesarYSubirSimple('rule', title, fileInput.files[0]);
             }
             else if (category === 'sixchan') {
                 const textBody = document.getElementById('sixchanText').value.trim();
-                const file = fileInput.files[0];
-                if (!file || !textBody) return alert("Completa el texto y la imagen para Sixchan.");
+                const fileInput = document.getElementById('singleFile');
+                if (!textBody || !fileInput.files[0]) return alert("Completa el texto y la imagen.");
                 const reader = new FileReader();
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(fileInput.files[0]);
                 reader.onload = async () => {
                     await addDoc(collection(db, "contents"), {
                         categoria: 'sixchan',
@@ -461,6 +566,7 @@
                         texto: textBody,
                         portadaUrl: reader.result,
                         autor: currentUserName,
+                        avatar: currentUserAvatar,
                         timestamp: new Date()
                     });
                     document.getElementById('newTitle').value = '';
@@ -470,59 +576,79 @@
                 };
             }
             else if (category === 'comic') {
-                const files = fileInput.files;
-                if (!files || files.length === 0) return alert("Selecciona al menos una página de cómic.");
-                
-                let loadedFiles = 0;
-                let base64Pages = [];
+                const portadaFile = document.getElementById('comicPortada').files[0];
+                if (!portadaFile) return alert("Sube la portada.");
 
-                Array.from(files).forEach((file, index) => {
+                let archivosPendientes = [];
+                archivosPendientes.push(new Promise((resolve) => {
                     const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => {
-                        base64Pages[index] = reader.result;
-                        loadedFiles++;
-                        if (loadedFiles === files.length) {
-                            // La primera imagen es la portada, las demás el array secuencial
-                            addDoc(collection(db, "contents"), {
-                                categoria: 'comic',
-                                titulo: title,
-                                portadaUrl: base64Pages[0],
-                                paginas: base64Pages,
-                                autor: currentUserName,
-                                timestamp: new Date()
-                            }).then(() => {
-                                document.getElementById('newTitle').value = '';
-                                fileInput.value = '';
-                                alert("¡Cómic publicado con éxito!");
-                            });
-                        }
-                    };
+                    reader.readAsDataURL(portadaFile);
+                    reader.onload = (e) => resolve(e.target.result);
+                }));
+
+                for (let i = 1; i <= 30; i++) {
+                    const slotFile = document.getElementById(`comicPag_${i}`).files[0];
+                    if (slotFile) {
+                        archivosPendientes.push(new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(slotFile);
+                            reader.onload = (e) => resolve(e.target.result);
+                        }));
+                    }
+                }
+
+                Promise.all(archivosPendientes).then(async (resultados) => {
+                    await addDoc(collection(db, "contents"), {
+                        categoria: 'comic',
+                        titulo: title,
+                        portadaUrl: resultados[0],
+                        paginas: resultados,
+                        autor: currentUserName,
+                        avatar: currentUserAvatar,
+                        timestamp: new Date()
+                    });
+
+                    document.getElementById('newTitle').value = '';
+                    alert("¡Cómic publicado!");
                 });
             }
         };
 
-        async function subirArchivoBase64(category, title, file) {
+        function procesarYSubirSimple(cat, title, file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async () => {
                 await addDoc(collection(db, "contents"), {
-                    categoria: category,
+                    categoria: cat,
                     titulo: title,
                     portadaUrl: reader.result,
                     autor: currentUserName,
+                    avatar: currentUserAvatar,
                     timestamp: new Date()
                 });
                 document.getElementById('newTitle').value = '';
-                document.getElementById('newFile').value = '';
-                alert("¡Publicado globalmente en la nube!");
+                alert("¡Publicado!");
             };
         }
 
-        // Sincronización en tiempo real de todas las categorías
+        // Borrado por Dueño o Administrador
+        window.borrarPublicacion = async (docId, autorPost) => {
+            if (!isAdmin && currentUserName !== autorPost) {
+                return alert("No tienes permisos para borrar esta publicación.");
+            }
+            if (confirm(isAdmin ? "👑 ¿Borrar esta publicación como Administrador?" : "¿Borrar tu publicación?")) {
+                try {
+                    await deleteDoc(doc(db, "contents", docId));
+                    alert("Publicación eliminada.");
+                } catch (e) { alert("Error al borrar: " + e.message); }
+            }
+        };
+
+        // Escuchador en Tiempo Real
         onSnapshot(collection(db, "contents"), (snapshot) => {
             const comicsGrid = document.getElementById('comicsGrid');
             const ruleGrid = document.getElementById('ruleGrid');
+            const videosListGrid = document.getElementById('videosListGrid');
             const sixchanFeed = document.getElementById('sixchanFeed');
 
             let comicsHtml = `
@@ -535,18 +661,37 @@
                 <div class="content-card" data-title="rule inicial"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')"><div class="content-actions"><button class="action-btn open" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')">Ver</button></div></div>
             `;
 
+            let videosHtml = `
+                <div class="video-card-item" data-title="konosuba"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba <span>+18</span></div></div>
+                <div class="video-card-item" data-title="nobara"><div class="video-player-container"><video controls preload="metadata"><source src="nobara.mp4" type="video/mp4"></video></div><div class="video-card-info">Nobara <span>+18</span></div></div>
+                <div class="video-card-item" data-title="konosuba 4"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba 4.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba 4 <span>+18</span></div></div>
+                <div class="video-card-item" data-title="yor"><div class="video-player-container"><video controls preload="metadata"><source src="yor.mp4" type="video/mp4"></video></div><div class="video-card-info">Yor <span>+18</span></div></div>
+                <div class="video-card-item" data-title="xx2"><div class="video-player-container"><video controls preload="metadata"><source src="xx2.mp4" type="video/mp4"></video></div><div class="video-card-info">XX2 <span>+18</span></div></div>
+            `;
+
             let sixchanHtml = '';
 
-            snapshot.forEach(doc => {
-                const c = doc.data();
+            snapshot.forEach(docSnap => {
+                const c = docSnap.data();
+                const docId = docSnap.id;
+                const esDueño = currentUserName === c.autor;
+                const userAvatar = c.avatar || "https://api.dicebear.com/7.x/bottts/svg?seed=" + c.autor;
+                
+                let botonBorrarHtml = '';
+                if (isAdmin) {
+                    botonBorrarHtml = `<button class="delete-btn admin-delete-btn" onclick="window.borrarPublicacion('${docId}', '${c.autor}')">👑 Borrar (Admin)</button>`;
+                } else if (esDueño) {
+                    botonBorrarHtml = `<button class="delete-btn" onclick="window.borrarPublicacion('${docId}', '${c.autor}')">✕ Borrar</button>`;
+                }
+
                 if (c.categoria === 'comic') {
-                    // Si el cómic viene de Firebase con múltiples páginas
                     const paginasJson = c.paginas ? JSON.stringify(c.paginas).replace(/"/g, '&quot;') : '';
                     comicsHtml += `
                         <div class="content-card" data-title="${c.titulo.toLowerCase()}">
-                            <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirComicFirebase('${paginasJson}', '${doc.id}')">
+                            ${botonBorrarHtml}
+                            <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirComicFirebase('${paginasJson}', '${docId}')">
                             <div class="content-actions">
-                                <button class="action-btn open" onclick="window.abrirComicFirebase('${paginasJson}', '${doc.id}')">Abrir</button>
+                                <button class="action-btn open" onclick="window.abrirComicFirebase('${paginasJson}', '${docId}')">Abrir</button>
                                 <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
                             </div>
                         </div>
@@ -554,23 +699,37 @@
                 } else if (c.categoria === 'rule') {
                     ruleHtml += `
                         <div class="content-card" data-title="${c.titulo.toLowerCase()}">
-                            <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${doc.id}')">
+                            ${botonBorrarHtml}
+                            <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${docId}')">
                             <div class="content-actions">
-                                <button class="action-btn open" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${doc.id}')">Ver</button>
+                                <button class="action-btn open" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${docId}')">Ver</button>
                                 <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
                             </div>
+                        </div>
+                    `;
+                } else if (c.categoria === 'video') {
+                    videosHtml += `
+                        <div class="video-card-item" data-title="${c.titulo.toLowerCase()}">
+                            ${botonBorrarHtml}
+                            <div class="video-player-container">
+                                <video controls preload="metadata">
+                                    <source src="${c.portadaUrl}" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="video-card-info">${c.titulo} <span>+18</span></div>
                         </div>
                     `;
                 } else if (c.categoria === 'sixchan') {
                     sixchanHtml += `
                         <div class="sixchan-post">
+                            ${botonBorrarHtml}
                             <div class="sixchan-post-header">
+                                <img src="${userAvatar}" class="avatar-img">
                                 <span>Anónimo <strong>@${c.autor}</strong></span>
-                                <span>${new Date().toLocaleDateString()}</span>
                             </div>
                             <div style="font-weight:700; font-size:0.9rem; color:var(--text-main);">${c.titulo}</div>
                             <div class="sixchan-post-body">
-                                <img src="${c.portadaUrl}" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${doc.id}')">
+                                <img src="${c.portadaUrl}" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${docId}')">
                                 <div class="sixchan-post-text">${c.texto}</div>
                             </div>
                         </div>
@@ -580,10 +739,11 @@
 
             comicsGrid.innerHTML = comicsHtml;
             ruleGrid.innerHTML = ruleHtml;
-            sixchanFeed.innerHTML = sixchanHtml || '<div style="color:var(--text-muted); text-align:center; padding:20px;">No hay publicaciones en Sixchan aún. ¡Sé el primero en postear!</div>';
+            videosListGrid.innerHTML = videosHtml;
+            sixchanFeed.innerHTML = sixchanHtml || '<div style="color:var(--text-muted); text-align:center; padding:20px;">No hay publicaciones en Sixchan aún.</div>';
         });
 
-        // Comentarios globales
+        // Comentarios
         window.cargarComentarios = (id) => {
             comicActualId = String(id);
             const q = query(collection(db, "comentarios"), where("comicId", "==", comicActualId));
@@ -592,7 +752,13 @@
                 list.innerHTML = '';
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    list.innerHTML += `<div class="comment-item"><strong>@${data.usuario}:</strong> ${data.texto}</div>`;
+                    const avatarComentario = data.avatar || "https://api.dicebear.com/7.x/bottts/svg?seed=" + data.usuario;
+                    list.innerHTML += `
+                        <div class="comment-item">
+                            <img src="${avatarComentario}" class="avatar-img">
+                            <div><strong>@${data.usuario}:</strong> ${data.texto}</div>
+                        </div>
+                    `;
                 });
             });
         };
@@ -603,6 +769,7 @@
             await addDoc(collection(db, "comentarios"), {
                 comicId: comicActualId,
                 usuario: currentUserName,
+                avatar: currentUserAvatar,
                 texto: input.value.trim(),
                 timestamp: new Date()
             });
