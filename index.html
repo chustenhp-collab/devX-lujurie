@@ -254,7 +254,7 @@
                 <div class="video-card-item" data-title="konosuba 4">
                     <div class="video-player-container">
                         <video controls preload="metadata">
-                            <source src="konosuba4.mp4" type="video/mp4">
+                            <source src="konosuba 4.mp4" type="video/mp4">
                             Tu navegador no soporta video.
                         </video>
                     </div>
@@ -398,4 +398,262 @@
             currentUserName = nuevo;
             localStorage.setItem('devx_name', nuevo);
             document.getElementById('sidebarUserBadge').textContent = "@" + nuevo;
-            document.getElementById('newNameInput').value =
+            document.getElementById('newNameInput').value = '';
+            alert("¡Nombre actualizado con éxito!");
+        };
+
+        window.cerrarSesionKey = () => {
+            localStorage.removeItem('devx_key');
+            localStorage.removeItem('devx_name');
+            location.reload();
+        };
+
+        function desbloquearApp(nombre) {
+            document.getElementById('gatekeeperModal').style.display = 'none';
+            document.getElementById('appContainer').classList.add('unlocked');
+            document.getElementById('sidebarUserBadge').textContent = "@" + nombre;
+        }
+
+        window.cambiarTipoSubida = (tipo) => {
+            const fileInput = document.getElementById('newFile');
+            if (tipo === 'video') {
+                fileInput.accept = "video/mp4";
+            } else {
+                fileInput.accept = "image/*";
+            }
+        };
+
+        document.getElementById('uploadBtn').onclick = async () => {
+            if (!currentKey) return alert("Inicia sesión primero.");
+            const category = document.getElementById('uploadCategory').value;
+            const title = document.getElementById('newTitle').value.trim();
+            const fileInput = document.getElementById('newFile');
+            const file = fileInput.files[0];
+
+            if (!title || !file) return alert("Completa el título y selecciona un archivo.");
+
+            if (category === 'video') {
+                const videoElementCheck = document.createElement('video');
+                videoElementCheck.preload = 'metadata';
+                videoElementCheck.onloadedmetadata = async function() {
+                    window.URL.revokeObjectURL(videoElementCheck.src);
+                    if (videoElementCheck.duration > 300) {
+                        alert("El video dura más de 5 minutos. Por favor selecciona uno más corto.");
+                        return;
+                    }
+                    procesarYSubirBase64(category, title, file);
+                }
+                videoElementCheck.src = URL.createObjectURL(file);
+            } else {
+                procesarYSubirBase64(category, title, file);
+            }
+        };
+
+        async function procesarYSubirBase64(category, title, file) {
+            try {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = async () => {
+                    const base64Data = reader.result;
+                    await addDoc(collection(db, "contents"), {
+                        categoria: category,
+                        titulo: title,
+                        portadaUrl: base64Data,
+                        autor: currentUserName,
+                        timestamp: new Date()
+                    });
+
+                    document.getElementById('newTitle').value = '';
+                    document.getElementById('newFile').value = '';
+                    alert("¡Publicado globalmente en la nube!");
+                };
+            } catch (e) { alert("Error al subir: " + e.message); }
+        }
+
+        onSnapshot(collection(db, "contents"), (snapshot) => {
+            const comicsGrid = document.getElementById('comicsGrid');
+            const ruleGrid = document.getElementById('ruleGrid');
+            const videosListGrid = document.getElementById('videosListGrid');
+
+            let comicsHtml = `
+                <div class="content-card" data-title="konosuba"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirComic(1)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(1)">Abrir</button><a href="comic1/comic1.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="content-card" data-title="jane doe"><img class="content-thumb" src="comic2/1t.jpg" onclick="window.abrirComic(2)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(2)">Abrir</button><a href="comic2/comic2.zip" class="action-btn" download>Descargar</a></div></div>
+                <div class="content-card" data-title="tonikaku"><img class="content-thumb" src="comic3/1r.jpg" onclick="window.abrirComic(3)"><div class="content-actions"><button class="action-btn open" onclick="window.abrirComic(3)">Abrir</button><a href="comic3/comic3.zip" class="action-btn" download>Descargar</a></div></div>
+            `;
+
+            let ruleHtml = `
+                <div class="content-card" data-title="rule inicial"><img class="content-thumb" src="comic1/portada1.jpg" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')"><div class="content-actions"><button class="action-btn open" onclick="window.abrirRuleOnline('comic1/portada1.jpg', 'rule_base1')">Ver</button></div></div>
+            `;
+
+            let videosHtml = `
+                <div class="video-card-item" data-title="konosuba"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba <span>+18</span></div></div>
+                <div class="video-card-item" data-title="nobara"><div class="video-player-container"><video controls preload="metadata"><source src="nobara.mp4" type="video/mp4"></video></div><div class="video-card-info">Nobara <span>+18</span></div></div>
+                <div class="video-card-item" data-title="konosuba 4"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba 4.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba 4 <span>+18</span></div></div>
+                <div class="video-card-item" data-title="yor"><div class="video-player-container"><video controls preload="metadata"><source src="yor.mp4" type="video/mp4"></video></div><div class="video-card-info">Yor <span>+18</span></div></div>
+                <div class="video-card-item" data-title="xx2"><div class="video-player-container"><video controls preload="metadata"><source src="xx2.mp4" type="video/mp4"></video></div><div class="video-card-info">XX2 <span>+18</span></div></div>
+            `;
+
+            snapshot.forEach(doc => {
+                const c = doc.data();
+                if (c.categoria === 'comic') {
+                    comicsHtml += `
+                        <div class="content-card" data-title="${c.titulo.toLowerCase()}">
+                            <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirComicOnline('${c.portadaUrl}', '${doc.id}')">
+                            <div class="content-actions">
+                                <button class="action-btn open" onclick="window.abrirComicOnline('${c.portadaUrl}', '${doc.id}')">Abrir</button>
+                                <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (c.categoria === 'rule') {
+                    ruleHtml += `
+                        <div class="content-card" data-title="${c.titulo.toLowerCase()}">
+                            <img class="content-thumb" src="${c.portadaUrl}" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${doc.id}')">
+                            <div class="content-actions">
+                                <button class="action-btn open" onclick="window.abrirRuleOnline('${c.portadaUrl}', '${doc.id}')">Ver</button>
+                                <span class="action-btn" style="background:var(--surface);">${c.titulo}</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (c.categoria === 'video') {
+                    videosHtml += `
+                        <div class="video-card-item" data-title="${c.titulo.toLowerCase()}">
+                            <div class="video-player-container">
+                                <video controls preload="metadata">
+                                    <source src="${c.portadaUrl}" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="video-card-info">${c.titulo} <span>+18</span></div>
+                        </div>
+                    `;
+                }
+            });
+
+            comicsGrid.innerHTML = comicsHtml;
+            ruleGrid.innerHTML = ruleHtml;
+            videosListGrid.innerHTML = videosHtml;
+        });
+
+        window.cargarComentarios = (id) => {
+            comicActualId = String(id);
+            const q = query(collection(db, "comentarios"), where("comicId", "==", comicActualId));
+            onSnapshot(q, (snapshot) => {
+                const list = document.getElementById('commentsList');
+                list.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    list.innerHTML += `<div class="comment-item"><strong>@${data.usuario}:</strong> ${data.texto}</div>`;
+                });
+            });
+        };
+
+        document.getElementById('sendCommentBtn').onclick = async () => {
+            const input = document.getElementById('commentInput');
+            if (!input.value.trim() || !currentKey) return;
+            await addDoc(collection(db, "comentarios"), {
+                comicId: comicActualId,
+                usuario: currentUserName,
+                texto: input.value.trim(),
+                timestamp: new Date()
+            });
+            input.value = '';
+        };
+    </script>
+
+    <script>
+        let comicActual = 1, paginaActual = 0, esModoRule = false;
+        const configs = { 1: { max: 16 }, 2: { max: 25 }, 3: { max: 24 } };
+
+        const videoElement = document.getElementById('introVideo');
+        videoElement.addEventListener('timeupdate', () => { if (videoElement.currentTime >= 4.0) terminarVideo(); });
+
+        function terminarVideo() {
+            const m = document.getElementById('introVideoModal');
+            m.style.opacity = '0';
+            setTimeout(() => { m.style.display = 'none'; document.getElementById('gatekeeperModal').style.display = 'flex'; }, 600);
+        }
+
+        function confirmarEdad(m) {
+            if (!m) window.location.href = "https://www.google.com";
+            else { document.getElementById('stepAge').style.display = 'none'; document.getElementById('stepAuth').style.display = 'flex'; }
+        }
+
+        function toggleSidebar() {
+            const s = document.getElementById('sidebarMenu'), o = document.getElementById('sidebarOverlay');
+            if (s.classList.contains('open')) { s.classList.remove('open'); o.style.display = 'none'; }
+            else { o.style.display = 'block'; setTimeout(() => o.style.opacity = '1', 10); s.classList.add('open'); }
+        }
+
+        function mostrarSeccion(seccionId) {
+            document.getElementById('mainHomeMenu').style.display = 'none';
+            document.querySelectorAll('.sub-section').forEach(el => el.style.display = 'none');
+            document.getElementById(seccionId).style.display = 'flex';
+        }
+
+        function volverAlMenuPrincipal() {
+            document.querySelectorAll('.sub-section').forEach(el => el.style.display = 'none');
+            document.getElementById('mainHomeMenu').style.display = 'block';
+        }
+
+        window.abrirComic = function(id) {
+            comicActual = id; paginaActual = 0; esModoRule = false;
+            document.getElementById('arrowLeft').style.display = 'flex';
+            document.getElementById('arrowRight').style.display = 'flex';
+            document.getElementById('commentsSection').style.display = 'flex';
+            document.getElementById('viewerModal').style.display = 'flex';
+            actualizarVista();
+            if (window.cargarComentarios) window.cargarComentarios(id);
+        };
+
+        window.abrirComicOnline = function(url, docId) {
+            comicActual = 999; paginaActual = 0; esModoRule = false;
+            document.getElementById('arrowLeft').style.display = 'none';
+            document.getElementById('arrowRight').style.display = 'none';
+            document.getElementById('commentsSection').style.display = 'flex';
+            document.getElementById('viewerModal').style.display = 'flex';
+            document.getElementById('comicImg').src = url;
+            if (window.cargarComentarios) window.cargarComentarios(docId);
+        };
+
+        window.abrirRuleOnline = function(url, docId) {
+            esModoRule = true;
+            document.getElementById('arrowLeft').style.display = 'none';
+            document.getElementById('arrowRight').style.display = 'none';
+            document.getElementById('commentsSection').style.display = 'flex';
+            document.getElementById('viewerModal').style.display = 'flex';
+            document.getElementById('comicImg').src = url;
+            if (window.cargarComentarios) window.cargarComentarios(docId);
+        };
+
+        function cerrarVisor() { document.getElementById('viewerModal').style.display = 'none'; }
+
+        function actualizarVista() {
+            const img = document.getElementById('comicImg');
+            img.src = comicActual === 1 ? (paginaActual === 0 ? "comic1/portada1.jpg" : `comic1/${paginaActual}.jpg`) :
+                      comicActual === 2 ? (paginaActual === 0 ? "comic2/1t.jpg" : `comic2/${paginaActual}t.jpg`) :
+                      (paginaActual === 0 ? "comic3/1r.jpg" : `comic3/${paginaActual}r.jpg`);
+        }
+
+        function cambiarPagina(dir) {
+            if (esModoRule) return;
+            let max = configs[comicActual] ? configs[comicActual].max : 0;
+            let nueva = paginaActual + dir;
+            if (nueva >= 0 && nueva <= max) { paginaActual = nueva; actualizarVista(); }
+        }
+
+        function filtrarContenido(gridId, queryText) {
+            const q = queryText.toLowerCase();
+            document.querySelectorAll(`#${gridId} .content-card`).forEach(c => {
+                c.style.display = (c.getAttribute('data-title') || '').includes(q) ? 'flex' : 'none';
+            });
+        }
+
+        function filtrarVideos(queryText) {
+            const q = queryText.toLowerCase();
+            document.querySelectorAll('#videosListGrid .video-card-item').forEach(v => {
+                v.style.display = (v.getAttribute('data-title') || '').includes(q) ? 'flex' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
