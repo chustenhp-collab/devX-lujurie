@@ -446,7 +446,7 @@
             "f5N4hM6dL9pK": "Theta_User",
             "q1W7jT3xV8mS": "Iota_User",
             "b3C9gP5fR2nH": "Omega_User",
-            [ADMIN_KEY]: "Admin_Supreme"
+            [ADMIN_KEY]: "chustenHP"
         };
 
         let currentKey = localStorage.getItem('devx_key');
@@ -547,7 +547,7 @@
             const q = query(collection(db, "banned_users"), where("usuario", "==", nombre));
             const snap = await getDocs(q);
             if (!snap.empty) {
-                alert("🚫 Has sido baneado de devX lujurie.web.");
+                alert("Acceso denegado.");
                 cerrarSesionKey();
             }
         }
@@ -567,7 +567,7 @@
                 isAdmin = (val === ADMIN_KEY);
                 desbloquearApp(defaultName);
             } else {
-                alert("Key incorrecta.");
+                alert("Credencial inválida.");
             }
         };
 
@@ -597,16 +597,14 @@
             document.getElementById('sidebarUserBadge').textContent = "@" + currentUserName;
             document.getElementById('sidebarAvatar').src = currentUserAvatar;
             document.getElementById('newNameInput').value = '';
-            alert("¡Perfil actualizado!");
         }
 
         window.banearUsuario = async () => {
             if (!isAdmin) return;
             const targetUser = document.getElementById('banUserInput').value.trim();
-            if (!targetUser) return alert("Escribe un usuario.");
+            if (!targetUser) return;
             await addDoc(collection(db, "banned_users"), { usuario: targetUser, timestamp: new Date() });
             document.getElementById('banUserInput').value = '';
-            alert(`El usuario @${targetUser} ha sido baneado.`);
         };
 
         window.cerrarSesionKey = () => {
@@ -623,7 +621,7 @@
             document.getElementById('sidebarAvatar').src = currentUserAvatar;
 
             if (isAdmin) {
-                document.getElementById('sidebarUserRole').textContent = "👑 Administrador";
+                document.getElementById('sidebarUserRole').textContent = "chustenHP (Admin)";
                 document.getElementById('sidebarUserRole').style.color = "var(--admin)";
                 document.getElementById('adminPanelBox').style.display = 'flex';
             }
@@ -643,8 +641,8 @@
             } else if (tipo === 'comic') {
                 area.innerHTML = `
                     <div class="comic-builder-container">
-                        <span class="ai-badge">✨ IA DE ORDENAMIENTO AUTOMÁTICO</span>
-                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top:4px;">Selecciona o arrastra todas las imágenes juntas (Portada y Páginas). La IA las organizará por nombre numérico.</p>
+                        <span class="ai-badge">ORDENAMIENTO AUTOMÁTICO</span>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top:4px;">Selecciona o arrastra los archivos de imagen. El sistema los estructurará de forma secuencial.</p>
                         <input type="file" id="masiveComicFiles" accept="image/*" multiple style="font-size:0.75rem; margin-top:6px;">
                     </div>
                 `;
@@ -652,11 +650,11 @@
         };
 
         document.getElementById('uploadBtn').onclick = async () => {
-            if (!currentKey) return alert("Inicia sesión primero.");
+            if (!currentKey) return;
             const category = document.getElementById('uploadCategory').value;
             const title = document.getElementById('newTitle').value.trim();
 
-            if (!title) return alert("Escribe un título.");
+            if (!title) return;
 
             let payload = {
                 categoria: category,
@@ -669,18 +667,16 @@
 
             if (category === 'video') {
                 const linkVal = document.getElementById('videoLinkInput').value.trim();
-                if (!linkVal) return alert("Introduce el enlace del video.");
+                if (!linkVal) return;
                 payload.portadaUrl = linkVal;
                 await addDoc(collection(db, "contents"), payload);
-                alert("¡Video publicado!");
                 document.getElementById('newTitle').value = '';
             } else if (category === 'rule') {
                 const fileInput = document.getElementById('singleFile').files[0];
-                if (!fileInput) return alert("Selecciona una imagen.");
+                if (!fileInput) return;
                 const base64 = await toBase64(fileInput);
                 payload.portadaUrl = base64;
                 await addDoc(collection(db, "contents"), payload);
-                alert("¡Imagen Rule publicada!");
                 document.getElementById('newTitle').value = '';
             } else if (category === 'sixchan') {
                 const textVal = document.getElementById('sixchanText').value.trim();
@@ -688,11 +684,10 @@
                 payload.texto = textVal;
                 payload.portadaUrl = fileInput ? await toBase64(fileInput) : "";
                 await addDoc(collection(db, "contents"), payload);
-                alert("¡Post de Sixchan publicado!");
                 document.getElementById('newTitle').value = '';
             } else if (category === 'comic') {
                 const filesInput = document.getElementById('masiveComicFiles');
-                if (!filesInput || filesInput.files.length === 0) return alert("Selecciona las imágenes del cómic.");
+                if (!filesInput || filesInput.files.length === 0) return;
 
                 let filesArray = Array.from(filesInput.files);
                 filesArray.sort((a, b) => {
@@ -711,7 +706,6 @@
                 payload.paginas = paginasArray;
                 
                 await addDoc(collection(db, "contents"), payload);
-                alert(`¡Cómic publicado con éxito! (${filesArray.length} páginas organizadas por IA).`);
                 document.getElementById('newTitle').value = '';
             }
         };
@@ -790,9 +784,7 @@
         };
 
         window.eliminarContenido = async (docId) => {
-            if (confirm("¿Deseas eliminar este elemento?")) {
-                await deleteDoc(doc(db, "contents", docId));
-            }
+            await deleteDoc(doc(db, "contents", docId));
         };
 
         function cargarComentarios(docId) {
