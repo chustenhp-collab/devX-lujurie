@@ -120,10 +120,6 @@
         .upload-form-box { display: flex; flex-direction: column; gap: 8px; background: var(--bg-base); border: 1px solid var(--border); padding: 12px; }
         .upload-form-box input, .upload-form-box select, .upload-form-box textarea { padding: 10px; border: 1px solid var(--border); background: var(--surface); color: white; font-size: 0.85rem; outline: none; }
 
-        /* Creador Cómics Bloque a Bloque */
-        .comic-builder-container { display: flex; flex-direction: column; gap: 10px; border: 2px dashed var(--accent); padding: 12px; background: var(--bg-base); text-align: center; }
-        .ai-badge { background: rgba(225,29,72,0.2); color: var(--accent); font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border: 1px solid var(--accent); }
-
         /* Secciones Dinámicas */
         .sub-section { display: none; flex-direction: column; gap: 12px; }
         .search-container { position: relative; width: 100%; }
@@ -142,7 +138,6 @@
         .like-btn { background: rgba(225,29,72,0.15); color: var(--accent); border-color: var(--accent); }
         .delete-btn { position: absolute; top: 6px; left: 6px; background: rgba(255, 42, 95, 0.9); color: white; border: none; font-size: 0.65rem; font-weight: 800; padding: 3px 6px; cursor: pointer; z-index: 10; }
         .admin-delete-btn { background: var(--admin); color: black; }
-        .add-pages-btn { background: rgba(234, 179, 8, 0.2); color: var(--admin); border-color: var(--admin); }
         .back-home-btn { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-weight: 600; cursor: pointer; text-align: center; }
 
         /* Sixchan */
@@ -155,13 +150,8 @@
         .sixchan-post-text { font-size: 0.85rem; color: var(--text-main); word-break: break-word; line-height: 1.4; }
         .sixchan-footer { display: flex; justify-content: flex-end; align-items: center; gap: 6px; border-top: 1px solid var(--border); padding-top: 6px; }
 
-        /* Videos */
+        /* Videos (Sección mantenida solo en interfaz por si acaso, oculta en menú principal) */
         .video-list-grid { display: flex; flex-direction: column; gap: 16px; width: 100%; }
-        .video-card-item { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        .video-player-container { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; }
-        .video-player-container video { width: 100%; height: 100%; object-fit: cover; }
-        .video-card-info { padding: 10px 12px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; border-top: 1px solid var(--border); background: var(--surface); display: flex; justify-content: space-between; align-items: center; }
-        .video-card-info span { color: var(--danger); font-size: 0.7rem; font-weight: 800; background: var(--surface-hover); padding: 2px 6px; border: 1px solid var(--border); }
 
         /* Visor */
         #viewerModal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9990; display: none; flex-direction: column; align-items: center; overflow-y: auto; }
@@ -208,10 +198,10 @@
             <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
         </header>
 
-        <!-- Menú Principal con Iconos en Imagen -->
+        <!-- Menú Principal (Solo Cómics, Rule y Sixchan) -->
         <div id="mainHomeMenu">
             <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Categorías</div>
-            <div class="options-grid">
+            <div class="options-grid" style="grid-template-columns: repeat(3, 1fr);">
                 <div class="option-card" onclick="mostrarSeccion('comicsSection')">
                     <span class="nsfw-badge">+18</span>
                     <div class="option-icon-wrapper">
@@ -226,13 +216,6 @@
                     </div>
                     <div class="option-name">Rule</div>
                 </div>
-                <div class="option-card" onclick="mostrarSeccion('videosSection')">
-                    <span class="nsfw-badge">+18</span>
-                    <div class="option-icon-wrapper">
-                        <img src="videos.jpg" alt="Videos">
-                    </div>
-                    <div class="option-name">Videos</div>
-                </div>
                 <div class="option-card" onclick="mostrarSeccion('sixchanSection')">
                     <span class="nsfw-badge">+18</span>
                     <div class="option-icon-wrapper">
@@ -243,61 +226,14 @@
             </div>
         </div>
 
-        <!-- Sección Cómics -->
+        <!-- Sección Cómics (Detección automática de carpetas con 'comic' mediante el escáner de IA) -->
         <div id="comicsSection" class="sub-section">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="search-container">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="searchComics" class="search-input" placeholder="Buscar cómics..." oninput="filtrarContenido('comicsGrid', this.value)">
             </div>
-            <div class="content-grid" id="comicsGrid">
-                <!-- Cómics 1 al 5 locales -->
-                <div class="content-card">
-                    <div class="content-thumb-wrapper">
-                        <img src="comic1/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic1", 30, "jpg")'>
-                    </div>
-                    <div class="content-actions">
-                        <span style="font-size:0.75rem; font-weight:700;">Cómic 1</span>
-                        <button class="action-btn open" onclick='abrirVisorComicLocal("comic1", 30, "jpg")'>Leer Cómic</button>
-                    </div>
-                </div>
-                <div class="content-card">
-                    <div class="content-thumb-wrapper">
-                        <img src="comic2/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic2", 30, "jpg")'>
-                    </div>
-                    <div class="content-actions">
-                        <span style="font-size:0.75rem; font-weight:700;">Cómic 2</span>
-                        <button class="action-btn open" onclick='abrirVisorComicLocal("comic2", 30, "jpg")'>Leer Cómic</button>
-                    </div>
-                </div>
-                <div class="content-card">
-                    <div class="content-thumb-wrapper">
-                        <img src="comic3/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic3", 30, "jpg")'>
-                    </div>
-                    <div class="content-actions">
-                        <span style="font-size:0.75rem; font-weight:700;">Cómic 3</span>
-                        <button class="action-btn open" onclick='abrirVisorComicLocal("comic3", 30, "jpg")'>Leer Cómic</button>
-                    </div>
-                </div>
-                <div class="content-card">
-                    <div class="content-thumb-wrapper">
-                        <img src="comic4/0001.webp" class="content-thumb" onclick='abrirVisorComicWebp("comic4", 56)'>
-                    </div>
-                    <div class="content-actions">
-                        <span style="font-size:0.75rem; font-weight:700;">Cómic 4 (Webp)</span>
-                        <button class="action-btn open" onclick='abrirVisorComicWebp("comic4", 56)'>Leer Cómic</button>
-                    </div>
-                </div>
-                <div class="content-card">
-                    <div class="content-thumb-wrapper">
-                        <img src="comic5/0001.webp" class="content-thumb" onclick='abrirVisorComicWebp("comic5", 100)'>
-                    </div>
-                    <div class="content-actions">
-                        <span style="font-size:0.75rem; font-weight:700;">Cómic 5 (Webp)</span>
-                        <button class="action-btn open" onclick='abrirVisorComicWebp("comic5", 100)'>Leer Cómic</button>
-                    </div>
-                </div>
-            </div>
+            <div class="content-grid" id="comicsGrid"></div>
         </div>
 
         <!-- Sección Rule -->
@@ -308,22 +244,6 @@
                 <input type="text" id="searchRule" class="search-input" placeholder="Buscar en Rule..." oninput="filtrarContenido('ruleGrid', this.value)">
             </div>
             <div class="content-grid" id="ruleGrid"></div>
-        </div>
-
-        <!-- Sección Videos -->
-        <div id="videosSection" class="sub-section">
-            <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
-            <div class="search-container">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="searchVideos" class="search-input" placeholder="Buscar videos..." oninput="filtrarVideos(this.value)">
-            </div>
-            <div class="video-list-grid" id="videosListGrid">
-                <div class="video-card-item" data-title="konosuba"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba <span>+18</span></div></div>
-                <div class="video-card-item" data-title="nobara"><div class="video-player-container"><video controls preload="metadata"><source src="nobara.mp4" type="video/mp4"></video></div><div class="video-card-info">Nobara <span>+18</span></div></div>
-                <div class="video-card-item" data-title="konosuba 4"><div class="video-player-container"><video controls preload="metadata"><source src="konosuba 4.mp4" type="video/mp4"></video></div><div class="video-card-info">Konosuba 4 <span>+18</span></div></div>
-                <div class="video-card-item" data-title="yor"><div class="video-player-container"><video controls preload="metadata"><source src="yor.mp4" type="video/mp4"></video></div><div class="video-card-info">Yor <span>+18</span></div></div>
-                <div class="video-card-item" data-title="xx2"><div class="video-player-container"><video controls preload="metadata"><source src="xx2.mp4" type="video/mp4"></video></div><div class="video-card-info">XX2 <span>+18</span></div></div>
-            </div>
         </div>
 
         <!-- Sección Sixchan -->
@@ -373,8 +293,6 @@
             <h3>Publicar Contenido</h3>
             <div class="upload-form-box">
                 <select id="uploadCategory" onchange="actualizarFormularioSubida(this.value)">
-                    <option value="video">Videos (GitHub / Enlace)</option>
-                    <option value="comic">Cómics (Creación Inicial / Portada)</option>
                     <option value="rule">Rule (Imagen simple)</option>
                     <option value="sixchan">Sixchan (Foto y Texto)</option>
                 </select>
@@ -382,7 +300,7 @@
                 <input type="text" id="newTitle" placeholder="Título / Descripción principal">
 
                 <div id="dynamicUploadArea" style="display:flex; flex-direction:column; gap:8px;">
-                    <input type="text" id="videoLinkInput" class="auth-input" placeholder="Enlace directo al video (.mp4)" style="text-align:left; font-size:0.8rem;">
+                    <input type="file" id="singleFile" accept="image/*" style="font-size: 0.75rem;">
                 </div>
 
                 <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" id="uploadBtn">Publicar</button>
@@ -409,10 +327,10 @@
         </div>
     </div>
 
-    <!-- Firebase SDK Modular -->
+    <!-- Firebase SDK e IA de Detección Automática de Cómics por Carpetas -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCEX9KoTBwnHfgSZOg3uH4woJr-_-__j4g",
@@ -450,83 +368,95 @@
         let paginaIndexActual = 0;
         window.paginasActualesVisor = [];
 
+        // IA Escáner de Cómics: Detecta dinámicamente carpetas locales con 'comic' en su nombre y ordena sus páginas
+        async function detectarComicsLocalesAutomaticamente() {
+            const comicsGrid = document.getElementById('comicsGrid');
+            comicsGrid.innerHTML = '';
+
+            // Lista estimada de posibles carpetas de cómics en el servidor (puedes ampliarla según tus carpetas)
+            const posiblesCarpetas = ["comic1", "comic2", "comic3", "comic4", "comic5", "comics", "mi_comic", "nuevo_comic"];
+
+            for (let carpeta of posiblesCarpetas) {
+                if (!carpeta.toLowerCase().includes("comic")) continue;
+
+                // Intentar detectar extensiones comunes para la portada o página inicial (portada.jpg, portada.png, portada.webp, 0001.webp, 1.jpg)
+                let portadaValida = null;
+                let extensiones = ["jpg", "png", "webp"];
+                let nombresPortada = ["portada", "0001", "1", "cover"];
+
+                for (let ext of extensiones) {
+                    for (let nombre of nombresPortada) {
+                        let rutaPrueba = `${carpeta}/${nombre}.${ext}`;
+                        if (await verificarExistenciaImagen(rutaPrueba)) {
+                            portadaValida = rutaPrueba;
+                            break;
+                        }
+                    }
+                    if (portadaValida) break;
+                }
+
+                if (portadaValida) {
+                    // Escanear cuántas páginas tiene esta carpeta (hasta 200 páginas)
+                    let paginasDetectadas = [portadaValida];
+                    for (let i = 1; i <= 200; i++) {
+                        let numStr1 = String(i);
+                        let numStr4 = String(i).padStart(4, '0');
+                        let encontradaPagina = false;
+
+                        for (let ext of extensiones) {
+                            for (let nFormat of [numStr1, numStr4]) {
+                                let rutaPagina = `${carpeta}/${nFormat}.${ext}`;
+                                if (await verificarExistenciaImagen(rutaPagina)) {
+                                    if (!paginasDetectadas.includes(rutaPagina)) {
+                                        paginasDetectadas.push(rutaPagina);
+                                    }
+                                    encontradaPagina = true;
+                                }
+                            }
+                        }
+                        if (!encontradaPagina && i > 30) break; // Límite de optimización de escaneo
+                    }
+
+                    // Renderizar tarjeta de cómic detectado automáticamente
+                    const card = document.createElement('div');
+                    card.className = 'content-card';
+                    card.innerHTML = `
+                        <div class="content-thumb-wrapper">
+                            <img src="${portadaValida}" class="content-thumb" onclick='abrirVisorArrayPaginas(${JSON.stringify(paginasDetectadas)})'>
+                        </div>
+                        <div class="content-actions">
+                            <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase;">${carpeta}</span>
+                            <button class="action-btn open" onclick='abrirVisorArrayPaginas(${JSON.stringify(paginasDetectadas)})'>Leer Cómic (${paginasDetectadas.length} pág)</button>
+                        </div>
+                    `;
+                    comicsGrid.appendChild(card);
+                }
+            }
+        }
+
+        function verificarExistenciaImagen(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            });
+        }
+
         function escucharContenidos() {
+            detectarComicsLocalesAutomaticamente();
+
             onSnapshot(collection(db, "contents"), (snapshot) => {
-                const comicsGrid = document.getElementById('comicsGrid');
                 const ruleGrid = document.getElementById('ruleGrid');
                 const sixchanFeed = document.getElementById('sixchanFeed');
 
-                // Mantener los 5 cómics locales estáticos
-                comicsGrid.innerHTML = `
-                    <div class="content-card">
-                        <div class="content-thumb-wrapper">
-                            <img src="comic1/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic1", 30, "jpg")'>
-                        </div>
-                        <div class="content-actions">
-                            <span style="font-size:0.75rem; font-weight:700;">Cómic 1</span>
-                            <button class="action-btn open" onclick='abrirVisorComicLocal("comic1", 30, "jpg")'>Leer Cómic</button>
-                        </div>
-                    </div>
-                    <div class="content-card">
-                        <div class="content-thumb-wrapper">
-                            <img src="comic2/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic2", 30, "jpg")'>
-                        </div>
-                        <div class="content-actions">
-                            <span style="font-size:0.75rem; font-weight:700;">Cómic 2</span>
-                            <button class="action-btn open" onclick='abrirVisorComicLocal("comic2", 30, "jpg")'>Leer Cómic</button>
-                        </div>
-                    </div>
-                    <div class="content-card">
-                        <div class="content-thumb-wrapper">
-                            <img src="comic3/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic3", 30, "jpg")'>
-                        </div>
-                        <div class="content-actions">
-                            <span style="font-size:0.75rem; font-weight:700;">Cómic 3</span>
-                            <button class="action-btn open" onclick='abrirVisorComicLocal("comic3", 30, "jpg")'>Leer Cómic</button>
-                        </div>
-                    </div>
-                    <div class="content-card">
-                        <div class="content-thumb-wrapper">
-                            <img src="comic4/0001.webp" class="content-thumb" onclick='abrirVisorComicWebp("comic4", 56)'>
-                        </div>
-                        <div class="content-actions">
-                            <span style="font-size:0.75rem; font-weight:700;">Cómic 4 (Webp)</span>
-                            <button class="action-btn open" onclick='abrirVisorComicWebp("comic4", 56)'>Leer Cómic</button>
-                        </div>
-                    </div>
-                    <div class="content-card">
-                        <div class="content-thumb-wrapper">
-                            <img src="comic5/0001.webp" class="content-thumb" onclick='abrirVisorComicWebp("comic5", 100)'>
-                        </div>
-                        <div class="content-actions">
-                            <span style="font-size:0.75rem; font-weight:700;">Cómic 5 (Webp)</span>
-                            <button class="action-btn open" onclick='abrirVisorComicWebp("comic5", 100)'>Leer Cómic</button>
-                        </div>
-                    </div>
-                `;
                 ruleGrid.innerHTML = '';
                 sixchanFeed.innerHTML = '';
 
                 snapshot.forEach((docSnap) => {
                     const data = { firebaseId: docSnap.id, ...docSnap.data() };
 
-                    if (data.categoria === 'comic') {
-                        const card = document.createElement('div');
-                        card.className = 'content-card';
-                        card.innerHTML = `
-                            ${(isAdmin || data.autor === currentUserName) ? `<button class="delete-btn ${isAdmin ? 'admin-delete-btn' : ''}" onclick="eliminarContenido('${data.firebaseId}')">✕</button>` : ''}
-                            <div class="content-thumb-wrapper">
-                                <img src="${data.portadaUrl}" class="content-thumb" onclick='abrirVisorComic(${JSON.stringify(data).replace(/'/g, "&apos;")})'>
-                            </div>
-                            <div class="content-actions">
-                                <span style="font-size:0.75rem; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${data.titulo}</span>
-                                <button class="action-btn open" onclick='abrirVisorComic(${JSON.stringify(data).replace(/'/g, "&apos;")})'>Leer Cómic (${(data.paginas ? data.paginas.length : 0) + 1} pág)</button>
-                                ${(isAdmin || data.autor === currentUserName) ? `<button class="action-btn add-pages-btn" onclick="agregarMasPaginasPrompt('${data.firebaseId}')">+ Agregar Páginas</button>` : ''}
-                                <button class="action-btn like-btn" onclick="darLike('${data.firebaseId}', ${data.likes || 0})">❤ ${data.likes || 0}</button>
-                            </div>
-                        `;
-                        comicsGrid.appendChild(card);
-                    } else if (data.categoria === 'rule') {
+                    if (data.categoria === 'rule') {
                         const card = document.createElement('div');
                         card.className = 'content-card';
                         card.innerHTML = `
@@ -559,19 +489,6 @@
                             </div>
                         `;
                         sixchanFeed.appendChild(postDiv);
-                    } else if (data.categoria === 'video') {
-                        const gridVideos = document.getElementById('videosListGrid');
-                        const cardItem = document.createElement('div');
-                        cardItem.className = 'video-card-item';
-                        cardItem.setAttribute('data-title', data.titulo.toLowerCase());
-                        cardItem.innerHTML = `
-                            ${(isAdmin || data.autor === currentUserName) ? `<button class="delete-btn ${isAdmin ? 'admin-delete-btn' : ''}" onclick="eliminarContenido('${data.firebaseId}')">✕</button>` : ''}
-                            <div class="video-player-container">
-                                <video controls preload="metadata"><source src="${data.portadaUrl}" type="video/mp4"></video>
-                            </div>
-                            <div class="video-card-info">${data.titulo} <span>+18</span></div>
-                        `;
-                        gridVideos.appendChild(cardItem);
                     }
                 });
             });
@@ -671,55 +588,14 @@
 
         window.actualizarFormularioSubida = (tipo) => {
             const area = document.getElementById('dynamicUploadArea');
-            if (tipo === 'video') {
-                area.innerHTML = `<input type="text" id="videoLinkInput" class="auth-input" placeholder="Enlace directo al video (.mp4)" style="text-align:left; font-size:0.8rem;">`;
-            } else if (tipo === 'rule') {
+            if (tipo === 'rule') {
                 area.innerHTML = `<input type="file" id="singleFile" accept="image/*" style="font-size: 0.75rem;">`;
             } else if (tipo === 'sixchan') {
                 area.innerHTML = `
                     <textarea id="sixchanText" class="auth-input" placeholder="Escribe tu texto..." style="text-align:left; font-size:0.8rem; height:70px;"></textarea>
                     <input type="file" id="singleFile" accept="image/*" style="font-size: 0.75rem;">
                 `;
-            } else if (tipo === 'comic') {
-                area.innerHTML = `
-                    <div class="comic-builder-container">
-                        <span class="ai-badge">CREACIÓN DE CÓMIC</span>
-                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top:4px;">Sube la portada inicial. Después podrás agregar más páginas paso a paso.</p>
-                        <input type="file" id="comicPortadaFile" accept="image/*" style="font-size:0.75rem; margin-top:6px;">
-                    </div>
-                `;
             }
-        };
-
-        // Función para agregar más páginas a un cómic existente de forma incremental
-        window.agregarMasPaginasPrompt = async (docId) => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.multiple = true;
-            input.onchange = async (e) => {
-                const files = Array.from(e.target.files);
-                if (files.length === 0) return;
-
-                files.sort((a, b) => {
-                    let numA = parseInt(a.name.replace(/\D/g, '')) || 0;
-                    let numB = parseInt(b.name.replace(/\D/g, '')) || 0;
-                    return numA - numB;
-                });
-
-                let novasBase64 = [];
-                for (let file of files) {
-                    novasBase64.push(await toBase64(file));
-                }
-
-                const comicRef = doc(db, "contents", docId);
-                await updateDoc(comicRef, {
-                    paginas: arrayUnion(...novasBase64)
-                });
-
-                alert(`¡Se añadieron ${files.length} páginas correctamente al cómic!`);
-            };
-            input.click();
         };
 
         document.getElementById('uploadBtn').onclick = async () => {
@@ -738,13 +614,7 @@
                 timestamp: new Date()
             };
 
-            if (category === 'video') {
-                const linkVal = document.getElementById('videoLinkInput').value.trim();
-                if (!linkVal) return;
-                payload.portadaUrl = linkVal;
-                await addDoc(collection(db, "contents"), payload);
-                document.getElementById('newTitle').value = '';
-            } else if (category === 'rule') {
+            if (category === 'rule') {
                 const fileInput = document.getElementById('singleFile').files[0];
                 if (!fileInput) return;
                 const base64 = await toBase64(fileInput);
@@ -758,16 +628,6 @@
                 payload.portadaUrl = fileInput ? await toBase64(fileInput) : "";
                 await addDoc(collection(db, "contents"), payload);
                 document.getElementById('newTitle').value = '';
-            } else if (category === 'comic') {
-                const portadaFile = document.getElementById('comicPortadaFile').files[0];
-                if (!portadaFile) return;
-
-                payload.portadaUrl = await toBase64(portadaFile);
-                payload.paginas = [];
-                
-                await addDoc(collection(db, "contents"), payload);
-                alert("¡Cómic creado! Ya puedes agregarle páginas usando el botón '+ Agregar Páginas'.");
-                document.getElementById('newTitle').value = '';
             }
         };
 
@@ -780,41 +640,13 @@
             });
         }
 
-        window.abrirVisorComicLocal = (folderName, totalPaginas, ext) => {
+        window.abrirVisorArrayPaginas = (paginasArray) => {
             paginaIndexActual = 0;
-            let paginas = [`${folderName}/portada.${ext}`];
-            for (let i = 1; i <= totalPaginas; i++) {
-                paginas.push(`${folderName}/${i}.${ext}`);
-            }
-            window.paginasActualesVisor = paginas;
+            window.paginasActualesVisor = paginasArray;
             document.getElementById('comicImg').src = window.paginasActualesVisor[0];
             document.getElementById('viewerModal').style.display = 'flex';
             document.getElementById('arrowLeft').style.display = 'flex';
             document.getElementById('arrowRight').style.display = 'flex';
-        };
-
-        window.abrirVisorComicWebp = (folderName, totalPaginas) => {
-            paginaIndexActual = 0;
-            let paginas = [];
-            for (let i = 1; i <= totalPaginas; i++) {
-                let numStr = String(i).padStart(4, '0');
-                paginas.push(`${folderName}/${numStr}.webp`);
-            }
-            window.paginasActualesVisor = paginas;
-            document.getElementById('comicImg').src = window.paginasActualesVisor[0];
-            document.getElementById('viewerModal').style.display = 'flex';
-            document.getElementById('arrowLeft').style.display = 'flex';
-            document.getElementById('arrowRight').style.display = 'flex';
-        };
-
-        window.abrirVisorComic = (data) => {
-            paginaIndexActual = 0;
-            window.paginasActualesVisor = [data.portadaUrl, ...(data.paginas || [])];
-            document.getElementById('comicImg').src = window.paginasActualesVisor[0];
-            document.getElementById('viewerModal').style.display = 'flex';
-            document.getElementById('arrowLeft').style.display = 'flex';
-            document.getElementById('arrowRight').style.display = 'flex';
-            cargarComentarios(data.firebaseId);
         };
 
         window.abrirVisorSimple = (urlImg, docId) => {
@@ -901,15 +733,6 @@
                 overlay.style.display = 'block';
                 overlay.style.opacity = '1';
             }
-        };
-
-        window.filtrarVideos = (texto) => {
-            const val = texto.toLowerCase();
-            const cards = document.querySelectorAll('.video-card-item');
-            cards.forEach(card => {
-                const titulo = card.getAttribute('data-title') || '';
-                card.style.display = titulo.includes(val) ? 'flex' : 'none';
-            });
         };
 
         window.filtrarContenido = (gridId, texto) => {
