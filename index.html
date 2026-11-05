@@ -269,7 +269,7 @@
                 <input type="text" id="searchVideos" class="search-input" placeholder="Buscar videos..." oninput="filtrarVideos(this.value)">
             </div>
             <div class="video-list-grid" id="videosListGrid">
-                <!-- Videos .mp4 inyectados automáticamente -->
+                <!-- Videos inyectados automáticamente -->
             </div>
         </div>
 
@@ -356,7 +356,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDK Modular y Lógica -->
+    <!-- Firebase SDK Modular y Lógica de Carga de Datos -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, increment, getDoc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -394,6 +394,11 @@
         let currentUserAvatar = localStorage.getItem('devx_avatar') || "https://api.dicebear.com/7.x/bottts/svg?seed=" + currentUserName;
         let isAdmin = (currentKey === ADMIN_KEY);
 
+        // Variables Globales para Visor y Cómics
+        let contenidoActualData = null;
+        let paginaIndexActual = 0;
+
+        // Escanear videos locales .mp4 (excluyendo intro.mp4)
         function escanearEInyectarVideosLocales() {
             const gridVideos = document.getElementById('videosListGrid');
             const videosEnDom = document.querySelectorAll('video');
@@ -425,8 +430,88 @@
             });
         }
 
+        // CARGAR CONTENIDO DINÁMICO DESDE FIRESTORE EN TIEMPO REAL
+        function escucharContenidos() {
+            onSnapshot(collection(db, "contents"), (snapshot) => {
+                const comicsGrid = document.getElementById('comicsGrid');
+                const ruleGrid = document.getElementById('ruleGrid');
+                const sixchanFeed = document.getElementById('sixchanFeed');
+                const videosListGrid = document.getElementById('videosListGrid');
+
+                comicsGrid.innerHTML = '';
+                ruleGrid.innerHTML = '';
+                sixchanFeed.innerHTML = '';
+
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.id ? { id: docSnap.id, ...docSnap.data() } : docSnap.data();
+                    data.firebaseId = docSnap.id;
+
+                    if (data.categoria === 'comic') {
+                        const card = document.createElement('div');
+                        card.className = 'content-card';
+                        card.innerHTML = `
+                            ${(isAdmin || data.autor === currentUserName) ? `<button class="delete-btn ${isAdmin ? 'admin-delete-btn' : ''}" onclick="eliminarContenido('${data.firebaseId}')">X</button>` : ''}
+                            <img src="${data.portadaUrl}" class="content-thumb" onclick='abrirVisorComic(${JSON.stringify(data)})'>
+                            <div class="content-actions">
+                                <span style="font-size:0.75font; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${data.titulo}</span>
+                                <button class="action-btn open" onclick='abrirVisorComic(${JSON.stringify(data)})'>Leer Cómic</button>
+                                <button class="action-btn like-btn" onclick="darLike('${data.firebaseId}', ${data.likes || 0})">❤ ${data.likes || 0}</button>
+                            </div>
+                        `;
+                        comicsGrid.appendChild(card);
+                    } else if (data.categoria === 'rule') {
+                        const card = document.createElement('div');
+                        card.className = 'content-card';
+                        card.innerHTML = `
+                            ${(isAdmin || data.autor === currentUserName) ? `<button class="delete-btn ${isAdmin ? 'admin-delete-btn' : ''}" onclick="eliminarContenido('${data.firebaseId}')">X</button>` : ''}
+                            <img src="${data.portadaUrl}" class="content-thumb" onclick='abrirVisorSimple("${data.portadaUrl}", "${data.firebaseId}")'>
+                            <div class="content-actions">
+                                <span style="font-size:0.75rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${data.titulo}</span>
+                                <button class="action-btn open" onclick='abrirVisorSimple("${data.portadaUrl}", "${data.firebaseId}")'>Ver Imagen</button>
+                                <button class="action-btn like-btn" onclick="darLike('${data.firebaseId}', ${data.likes || 0})">❤ ${data.likes || 0}</button>
+                            </div>
+                        `;
+                        ruleGrid.appendChild(card);
+                    } else if (data.categoria === 'sixchan') {
+                        const postDiv = document.createElement('div');
+                        postDiv.className = 'sixchan-post';
+                        postDiv.innerHTML = `
+                            ${(isAdmin || data.autor === currentUserName) ? `<button class="delete-btn ${isAdmin ? 'admin-delete-btn' : ''}" onclick="eliminarContenido('${data.firebaseId}')" style="top:8px; right:8px; left:auto;">X</button>` : ''}
+                            <div class="sixchan-post-header">
+                                <img src="${data.avatar || 'https://via.placeholder.com/30'}" class="avatar-img">
+                                <strong>@${data.autor || 'Anónimo'}</strong>
+                                <span>#${data.firebaseId.slice(-4)}</span>
+                            </div>
+                            <div class="sixchan-post-body">
+                                ${data.portadaUrl ? `<img src="${data.portadaUrl}" onclick='abrirVisorSimple("${data.portadaUrl}", "${data.firebaseId}")'>` : ''}
+                                <div class="sixchan-post-text"><strong>${data.titulo}</strong><br>${data.texto || ''}</div>
+                            </div>
+                            <div class="sixchan-footer">
+                                <button class="action-btn like-btn" style="width:auto; padding:4px 10px;" onclick="darLike('${data.firebaseId}', ${data.likes || 0})">❤ ${data.likes || 0}</button>
+                            </div>
+                        `;
+                        sixchanFeed.appendChild(postDiv);
+                    } else if (data.categoria === 'video') {
+                        // Si se subió un video desde la app
+                        const cardItem = document.createElement('div');
+                        cardItem.className = 'video-card-item';
+                        cardItem.setAttribute('data-title', data.titulo.toLowerCase());
+                        cardItem.innerHTML = `
+                            ${(isAdmin || data.autor === currentUserName) ? `<button class="delete-btn ${isAdmin ? 'admin-delete-btn' : ''}" onclick="eliminarContenido('${data.firebaseId}')">X</button>` : ''}
+                            <div class="video-player-container">
+                                <video controls preload="metadata"><source src="${data.portadaUrl}" type="video/mp4"></video>
+                            </div>
+                            <div class="video-card-info">${data.titulo} <span>+18</span></div>
+                        `;
+                        videosListGrid.appendChild(cardItem);
+                    }
+                });
+            });
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             escanearEInyectarVideosLocales();
+            escucharContenidos();
         });
 
         if (currentUserName) {
@@ -552,6 +637,178 @@
             }
         };
 
+        // LÓGICA DE PUBLICACIÓN DE CONTENIDO
+        document.getElementById('uploadBtn').onclick = async () => {
+            if (!currentKey) return alert("Inicia sesión primero.");
+            const category = document.getElementById('uploadCategory').value;
+            const title = document.getElementById('newTitle').value.trim();
+
+            if (!title) return alert("Escribe un título.");
+
+            let payload = {
+                categoria: category,
+                titulo: title,
+                autor: currentUserName,
+                avatar: currentUserAvatar,
+                likes: 0,
+                timestamp: new Date()
+            };
+
+            if (category === 'video') {
+                const linkVal = document.getElementById('videoLinkInput').value.trim();
+                if (!linkVal) return alert("Introduce el enlace del video.");
+                payload.portadaUrl = linkVal;
+                await addDoc(collection(db, "contents"), payload);
+                alert("¡Video publicado con éxito!");
+                document.getElementById('newTitle').value = '';
+                document.getElementById('videoLinkInput').value = '';
+            } else if (category === 'rule') {
+                const fileInput = document.getElementById('singleFile').files[0];
+                if (!fileInput) return alert("Selecciona una imagen.");
+                const reader = new FileReader();
+                reader.readAsDataURL(fileInput);
+                reader.onload = async () => {
+                    payload.portadaUrl = reader.result;
+                    await addDoc(collection(db, "contents"), payload);
+                    alert("¡Imagen Rule publicada con éxito!");
+                    document.getElementById('newTitle').value = '';
+                };
+            } else if (category === 'sixchan') {
+                const textVal = document.getElementById('sixchanText').value.trim();
+                const fileInput = document.getElementById('singleFile').files[0];
+                payload.texto = textVal;
+
+                if (fileInput) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(fileInput);
+                    reader.onload = async () => {
+                        payload.portadaUrl = reader.result;
+                        await addDoc(collection(db, "contents"), payload);
+                        alert("¡Post de Sixchan publicado!");
+                        document.getElementById('newTitle').value = '';
+                        document.getElementById('sixchanText').value = '';
+                    };
+                } else {
+                    payload.portadaUrl = "";
+                    await addDoc(collection(db, "contents"), payload);
+                    alert("¡Post de Sixchan publicado!");
+                    document.getElementById('newTitle').value = '';
+                    document.getElementById('sixchanText').value = '';
+                }
+            } else if (category === 'comic') {
+                const portadaFile = document.getElementById('comicPortada').files[0];
+                if (!portadaFile) return alert("Selecciona la portada del cómic.");
+
+                let paginasArray = [];
+                for (let i = 1; i <= 30; i++) {
+                    const pagInput = document.getElementById(`comicPag_${i}`).files[0];
+                    if (pagInput) {
+                        // Convertir a Base64 de forma síncrona/promesa
+                        const base64 = await toBase64(pagInput);
+                        paginasArray.push(base64);
+                    }
+                }
+
+                const reader = new FileReader();
+                reader.readAsDataURL(portadaFile);
+                reader.onload = async () => {
+                    payload.portadaUrl = reader.result;
+                    payload.paginas = paginasArray;
+                    await addDoc(collection(db, "contents"), payload);
+                    alert("¡Cómic publicado con éxito!");
+                    document.getElementById('newTitle').value = '';
+                };
+            }
+        };
+
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // FUNCIONES DEL VISOR Y COMENTARIOS
+        window.abrirVisorComic = (data) => {
+            contenidoActualData = data;
+            paginaIndexActual = 0;
+            let paginas = [data.portadaUrl, ...(data.paginas || [])];
+            window.paginasActualesVisor = paginas;
+
+            document.getElementById('comicImg').src = paginas[paginaIndexActual];
+            document.getElementById('viewerModal').style.display = 'flex';
+            document.getElementById('arrowLeft').style.display = 'flex';
+            document.getElementById('arrowRight').style.display = 'flex';
+            cargarComentarios(data.firebaseId);
+        };
+
+        window.abrirVisorSimple = (urlImg, docId) => {
+            window.paginasActualesVisor = [urlImg];
+            paginaIndexActual = 0;
+            document.getElementById('comicImg').src = urlImg;
+            document.getElementById('viewerModal').style.display = 'flex';
+            document.getElementById('arrowLeft').style.display = 'none';
+            document.getElementById('arrowRight').style.display = 'none';
+            if(docId) cargarComentarios(docId);
+        };
+
+        window.cambiarPagina = (dir) => {
+            if (!window.paginasActualesVisor) return;
+            paginaIndexActual += dir;
+            if (paginaIndexActual < 0) paginaIndexActual = 0;
+            if (paginaIndexActual >= window.paginasActualesVisor.length) paginaIndexActual = window.paginasActualesVisor.length - 1;
+            document.getElementById('comicImg').src = window.paginasActualesVisor[paginaIndexActual];
+        };
+
+        window.cerrarVisor = () => {
+            document.getElementById('viewerModal').style.display = 'none';
+        };
+
+        window.darLike = async (docId, likesActuales) => {
+            const ref = doc(db, "contents", docId);
+            await updateDoc(ref, { likes: (likesActuales || 0) + 1 });
+        };
+
+        window.eliminarContenido = async (docId) => {
+            if (confirm("¿Estás seguro de eliminar este contenido?")) {
+                await deleteDoc(doc(db, "contents", docId));
+                alert("Contenido eliminado.");
+            }
+        };
+
+        // Comentarios
+        function cargarComentarios(docId) {
+            const list = document.getElementById('commentsList');
+            list.innerHTML = '';
+            onSnapshot(collection(db, "contents", docId, "comments"), (snapshot) => {
+                list.innerHTML = '';
+                snapshot.forEach(cDoc => {
+                    const cData = cDoc.data();
+                    const item = document.createElement('div');
+                    item.className = 'comment-item';
+                    item.innerHTML = `
+                        <img src="${cData.avatar || 'https://via.placeholder.com/25'}" class="avatar-img" style="width:25px; height:25px;">
+                        <div><strong>@${cData.usuario}:</strong> ${cData.texto}</div>
+                    `;
+                    list.appendChild(item);
+                });
+            });
+
+            document.getElementById('sendCommentBtn').onclick = async () => {
+                const txt = document.getElementById('commentInput').value.trim();
+                if (!txt) return;
+                await addDoc(collection(db, "contents", docId, "comments"), {
+                    usuario: currentUserName,
+                    avatar: currentUserAvatar,
+                    texto: txt,
+                    timestamp: new Date()
+                });
+                document.getElementById('commentInput').value = '';
+            };
+        }
+
         window.mostrarSeccion = (idSeccion) => {
             document.getElementById('mainHomeMenu').style.display = 'none';
             document.querySelectorAll('.sub-section').forEach(el => el.style.display = 'none');
@@ -586,6 +843,16 @@
             });
         };
 
+        window.filtrarContenido = (gridId, texto) => {
+            const val = texto.toLowerCase();
+            const cards = document.querySelectorAll(`#${gridId} .content-card`);
+            cards.forEach(card => {
+                const span = card.querySelector('span');
+                const titulo = span ? span.textContent.toLowerCase() : '';
+                card.style.display = titulo.includes(val) ? 'flex' : 'none';
+            });
+        };
+
         window.terminarVideo = () => {
             const modal = document.getElementById('introVideoModal');
             const video = document.getElementById('introVideo');
@@ -595,7 +862,6 @@
             document.getElementById('gatekeeperModal').style.display = 'flex';
         };
 
-        // Redirección a YouTube Kids en caso de seleccionar "No"
         window.confirmarEdad = (esMayor) => {
             if (esMayor) {
                 document.getElementById('stepAge').style.display = 'none';
