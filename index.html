@@ -294,14 +294,14 @@
                     </div>
                 </div>
 
-                <!-- Cómic 5 (Formato webp, 0001 a 0150) -->
+                <!-- Cómic 5 (Formato webp, 0001 a 0100) -->
                 <div class="content-card">
                     <div class="content-thumb-wrapper">
-                        <img src="comic5/0001.webp" class="content-thumb" onclick='abrirVisorComicWebp("comic5", 150)'>
+                        <img src="comic5/0001.webp" class="content-thumb" onclick='abrirVisorComicWebp("comic5", 100)'>
                     </div>
                     <div class="content-actions">
                         <span style="font-size:0.75rem; font-weight:700;">Cómic 5 (Webp)</span>
-                        <button class="action-btn open" onclick='abrirVisorComicWebp("comic5", 150)'>Leer Cómic</button>
+                        <button class="action-btn open" onclick='abrirVisorComicWebp("comic5", 100)'>Leer Cómic</button>
                     </div>
                 </div>
             </div>
@@ -416,7 +416,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDK Modular y IA de Ordenamiento Masivo -->
+    <!-- Firebase SDK Modular e IA de Ordenamiento Masivo -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -629,7 +629,6 @@
             }
         }
 
-        // Formulario de Subida con IA para Cómics Masivos (Selección múltiple de golpe)
         window.actualizarFormularioSubida = (tipo) => {
             const area = document.getElementById('dynamicUploadArea');
             if (tipo === 'video') {
@@ -652,7 +651,6 @@
             }
         };
 
-        // Subida de Cómics Masiva Optimizada con Inteligencia de Ordenamiento
         document.getElementById('uploadBtn').onclick = async () => {
             if (!currentKey) return alert("Inicia sesión primero.");
             const category = document.getElementById('uploadCategory').value;
@@ -696,7 +694,6 @@
                 const filesInput = document.getElementById('masiveComicFiles');
                 if (!filesInput || filesInput.files.length === 0) return alert("Selecciona las imágenes del cómic.");
 
-                // IA Inteligente: Organizar archivos por nombre numérico extraído
                 let filesArray = Array.from(filesInput.files);
                 filesArray.sort((a, b) => {
                     let numA = parseInt(a.name.replace(/\D/g, '')) || 0;
@@ -705,10 +702,8 @@
                 });
 
                 let paginasArray = [];
-                // El primer archivo ordenado numéricamente será la portada
                 let portadaBase64 = await toBase64(filesArray[0]);
 
-                // El resto de archivos se procesan en paralelo para máxima velocidad
                 let promesasPaginas = filesArray.slice(1).map(file => toBase64(file));
                 paginasArray = await Promise.all(promesasPaginas);
 
@@ -730,7 +725,6 @@
             });
         }
 
-        // Visor Cómic Local Carpetas 1 al 3 (jpg)
         window.abrirVisorComicLocal = (folderName, totalPaginas, ext) => {
             paginaIndexActual = 0;
             let paginas = [`${folderName}/portada.${ext}`];
@@ -744,7 +738,6 @@
             document.getElementById('arrowRight').style.display = 'flex';
         };
 
-        // Visor Cómic Local Carpetas 4 y 5 (.webp estructurado 0001, 0002...)
         window.abrirVisorComicWebp = (folderName, totalPaginas) => {
             paginaIndexActual = 0;
             let paginas = [];
@@ -759,7 +752,6 @@
             document.getElementById('arrowRight').style.display = 'flex';
         };
 
-        // Visor Cómic Nube
         window.abrirVisorComic = (data) => {
             paginaIndexActual = 0;
             window.paginasActualesVisor = [data.portadaUrl, ...(data.paginas || [])];
