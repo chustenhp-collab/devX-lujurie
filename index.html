@@ -120,11 +120,9 @@
         .upload-form-box { display: flex; flex-direction: column; gap: 8px; background: var(--bg-base); border: 1px solid var(--border); padding: 12px; }
         .upload-form-box input, .upload-form-box select, .upload-form-box textarea { padding: 10px; border: 1px solid var(--border); background: var(--surface); color: white; font-size: 0.85rem; outline: none; }
 
-        /* Creador Cómics (Hasta 60 Páginas) */
-        .comic-builder-container { display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto; border: 1px solid var(--border); padding: 8px; background: var(--bg-base); }
-        .portada-box { background: #220d14; border: 2px dashed var(--accent); padding: 8px; text-align: center; font-size: 0.75rem; display: flex; flex-direction: column; gap: 4px; }
-        .pages-grid-builder { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-        .page-slot { background: var(--surface); border: 1px solid var(--border); padding: 6px; font-size: 0.7rem; display: flex; flex-direction: column; gap: 2px; }
+        /* Creador Cómics Masivo Optimizado */
+        .comic-builder-container { display: flex; flex-direction: column; gap: 10px; border: 2px dashed var(--accent); padding: 12px; background: var(--bg-base); text-align: center; }
+        .ai-badge { background: rgba(225,29,72,0.2); color: var(--accent); font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border: 1px solid var(--accent); }
 
         /* Secciones Dinámicas */
         .sub-section { display: none; flex-direction: column; gap: 12px; }
@@ -244,7 +242,7 @@
             </div>
         </div>
 
-        <!-- Sección Cómics (Con cómics 1, 2 y 3 precargados localmente) -->
+        <!-- Sección Cómics (Con Cómics 1 al 5 precargados localmente) -->
         <div id="comicsSection" class="sub-section">
             <button class="back-home-btn" onclick="volverAlMenuPrincipal()">❮ Volver al Menú</button>
             <div class="search-container">
@@ -255,33 +253,55 @@
                 <!-- Cómic 1 -->
                 <div class="content-card">
                     <div class="content-thumb-wrapper">
-                        <img src="comic1/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic1", 30)'>
+                        <img src="comic1/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic1", 30, "jpg")'>
                     </div>
                     <div class="content-actions">
                         <span style="font-size:0.75rem; font-weight:700;">Cómic 1</span>
-                        <button class="action-btn open" onclick='abrirVisorComicLocal("comic1", 30)'>Leer Cómic</button>
+                        <button class="action-btn open" onclick='abrirVisorComicLocal("comic1", 30, "jpg")'>Leer Cómic</button>
                     </div>
                 </div>
 
                 <!-- Cómic 2 -->
                 <div class="content-card">
                     <div class="content-thumb-wrapper">
-                        <img src="comic2/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic2", 30)'>
+                        <img src="comic2/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic2", 30, "jpg")'>
                     </div>
                     <div class="content-actions">
                         <span style="font-size:0.75rem; font-weight:700;">Cómic 2</span>
-                        <button class="action-btn open" onclick='abrirVisorComicLocal("comic2", 30)'>Leer Cómic</button>
+                        <button class="action-btn open" onclick='abrirVisorComicLocal("comic2", 30, "jpg")'>Leer Cómic</button>
                     </div>
                 </div>
 
                 <!-- Cómic 3 -->
                 <div class="content-card">
                     <div class="content-thumb-wrapper">
-                        <img src="comic3/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic3", 30)'>
+                        <img src="comic3/portada.jpg" class="content-thumb" onclick='abrirVisorComicLocal("comic3", 30, "jpg")'>
                     </div>
                     <div class="content-actions">
                         <span style="font-size:0.75rem; font-weight:700;">Cómic 3</span>
-                        <button class="action-btn open" onclick='abrirVisorComicLocal("comic3", 30)'>Leer Cómic</button>
+                        <button class="action-btn open" onclick='abrirVisorComicLocal("comic3", 30, "jpg")'>Leer Cómic</button>
+                    </div>
+                </div>
+
+                <!-- Cómic 4 (Formato webp, 0001 a 0056) -->
+                <div class="content-card">
+                    <div class="content-thumb-wrapper">
+                        <img src="comic4/0001.webp" class="content-thumb" onclick='abrirVisorComicWebp("comic4", 56)'>
+                    </div>
+                    <div class="content-actions">
+                        <span style="font-size:0.75rem; font-weight:700;">Cómic 4 (Webp)</span>
+                        <button class="action-btn open" onclick='abrirVisorComicWebp("comic4", 56)'>Leer Cómic</button>
+                    </div>
+                </div>
+
+                <!-- Cómic 5 (Formato webp, 0001 a 0150) -->
+                <div class="content-card">
+                    <div class="content-thumb-wrapper">
+                        <img src="comic5/0001.webp" class="content-thumb" onclick='abrirVisorComicWebp("comic5", 150)'>
+                    </div>
+                    <div class="content-actions">
+                        <span style="font-size:0.75rem; font-weight:700;">Cómic 5 (Webp)</span>
+                        <button class="action-btn open" onclick='abrirVisorComicWebp("comic5", 150)'>Leer Cómic</button>
                     </div>
                 </div>
             </div>
@@ -361,7 +381,7 @@
             <div class="upload-form-box">
                 <select id="uploadCategory" onchange="actualizarFormularioSubida(this.value)">
                     <option value="video">Videos (GitHub / Enlace)</option>
-                    <option value="comic">Cómics (Creador 60 Páginas + Portada)</option>
+                    <option value="comic">Cómics (Subida Masiva con IA)</option>
                     <option value="rule">Rule (Imagen simple)</option>
                     <option value="sixchan">Sixchan (Foto y Texto)</option>
                 </select>
@@ -396,7 +416,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDK Modular -->
+    <!-- Firebase SDK Modular y IA de Ordenamiento Masivo -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -609,7 +629,7 @@
             }
         }
 
-        // Formulario de Subida dinamizado para hasta 60 PÁGINAS
+        // Formulario de Subida con IA para Cómics Masivos (Selección múltiple de golpe)
         window.actualizarFormularioSubida = (tipo) => {
             const area = document.getElementById('dynamicUploadArea');
             if (tipo === 'video') {
@@ -622,28 +642,17 @@
                     <input type="file" id="singleFile" accept="image/*" style="font-size: 0.75rem;">
                 `;
             } else if (tipo === 'comic') {
-                let htmlSlots = `
+                area.innerHTML = `
                     <div class="comic-builder-container">
-                        <div class="portada-box">
-                            <strong>⭐ PORTADA DEL CÓMIC</strong>
-                            <input type="file" id="comicPortada" accept="image/*" style="font-size:0.7rem;">
-                        </div>
-                        <div class="pages-grid-builder">
+                        <span class="ai-badge">✨ IA DE ORDENAMIENTO AUTOMÁTICO</span>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top:4px;">Selecciona o arrastra todas las imágenes juntas (Portada y Páginas). La IA las organizará por nombre numérico.</p>
+                        <input type="file" id="masiveComicFiles" accept="image/*" multiple style="font-size:0.75rem; margin-top:6px;">
+                    </div>
                 `;
-                for (let i = 1; i <= 60; i++) {
-                    htmlSlots += `
-                        <div class="page-slot">
-                            <span>Página ${i}</span>
-                            <input type="file" id="comicPag_${i}" accept="image/*" style="font-size:0.65rem;">
-                        </div>
-                    `;
-                }
-                htmlSlots += `</div></div>`;
-                area.innerHTML = htmlSlots;
             }
         };
 
-        // Subida de Cómics de hasta 60 Páginas
+        // Subida de Cómics Masiva Optimizada con Inteligencia de Ordenamiento
         document.getElementById('uploadBtn').onclick = async () => {
             if (!currentKey) return alert("Inicia sesión primero.");
             const category = document.getElementById('uploadCategory').value;
@@ -684,21 +693,30 @@
                 alert("¡Post de Sixchan publicado!");
                 document.getElementById('newTitle').value = '';
             } else if (category === 'comic') {
-                const portadaFile = document.getElementById('comicPortada').files[0];
-                if (!portadaFile) return alert("Selecciona la portada.");
+                const filesInput = document.getElementById('masiveComicFiles');
+                if (!filesInput || filesInput.files.length === 0) return alert("Selecciona las imágenes del cómic.");
+
+                // IA Inteligente: Organizar archivos por nombre numérico extraído
+                let filesArray = Array.from(filesInput.files);
+                filesArray.sort((a, b) => {
+                    let numA = parseInt(a.name.replace(/\D/g, '')) || 0;
+                    let numB = parseInt(b.name.replace(/\D/g, '')) || 0;
+                    return numA - numB;
+                });
 
                 let paginasArray = [];
-                for (let i = 1; i <= 60; i++) {
-                    const pagInput = document.getElementById(`comicPag_${i}`)?.files[0];
-                    if (pagInput) {
-                        paginasArray.push(await toBase64(pagInput));
-                    }
-                }
+                // El primer archivo ordenado numéricamente será la portada
+                let portadaBase64 = await toBase64(filesArray[0]);
 
-                payload.portadaUrl = await toBase64(portadaFile);
+                // El resto de archivos se procesan en paralelo para máxima velocidad
+                let promesasPaginas = filesArray.slice(1).map(file => toBase64(file));
+                paginasArray = await Promise.all(promesasPaginas);
+
+                payload.portadaUrl = portadaBase64;
                 payload.paginas = paginasArray;
+                
                 await addDoc(collection(db, "contents"), payload);
-                alert("¡Cómic publicado!");
+                alert(`¡Cómic publicado con éxito! (${filesArray.length} páginas organizadas por IA).`);
                 document.getElementById('newTitle').value = '';
             }
         };
@@ -712,12 +730,27 @@
             });
         }
 
-        // Visor Cómic Local (Carpetas comic1, comic2, comic3)
-        window.abrirVisorComicLocal = (folderName, totalPaginas) => {
+        // Visor Cómic Local Carpetas 1 al 3 (jpg)
+        window.abrirVisorComicLocal = (folderName, totalPaginas, ext) => {
             paginaIndexActual = 0;
-            let paginas = [`${folderName}/portada.jpg`];
+            let paginas = [`${folderName}/portada.${ext}`];
             for (let i = 1; i <= totalPaginas; i++) {
-                paginas.push(`${folderName}/${i}.jpg`);
+                paginas.push(`${folderName}/${i}.${ext}`);
+            }
+            window.paginasActualesVisor = paginas;
+            document.getElementById('comicImg').src = window.paginasActualesVisor[0];
+            document.getElementById('viewerModal').style.display = 'flex';
+            document.getElementById('arrowLeft').style.display = 'flex';
+            document.getElementById('arrowRight').style.display = 'flex';
+        };
+
+        // Visor Cómic Local Carpetas 4 y 5 (.webp estructurado 0001, 0002...)
+        window.abrirVisorComicWebp = (folderName, totalPaginas) => {
+            paginaIndexActual = 0;
+            let paginas = [];
+            for (let i = 1; i <= totalPaginas; i++) {
+                let numStr = String(i).padStart(4, '0');
+                paginas.push(`${folderName}/${numStr}.webp`);
             }
             window.paginasActualesVisor = paginas;
             document.getElementById('comicImg').src = window.paginasActualesVisor[0];
